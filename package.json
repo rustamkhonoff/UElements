@@ -1,0 +1,15 @@
+{
+  "name": "com.rustamkhonoff.uelements",
+  "version": "1.0.0",
+  "displayName": "UElements",
+  "description": "Simple Elements based UI service using UniTask",
+  "unity": "2021.3",
+  "unityRelease": "21f1",
+  "author": {
+    "name": "rustamkhonoff",
+    "email": "rustamkhonoff@gmail.com"
+  },
+  "dependencies": {
+    "com.cysharp.unitask": "2.5.0"
+  }
+}
