@@ -25,6 +25,7 @@ namespace UElements
         public async UniTask<ElementBase> Create(ElementRequest request)
         {
             ElementBase instance = await Create_Internal<ElementBase>(request);
+            instance.Initialize(this);
             instance.Initialize();
             instance.Show();
             return instance;
@@ -33,6 +34,7 @@ namespace UElements
         public async UniTask<T> Create<T>(ElementRequest? request = null) where T : Element
         {
             T instance = await Create_Internal<T>(request);
+            instance.Initialize(this);
             instance.Initialize();
             instance.Show();
             return instance;
@@ -41,6 +43,7 @@ namespace UElements
         public async UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null) where T : ModelElement<TModel>
         {
             T instance = await Create_Internal<T>(request);
+            instance.Initialize(this);
             instance.InitializeModel(model);
             instance.Initialize();
             instance.Show();
