@@ -43,7 +43,7 @@ namespace UElements
             return this;
         }
 
-        public static ElementRequest Default => new ElementRequest().WithKey("null").WithOnlyOneInstance(true);
+        public static ElementRequest Default => new ElementRequest().WithOnlyOneInstance(true);
         public static ElementRequest RequestOnlyOneInstance => new ElementRequest().WithOnlyOneInstance(true);
         public static ElementRequest RequestMultipleInstances => new ElementRequest().WithOnlyOneInstance(false);
         public static implicit operator ElementRequest(string key) => new(key);
