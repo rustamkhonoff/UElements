@@ -6,17 +6,18 @@ using UnityEngine;
 
 namespace UElements
 {
-    public class Elements : IElements
+    public class Elements : IElements, IDisposable
     {
-        private readonly IElementsProvider m_elementsProvider;
+        private readonly IEnumerable<IElementsProvider> m_elementsProviders;
         private readonly IElementsFactory m_elementsFactory;
         private readonly IElementsConfiguration m_elementsConfiguration;
         private ElementsRoot m_elementsRoot;
         private readonly Dictionary<string, List<ElementBase>> m_activeElementsCache;
 
-        public Elements(IElementsProvider elementsProvider, IElementsFactory elementsFactory, IElementsConfiguration elementsConfiguration)
+        public Elements(IEnumerable<IElementsProvider> elementsProvider, IElementsFactory elementsFactory,
+            IElementsConfiguration elementsConfiguration)
         {
-            m_elementsProvider = elementsProvider;
+            m_elementsProviders = elementsProvider.Concat(elementsConfiguration.Modules.Select(a => a.ElementsProvider));
             m_elementsFactory = elementsFactory;
             m_elementsConfiguration = elementsConfiguration;
             m_activeElementsCache = new Dictionary<string, List<ElementBase>>();
@@ -55,12 +56,23 @@ namespace UElements
             ElementRequest fixedRequest = request != null ? request.Value : ElementRequest.Default;
             string key = GetKey<T>(fixedRequest);
 
-            T prefab = await m_elementsProvider.GetElement<T>(key);
-            if (prefab == null) return null;
+            IElementsProvider elementsProvider = m_elementsProviders.FirstOrDefault(a => a.HasElement<T>(key));
+            if (elementsProvider == null)
+            {
+                Debug.LogException(new NullReferenceException($"There is no element with key {key}"));
+                return null;
+            }
+
+            T prefab = await elementsProvider.GetElement<T>(key);
 
             TryHandleRequestSettings(fixedRequest, key);
 
             T instance = m_elementsFactory.Instantiate(prefab, GetParent(fixedRequest));
+            instance.OnDestroying += () =>
+            {
+                if (m_activeElementsCache.TryGetValue(key, out List<ElementBase> elementBases))
+                    elementBases.Remove(instance);
+            };
 
             AddToCache(instance, key);
 
@@ -92,6 +104,12 @@ namespace UElements
             if (m_activeElementsCache.TryGetValue(GetKey<T>(request), out List<ElementBase> cachedElements))
                 return cachedElements.OfType<T>().ToList();
             return new List<T>();
+        }
+
+        public void Release()
+        {
+            foreach (IElementsProvider elementsProvider in m_elementsProviders)
+                elementsProvider.Release();
         }
 
         private void AddToCache(ElementBase elementBase, string key)
@@ -146,6 +164,12 @@ namespace UElements
             {
                 return typeof(T).Name;
             }
+        }
+
+        public void Dispose()
+        {
+            foreach (IElementsProvider elementsProvider in m_elementsProviders)
+                elementsProvider.Release();
         }
     }
 }

@@ -1,7 +1,10 @@
+using System.Collections.Generic;
+
 namespace UElements
 {
     public interface IElementsConfiguration
     {
-        public ElementsRoot ElementsRootPrefab { get; }
+        ElementsRoot ElementsRootPrefab { get; }
+        List<ElementsModule> Modules { get; }
     }
 }

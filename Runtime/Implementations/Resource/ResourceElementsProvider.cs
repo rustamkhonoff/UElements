@@ -8,19 +8,28 @@ namespace UElements.Resource
 {
     public class ResourceElementsProvider : IElementsProvider
     {
-        private ResourceElementsMapScriptableObject m_map;
         private readonly Dictionary<string, ResourceRequest> m_cache;
+        private readonly Dictionary<string, string> m_assetPaths;
 
-        public ResourceElementsProvider(ResourceElementsMapScriptableObject map)
+        public ResourceElementsProvider(ResourceElementsMapScriptableObject map) : this(map.Maps) { }
+
+        public ResourceElementsProvider(IEnumerable<ElementMap> maps)
         {
-            m_map = map;
             m_cache = new Dictionary<string, ResourceRequest>();
+            m_assetPaths = maps.ToDictionary(a => a.Key, a => a.Path);
+        }
+
+        public IEnumerable<string> ExistKeys => m_assetPaths.Keys;
+
+        public bool HasElement<T>(string key) where T : ElementBase
+        {
+            return m_assetPaths.ContainsKey(key);
         }
 
         public async UniTask<T> GetElement<T>(string key) where T : ElementBase
         {
-            ElementMap found = m_map.Maps.FirstOrDefault(a => a.Key == key);
-            if (found == null)
+            string foundPath = m_assetPaths[key];
+            if (foundPath == null)
             {
                 Debug.LogException(new NullReferenceException($"There is no element found with Key {key}, for Type {typeof(T)}"));
                 return null;
@@ -42,7 +51,7 @@ namespace UElements.Resource
             }
             else
             {
-                ResourceRequest handle = Resources.LoadAsync(found.Path);
+                ResourceRequest handle = Resources.LoadAsync(foundPath);
                 m_cache[key] = handle;
                 await handle.ToUniTask();
                 result = (GameObject)handle.asset;
@@ -54,11 +63,6 @@ namespace UElements.Resource
         public void Release()
         {
             m_cache.Clear();
-        }
-
-        public void Dispose()
-        {
-            Release();
         }
     }
 }

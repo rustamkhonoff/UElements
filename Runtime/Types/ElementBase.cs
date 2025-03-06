@@ -6,6 +6,7 @@ namespace UElements
 {
     public abstract class ElementBase : MonoBehaviour, IDisposable
     {
+        public event Action OnDestroying;
         public IElementController ElementController { get; set; } = new DefaultElementController();
         private CancellationTokenSource m_cancellationTokenSource;
 
@@ -35,7 +36,9 @@ namespace UElements
         private void OnDestroy()
         {
             Dispose();
+            OnDestroying?.Invoke();
             m_cancellationTokenSource?.Cancel();
+            m_cancellationTokenSource?.Dispose();
             m_cancellationTokenSource = null;
             Elements = null;
         }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UElements
@@ -7,5 +8,6 @@ namespace UElements
     public class ElementsConfigurationScriptableObject : ScriptableObject, IElementsConfiguration
     {
         [field: SerializeField] public ElementsRoot ElementsRootPrefab { get; private set; }
+        [field: SerializeField] public List<ElementsModule> Modules { get; private set; }
     }
 }

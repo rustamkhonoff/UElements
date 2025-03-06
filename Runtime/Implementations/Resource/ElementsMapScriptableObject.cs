@@ -5,7 +5,7 @@ using Object = UnityEngine.Object;
 
 namespace UElements.Resource
 {
-    [CreateAssetMenu(menuName = "Services/UElements/Create ResourceElementsMapScriptableObject", fileName = "ResourceElementsMapScriptableObject",
+    [CreateAssetMenu(menuName = "Services/UElements/Resources/Create ResourceElementsMapScriptableObject", fileName = "ResourceElementsMapScriptableObject",
         order = 0)]
     public class ResourceElementsMapScriptableObject : ScriptableObject
     {

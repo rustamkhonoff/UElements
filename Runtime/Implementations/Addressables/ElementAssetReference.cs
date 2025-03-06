@@ -1,7 +1,7 @@
 using System;
 using UnityEngine.AddressableAssets;
 
-namespace Addressables
+namespace UElements.Addressables
 {
     [Serializable]
     public class ElementAssetReference : AssetReferenceGameObject

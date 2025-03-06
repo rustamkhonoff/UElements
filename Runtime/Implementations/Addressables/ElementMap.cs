@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Addressables
+namespace UElements.Addressables
 {
     [Serializable]
     public class ElementMap
