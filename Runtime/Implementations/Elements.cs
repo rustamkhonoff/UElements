@@ -11,10 +11,13 @@ namespace UElements
         private readonly IEnumerable<IElementsProvider> m_elementsProviders;
         private readonly IElementsFactory m_elementsFactory;
         private readonly IElementsConfiguration m_elementsConfiguration;
-        private ElementsRoot m_elementsRoot;
         private readonly Dictionary<string, List<ElementBase>> m_activeElementsCache;
 
-        public Elements(IEnumerable<IElementsProvider> elementsProvider, IElementsFactory elementsFactory,
+        private ElementsRoot m_elementsRoot;
+
+        public Elements(
+            IEnumerable<IElementsProvider> elementsProvider,
+            IElementsFactory elementsFactory,
             IElementsConfiguration elementsConfiguration)
         {
             m_elementsProviders = elementsProvider.Concat(elementsConfiguration.Modules.Select(a => a.ElementsProvider));

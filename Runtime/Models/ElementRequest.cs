@@ -11,6 +11,12 @@ namespace UElements
         [field: SerializeField] [CanBeNull] public Transform Parent { get; private set; }
         [field: SerializeField] public bool OnlyOneInstance { get; private set; }
 
+        public ElementRequest(string key, Transform parent, bool onlyOneInstance)
+        {
+            Key = key;
+            Parent = parent;
+            OnlyOneInstance = onlyOneInstance;
+        }
         public ElementRequest(string key)
         {
             Key = key;

@@ -8,13 +8,12 @@ namespace UElements
     {
         public event Action OnDestroying;
         public IElementController ElementController { get; set; } = new DefaultElementController();
-        private CancellationTokenSource m_cancellationTokenSource;
+        private CancellationTokenSource m_cancellationTokenSource = new();
 
         protected IElements Elements { get; private set; }
 
         internal void Initialize(IElements elements)
         {
-            m_cancellationTokenSource = new CancellationTokenSource();
             Elements = elements;
         }
 
