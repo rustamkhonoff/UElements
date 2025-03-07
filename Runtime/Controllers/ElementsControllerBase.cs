@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UElements
@@ -6,12 +7,12 @@ namespace UElements
     [RequireComponent(typeof(ElementBase))] [DefaultExecutionOrder(-1)]
     public abstract class ElementsControllerBase : MonoBehaviour, IElementController, IDisposable
     {
-        protected ElementBase ElementBase { get; private set; }
+        protected ElementBase Element { get; private set; }
 
         private void Awake()
         {
-            ElementBase = GetComponent<ElementBase>();
-            ElementBase.ElementController = this;
+            Element = GetComponent<ElementBase>();
+            Element.ElementController = this;
         }
 
         public abstract void Show(Action callback);
@@ -22,7 +23,7 @@ namespace UElements
         private void OnDestroy()
         {
             Dispose();
-            ElementBase.ElementController = new DefaultElementController();
+            Element.ElementController = new DefaultElementController();
         }
     }
 }
