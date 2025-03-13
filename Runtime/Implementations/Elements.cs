@@ -59,14 +59,7 @@ namespace UElements
             ElementRequest fixedRequest = request != null ? request.Value : ElementRequest.Default;
             string key = GetKey<T>(fixedRequest);
 
-            IElementsProvider elementsProvider = m_elementsProviders.FirstOrDefault(a => a.HasElement<T>(key));
-            if (elementsProvider == null)
-            {
-                Debug.LogException(new NullReferenceException($"There is no element with key {key}"));
-                return null;
-            }
-
-            T prefab = await elementsProvider.GetElement<T>(key);
+            T prefab = await GetPrefab<T>(key, request);
 
             TryHandleRequestSettings(fixedRequest, key);
 
@@ -113,6 +106,25 @@ namespace UElements
         {
             foreach (IElementsProvider elementsProvider in m_elementsProviders)
                 elementsProvider.Release();
+        }
+
+        private UniTask<T> GetPrefab<T>(string key, ElementRequest? request) where T : ElementBase
+        {
+            if (request.HasValue && request.Value.CustomPrefabReference != null && request.Value.CustomPrefabReference.GetComponent<T>() != null)
+            {
+                return UniTask.FromResult(request.Value.CustomPrefabReference.GetComponent<T>());
+            }
+            else
+            {
+                IElementsProvider elementsProvider = m_elementsProviders.FirstOrDefault(a => a.HasElement<T>(key));
+                if (elementsProvider == null)
+                {
+                    Debug.LogException(new NullReferenceException($"There is no element with key {key}"));
+                    return UniTask.FromResult<T>(null);
+                }
+
+                return elementsProvider.GetElement<T>(key);
+            }
         }
 
         private void AddToCache(ElementBase elementBase, string key)
