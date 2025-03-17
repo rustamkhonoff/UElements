@@ -5,8 +5,11 @@ using Object = UnityEngine.Object;
 
 namespace UElements.Resource
 {
-    [CreateAssetMenu(menuName = "Services/UElements/Resources/Create ResourceElementsMapScriptableObject", fileName = "ResourceElementsMapScriptableObject",
-        order = 0)]
+    [CreateAssetMenu(
+        menuName = "Services/UElements/Resources/Create ResourceElementsMapScriptableObject",
+        fileName = "ResourceElementsMapScriptableObject",
+        order = 0)
+    ]
     public class ResourceElementsMapScriptableObject : ScriptableObject
     {
         [field: SerializeField] public ElementMap[] Maps { get; private set; }

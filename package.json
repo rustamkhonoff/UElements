@@ -1,6 +1,6 @@
 {
   "name": "com.rustamkhonoff.uelements",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "displayName": "UElements",
   "description": "Simple Elements based UI service using UniTask",
   "unity": "2021.3",
