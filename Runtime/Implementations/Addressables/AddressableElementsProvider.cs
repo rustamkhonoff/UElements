@@ -12,10 +12,11 @@ namespace UElements.Addressables
         private readonly Dictionary<string, AsyncOperationHandle> m_cache;
         private readonly Dictionary<string, ElementAssetReference> m_assetReferences;
 
-        public AddressableElementsProvider(AddressableElementsMapScriptableObject map) : this(map.Maps) { }
+        public string Key { get; }
 
-        public AddressableElementsProvider(IEnumerable<ElementMap> maps)
+        public AddressableElementsProvider(string key, IEnumerable<ElementMap> maps)
         {
+            Key = key;
             m_cache = new Dictionary<string, AsyncOperationHandle>();
             m_assetReferences = maps.ToDictionary(a => a.Key, a => a.AssetReference);
         }
@@ -32,7 +33,8 @@ namespace UElements.Addressables
             ElementAssetReference found = m_assetReferences[key];
             if (found == null)
             {
-                Debug.LogException(new NullReferenceException($"There is no element found with Key {key}, for Type {typeof(T)}"));
+                Debug.LogException(
+                    new NullReferenceException($"There is no element found with Key {key}, for Type {typeof(T)}"));
                 return null;
             }
 
@@ -56,6 +58,29 @@ namespace UElements.Addressables
 
             result = (GameObject)handle.Result;
             return result.GetComponent<T>();
+        }
+
+        public async UniTask Prewarm()
+        {
+            foreach (var item in m_assetReferences)
+            {
+                AsyncOperationHandle handle;
+
+                if (m_cache.TryGetValue(item.Key, out AsyncOperationHandle cachedHandle))
+                {
+                    handle = cachedHandle;
+                    if (!handle.IsValid() || handle.Status != AsyncOperationStatus.Succeeded)
+                        await handle.ToUniTask();
+                }
+                else
+                {
+                    if (item.Value.OperationHandle.IsValid()) handle = item.Value.OperationHandle;
+                    else handle = item.Value.LoadAssetAsync<GameObject>();
+
+                    m_cache[item.Key] = handle;
+                    await handle.ToUniTask();
+                }
+            }
         }
 
 

@@ -13,6 +13,8 @@ namespace UElements
         [CanBeNull] T GetActive<T>(ElementRequest? request = null) where T : ElementBase;
         void HideAll<T>(ElementRequest? request = null) where T : ElementBase;
         List<T> GetAll<T>(ElementRequest? request = null) where T : ElementBase;
+        UniTask PrewarmProvider(string moduleKey);
         void Release();
+        void Release(string key);
     }
 }

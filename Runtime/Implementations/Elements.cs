@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using static UElements.UElementsExtensions;
 
 namespace UElements
 {
     public class Elements : IElements, IDisposable
     {
-        private readonly IEnumerable<IElementsProvider> m_elementsProviders;
         private readonly IElementsFactory m_elementsFactory;
         private readonly IElementsConfiguration m_elementsConfiguration;
         private readonly Dictionary<string, List<ElementBase>> m_activeElementsCache;
+        private readonly Dictionary<string, IElementsProvider> m_providers;
 
         private ElementsRoot m_elementsRoot;
 
@@ -20,10 +21,12 @@ namespace UElements
             IElementsFactory elementsFactory,
             IElementsConfiguration elementsConfiguration)
         {
-            m_elementsProviders = elementsProvider.Concat(elementsConfiguration.Modules.Select(a => a.ElementsProvider));
             m_elementsFactory = elementsFactory;
             m_elementsConfiguration = elementsConfiguration;
             m_activeElementsCache = new Dictionary<string, List<ElementBase>>();
+            m_providers = elementsConfiguration.Modules.ToDictionary(a => a.Key, a => a.ElementsProvider);
+            foreach (IElementsProvider provider in elementsProvider)
+                m_providers.Add(provider.Key, provider);
         }
 
         public async UniTask<ElementBase> Create(ElementRequest request)
@@ -44,7 +47,8 @@ namespace UElements
             return instance;
         }
 
-        public async UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null) where T : ModelElement<TModel>
+        public async UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null)
+            where T : ModelElement<TModel>
         {
             T instance = await Create_Internal<T>(request);
             instance.Initialize(this);
@@ -77,7 +81,8 @@ namespace UElements
 
         public T GetActive<T>(ElementRequest? request = null) where T : ElementBase
         {
-            if (m_activeElementsCache.TryGetValue(GetKey<T>(request), out List<ElementBase> cachedElements) && cachedElements.Count > 0)
+            if (m_activeElementsCache.TryGetValue(GetKey<T>(request), out List<ElementBase> cachedElements) &&
+                cachedElements.Count > 0)
                 return (T)cachedElements.First();
             return null;
         }
@@ -102,21 +107,39 @@ namespace UElements
             return new List<T>();
         }
 
+        public UniTask PrewarmProvider(string moduleKey)
+        {
+            if (!m_providers.TryGetValue(moduleKey, out IElementsProvider provider))
+            {
+                Debug.LogException(new NullReferenceException($"No module with key {moduleKey}"));
+                return UniTask.CompletedTask;
+            }
+
+            return provider.Prewarm();
+        }
+
         public void Release()
         {
-            foreach (IElementsProvider elementsProvider in m_elementsProviders)
+            foreach (IElementsProvider elementsProvider in m_providers.Values)
                 elementsProvider.Release();
+        }
+
+        public void Release(string key)
+        {
+            if (m_providers.TryGetValue(key, out IElementsProvider provider))
+                provider.Release();
         }
 
         private UniTask<T> GetPrefab<T>(string key, ElementRequest? request) where T : ElementBase
         {
-            if (request.HasValue && request.Value.CustomPrefabReference != null && request.Value.CustomPrefabReference.GetComponent<T>() != null)
+            if (request.HasValue && request.Value.CustomPrefabReference != null &&
+                request.Value.CustomPrefabReference.GetComponent<T>() != null)
             {
                 return UniTask.FromResult(request.Value.CustomPrefabReference.GetComponent<T>());
             }
             else
             {
-                IElementsProvider elementsProvider = m_elementsProviders.FirstOrDefault(a => a.HasElement<T>(key));
+                IElementsProvider elementsProvider = m_providers.Values.FirstOrDefault(a => a.HasElement<T>(key));
                 if (elementsProvider == null)
                 {
                     Debug.LogException(new NullReferenceException($"There is no element with key {key}"));
@@ -144,7 +167,8 @@ namespace UElements
         {
             if (!elementRequest.HasValue) return;
 
-            if (elementRequest.Value.OnlyOneInstance && m_activeElementsCache.TryGetValue(key, out List<ElementBase> cachedElements))
+            if (elementRequest.Value.OnlyOneInstance &&
+                m_activeElementsCache.TryGetValue(key, out List<ElementBase> cachedElements))
             {
                 if (cachedElements.Count >= 0)
                     cachedElements.ForEach(a => a.Hide());
@@ -165,26 +189,11 @@ namespace UElements
             }
         }
 
-        private string GetKey<T>(ElementRequest? elementRequest) where T : ElementBase
-        {
-            if (elementRequest.HasValue && !string.IsNullOrEmpty(elementRequest.Value.Key))
-            {
-                return elementRequest.Value.Key;
-            }
-            else if (Attribute.GetCustomAttribute(typeof(T), typeof(ElementKeyAttribute)) is { } attribute)
-            {
-                return ((ElementKeyAttribute)attribute).Key;
-            }
-            else
-            {
-                return typeof(T).Name;
-            }
-        }
-
         public void Dispose()
         {
-            foreach (IElementsProvider elementsProvider in m_elementsProviders)
+            foreach (IElementsProvider elementsProvider in m_providers.Values)
                 elementsProvider.Release();
+            m_providers.Clear();
         }
     }
 }

@@ -11,10 +11,11 @@ namespace UElements.Resource
         private readonly Dictionary<string, ResourceRequest> m_cache;
         private readonly Dictionary<string, string> m_assetPaths;
 
-        public ResourceElementsProvider(ResourceElementsMapScriptableObject map) : this(map.Maps) { }
+        public string Key { get; }
 
-        public ResourceElementsProvider(IEnumerable<ElementMap> maps)
+        public ResourceElementsProvider(string key, IEnumerable<ElementMap> maps)
         {
+            Key = key;
             m_cache = new Dictionary<string, ResourceRequest>();
             m_assetPaths = maps.ToDictionary(a => a.Key, a => a.Path);
         }
@@ -31,7 +32,8 @@ namespace UElements.Resource
             string foundPath = m_assetPaths[key];
             if (foundPath == null)
             {
-                Debug.LogException(new NullReferenceException($"There is no element found with Key {key}, for Type {typeof(T)}"));
+                Debug.LogException(
+                    new NullReferenceException($"There is no element found with Key {key}, for Type {typeof(T)}"));
                 return null;
             }
 
@@ -58,6 +60,27 @@ namespace UElements.Resource
             }
 
             return result.GetComponent<T>();
+        }
+
+        public async UniTask Prewarm()
+        {
+            foreach (var item in m_assetPaths)
+            {
+                if (m_cache.TryGetValue(item.Key, out ResourceRequest request))
+                {
+                    if (!request.isDone)
+                    {
+                        ResourceRequest handle = request;
+                        await handle.ToUniTask();
+                    }
+                }
+                else
+                {
+                    ResourceRequest handle = Resources.LoadAsync(item.Value);
+                    m_cache[item.Key] = handle;
+                    await handle.ToUniTask();
+                }
+            }
         }
 
         public void Release()

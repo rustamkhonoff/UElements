@@ -1,20 +1,17 @@
-using System;
 using System.Linq;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
-namespace UElements.Resource
+namespace UElements.Reference
 {
     [CreateAssetMenu(
-        menuName = "Services/UElements/Resources/Create ResourceElementsModule",
-        fileName = "ResourceElementsModule",
+        menuName = "Services/UElements/Reference/Create ReferenceElementsModule",
+        fileName = "ReferenceElementsModule",
         order = 0)
     ]
-    public class ResourceElementsModule : ElementsModule
+    public class ReferenceElementsModule : ElementsModule
     {
         [field: SerializeField] public ElementMap[] Maps { get; private set; }
-
-        public override IElementsProvider ElementsProvider => new ResourceElementsProvider(Key, Maps);
+        public override IElementsProvider ElementsProvider => new ReferenceElementsProvider(Key, Maps);
 
 #if UNITY_EDITOR
         [field: SerializeField] public bool AutoValidate { get; private set; } = true;
@@ -32,8 +29,6 @@ namespace UElements.Resource
             {
                 if (UElementsExtensions.IsEmptyKey(elementMap.Key))
                     elementMap.Key = UElementsExtensions.GetKey(elementMap.Prefab.gameObject);
-
-                elementMap.Path = UElementsExtensions.GetResourcesPath(elementMap.Prefab);
             }
         }
 #endif
