@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -43,6 +44,7 @@ namespace UElements
         {
             return string.IsNullOrEmpty(key) || key == "null";
         }
+#if UNITY_EDITOR
         public static string GetResourcesPath(Object asset)
         {
             string fullPath = UnityEditor.AssetDatabase.GetAssetPath(asset);
@@ -55,8 +57,9 @@ namespace UElements
             }
 
             string relativePath = fullPath[(resourcesIndex + "/Resources/".Length)..];
-            relativePath = System.IO.Path.ChangeExtension(relativePath, null);
+            relativePath = Path.ChangeExtension(relativePath, null);
             return relativePath;
         }
+#endif
     }
 }
