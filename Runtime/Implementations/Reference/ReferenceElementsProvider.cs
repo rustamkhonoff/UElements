@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -24,7 +25,7 @@ namespace UElements.Reference
             return m_assetReferences.ContainsKey(key);
         }
 
-        public UniTask<T> GetElement<T>(string key) where T : ElementBase
+        public UniTask<T> GetElement<T>(string key, CancellationToken cancellationToken = default) where T : ElementBase
         {
             GameObject found = m_assetReferences[key];
             if (found == null)

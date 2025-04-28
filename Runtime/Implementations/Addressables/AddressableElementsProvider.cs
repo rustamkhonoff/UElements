@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -28,7 +29,7 @@ namespace UElements.Addressables
             return m_assetReferences.ContainsKey(key);
         }
 
-        public async UniTask<T> GetElement<T>(string key) where T : ElementBase
+        public async UniTask<T> GetElement<T>(string key, CancellationToken cancellationToken = default) where T : ElementBase
         {
             ElementAssetReference found = m_assetReferences[key];
             if (found == null)
@@ -45,7 +46,7 @@ namespace UElements.Addressables
             {
                 handle = cachedHandle;
                 if (!handle.IsValid() || handle.Status != AsyncOperationStatus.Succeeded)
-                    await handle.ToUniTask();
+                    await handle.ToUniTask(cancellationToken: cancellationToken);
             }
             else
             {
@@ -53,7 +54,7 @@ namespace UElements.Addressables
                 else handle = found.LoadAssetAsync<GameObject>();
 
                 m_cache[key] = handle;
-                await handle.ToUniTask();
+                await handle.ToUniTask(cancellationToken: cancellationToken);
             }
 
             result = (GameObject)handle.Result;

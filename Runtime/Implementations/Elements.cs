@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using static UElements.UElementsExtensions;
 
 namespace UElements
 {
-    public class Elements : IElements, IDisposable
+    public sealed class Elements : IElements, IDisposable
     {
         private readonly IElementsFactory m_elementsFactory;
         private readonly IElementsConfiguration m_elementsConfiguration;
@@ -27,30 +28,32 @@ namespace UElements
             m_providers = elementsConfiguration.Modules.ToDictionary(a => a.Key, a => a.ElementsProvider);
             foreach (IElementsProvider provider in elementsProvider)
                 m_providers.Add(provider.Key, provider);
+
+            ElementsGlobal.Initialize(this);
         }
 
-        public async UniTask<ElementBase> Create(ElementRequest request)
+        public async UniTask<ElementBase> Create(ElementRequest request, CancellationToken cancellationToken = default)
         {
-            ElementBase instance = await Create_Internal<ElementBase>(request);
+            ElementBase instance = await Create_Internal<ElementBase>(request, cancellationToken);
             instance.Initialize(this);
             instance.Initialize();
             instance.Show();
             return instance;
         }
 
-        public async UniTask<T> Create<T>(ElementRequest? request = null) where T : Element
+        public async UniTask<T> Create<T>(ElementRequest? request = null, CancellationToken cancellationToken = default) where T : Element
         {
-            T instance = await Create_Internal<T>(request);
+            T instance = await Create_Internal<T>(request, cancellationToken);
             instance.Initialize(this);
             instance.Initialize();
             instance.Show();
             return instance;
         }
 
-        public async UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null)
+        public async UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null, CancellationToken cancellationToken = default)
             where T : ModelElement<TModel>
         {
-            T instance = await Create_Internal<T>(request);
+            T instance = await Create_Internal<T>(request, cancellationToken);
             instance.Initialize(this);
             instance.InitializeModel(model);
             instance.Initialize();
@@ -58,12 +61,13 @@ namespace UElements
             return instance;
         }
 
-        private async UniTask<T> Create_Internal<T>(ElementRequest? request = null) where T : ElementBase
+        private async UniTask<T> Create_Internal<T>(ElementRequest? request = null, CancellationToken cancellationToken = default)
+            where T : ElementBase
         {
             ElementRequest fixedRequest = request != null ? request.Value : ElementRequest.Default;
             string key = GetKey<T>(fixedRequest);
 
-            T prefab = await GetPrefab<T>(key, request);
+            T prefab = await GetPrefab<T>(key, request, cancellationToken);
 
             TryHandleRequestSettings(fixedRequest, key);
 
@@ -130,7 +134,7 @@ namespace UElements
                 provider.Release();
         }
 
-        private UniTask<T> GetPrefab<T>(string key, ElementRequest? request) where T : ElementBase
+        private UniTask<T> GetPrefab<T>(string key, ElementRequest? request, CancellationToken cancellationToken = default) where T : ElementBase
         {
             if (request.HasValue && request.Value.CustomPrefabReference != null &&
                 request.Value.CustomPrefabReference.GetComponent<T>() != null)
@@ -146,7 +150,7 @@ namespace UElements
                     return UniTask.FromResult<T>(null);
                 }
 
-                return elementsProvider.GetElement<T>(key);
+                return elementsProvider.GetElement<T>(key, cancellationToken);
             }
         }
 
@@ -194,6 +198,8 @@ namespace UElements
             foreach (IElementsProvider elementsProvider in m_providers.Values)
                 elementsProvider.Release();
             m_providers.Clear();
+
+            ElementsGlobal.Dispose();
         }
     }
 }

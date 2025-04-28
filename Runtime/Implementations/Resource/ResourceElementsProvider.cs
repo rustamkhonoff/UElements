@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ namespace UElements.Resource
             return m_assetPaths.ContainsKey(key);
         }
 
-        public async UniTask<T> GetElement<T>(string key) where T : ElementBase
+        public async UniTask<T> GetElement<T>(string key, CancellationToken cancellationToken = default) where T : ElementBase
         {
             string foundPath = m_assetPaths[key];
             if (foundPath == null)
@@ -47,7 +48,7 @@ namespace UElements.Resource
                 else
                 {
                     ResourceRequest handle = request;
-                    await handle.ToUniTask();
+                    await handle.ToUniTask(cancellationToken: cancellationToken);
                     result = (GameObject)handle.asset;
                 }
             }
@@ -55,7 +56,7 @@ namespace UElements.Resource
             {
                 ResourceRequest handle = Resources.LoadAsync(foundPath);
                 m_cache[key] = handle;
-                await handle.ToUniTask();
+                await handle.ToUniTask(cancellationToken: cancellationToken);
                 result = (GameObject)handle.asset;
             }
 
