@@ -136,8 +136,7 @@ namespace UElements
 
         private UniTask<T> GetPrefab<T>(string key, ElementRequest? request, CancellationToken cancellationToken = default) where T : ElementBase
         {
-            if (request.HasValue && request.Value.CustomPrefabReference != null &&
-                request.Value.CustomPrefabReference.GetComponent<T>() != null)
+            if (request.HasValue && request.Value.CustomPrefabReference != null && request.Value.CustomPrefabReference.GetComponent<T>() != null)
             {
                 return UniTask.FromResult(request.Value.CustomPrefabReference.GetComponent<T>());
             }

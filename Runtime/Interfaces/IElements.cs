@@ -7,7 +7,7 @@ namespace UElements
 {
     public interface IElements
     {
-        UniTask<ElementBase> Create(ElementRequest request,CancellationToken cancellationToken = default);
+        UniTask<ElementBase> Create(ElementRequest request, CancellationToken cancellationToken = default);
         UniTask<T> Create<T>(ElementRequest? request = null, CancellationToken cancellationToken = default) where T : Element;
         UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null, CancellationToken token = default) where T : ModelElement<TModel>;
         bool HasActive<T>(ElementRequest? request = null) where T : ElementBase;
