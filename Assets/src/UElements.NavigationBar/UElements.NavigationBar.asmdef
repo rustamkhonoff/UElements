@@ -1,0 +1,18 @@
+{
+    "name": "UElements.NavigationBar",
+    "rootNamespace": "UElements.NavigationBar",
+    "references": [
+        "GUID:421747c63533549708e5d9c41306271a",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:6a9e9dbd6e71c4369abdefd0259fe746"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

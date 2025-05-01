@@ -1,0 +1,19 @@
+{
+    "name": "UElements.CollectionView.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:421747c63533549708e5d9c41306271a",
+        "GUID:6a9e9dbd6e71c4369abdefd0259fe746"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

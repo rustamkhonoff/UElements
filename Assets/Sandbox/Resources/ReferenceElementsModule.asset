@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca850933f6ef4699bc08d4ca42ce0f02, type: 3}
+  m_Name: ReferenceElementsModule
+  m_EditorClassIdentifier: 
+  <Key>k__BackingField: main
+  <Maps>k__BackingField:
+  - <Key>k__BackingField: DemoNavigationSwitcherView
+    <Prefab>k__BackingField: {fileID: 8144799137851417604, guid: 43e90790ff38c4097bd1ef237dfaa684, type: 3}
+  <AutoValidate>k__BackingField: 1

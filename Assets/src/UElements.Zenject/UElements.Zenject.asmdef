@@ -1,0 +1,19 @@
+{
+    "name": "UElements.Zenject",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0d8beb7f090555447a6cf5ce9e54dbb4",
+        "GUID:421747c63533549708e5d9c41306271a",
+        "GUID:2989156728e454921b5f55d04ffa8319",
+        "GUID:119427a112aa642fda5515697d8634ee"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
