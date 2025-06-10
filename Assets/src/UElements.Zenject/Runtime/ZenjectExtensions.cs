@@ -1,13 +1,13 @@
-using UElements.Addressables;
-using UElements.Resource;
 using UnityEngine;
+using UnityEngine.Scripting;
 using Zenject;
 
 namespace UElements.Zenject
 {
     public static class ZenjectExtensions
     {
-        public class UElementsZenjectFactory : IElementsFactory
+        [Preserve]
+        private class UElementsZenjectFactory : IElementsFactory
         {
             private readonly IInstantiator m_instantiator;
 
@@ -24,7 +24,6 @@ namespace UElements.Zenject
 
         public static DiContainer AddUElements(this DiContainer container, string configurationPath = "ElementsConfigurationScriptableObject")
         {
-            //CORE
             container
                 .BindInterfacesTo<Elements>()
                 .AsSingle();
