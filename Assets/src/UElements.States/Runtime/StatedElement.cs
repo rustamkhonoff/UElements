@@ -52,14 +52,20 @@ namespace UElements.States
     {
         [SerializeField] private TData _default, _active, _disabled;
 
+        public TData Default => _default;
+
+        public TData Active => _active;
+
+        public TData Disabled => _disabled;
+
         public TData Get(State state)
         {
             return state switch
             {
-                State.Disabled => _disabled,
-                State.Default => _default,
-                State.Active => _active,
-                _ => _default
+                State.Disabled => Disabled,
+                State.Default => Default,
+                State.Active => Active,
+                _ => Default
             };
         }
     }
