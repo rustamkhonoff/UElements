@@ -22,12 +22,18 @@ namespace UElements.States
 
         private bool m_wasNullComposite;
 
-        public void SetState(State state, bool animate = true)
+        public void SetState(State state, bool animate)
         {
             State = state;
 
             OnSetState(state, animate);
         }
+
+        public void SetState(bool state) => SetState(state ? State.Active : State.Disabled);
+        public void SetState(bool state, bool animate) => SetState(state ? State.Active : State.Disabled, animate);
+        public void SetStateNoAnimation(bool state) => SetState(state ? State.Active : State.Disabled, false);
+        public void SetState(State state) => SetState(state, true);
+        public void SetStateNoAnimation(State state) => SetState(state, false);
 
         protected abstract void OnSetState(State state, bool animate);
 
