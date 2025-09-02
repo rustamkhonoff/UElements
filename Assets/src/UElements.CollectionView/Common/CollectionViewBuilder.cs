@@ -1,9 +1,11 @@
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace UElements.CollectionView
 {
-    public static class CollectionViewBuilder
+    public static class CollectionPresenterBuilder
     {
         public static CollectionPresenter<TModel, TView> Build<TModel, TView>(
             TView prefab,
@@ -32,8 +34,20 @@ namespace UElements.CollectionView
             where TView : ModelElement<TModel>
         {
             return new CollectionPresenter<TModel, TView>(
-                (model, view) => new CollectionItemModelPresenter<TModel, TView>(model, view, onCreated, onDispose),
+                (model, view) => new CollectionItemPresenter<TModel, TView>(model, view, onCreated, onDispose),
                 (model, token) => ElementsGlobal.Elements.Create<TView, TModel>(model, request, token)
+            );
+        }
+
+        public static CollectionPresenter<TModel, TView> Build<TModel, TView>(
+            Func<TModel, CancellationToken, UniTask<TView>> viewFactory,
+            Action<TModel, TView> onCreated = null,
+            Action<TModel, TView> onDispose = null)
+            where TView : ModelElement<TModel>
+        {
+            return new CollectionPresenter<TModel, TView>(
+                (model, view) => new CollectionItemPresenter<TModel, TView>(model, view, onCreated, onDispose),
+                viewFactory
             );
         }
 
@@ -44,7 +58,7 @@ namespace UElements.CollectionView
             where TView : ModelElement<TModel>
         {
             return new CollectionPresenter<TModel, TView>(
-                (model, view) => new CollectionItemModelPresenter<TModel, TView>(model, view, onCreated, onDispose),
+                (model, view) => new CollectionItemPresenter<TModel, TView>(model, view, onCreated, onDispose),
                 (model, token) => ElementsGlobal.Elements.Create<TView, TModel>(model, request?.Invoke(model), token)
             );
         }

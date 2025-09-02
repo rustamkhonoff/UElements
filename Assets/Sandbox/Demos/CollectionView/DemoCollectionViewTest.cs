@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using ObservableCollections;
 using R3;
 using UElements;
@@ -14,17 +15,19 @@ namespace Demos.CollectionView
         [SerializeField] private CollectionItemRequest _request;
         [SerializeField] private CollectionItemRequest _kingRequest;
 
-        private CollectionPresenter<DemoCollectionModel, DemoCollectionItemView> m_collectionPresenter;
+        private ICollectionPresenter<DemoCollectionModel, DemoCollectionItemView> m_collectionPresenter;
         private ObservableList<DemoCollectionModel> m_modelsReactive = new();
 
         private void Start()
         {
             m_modelsReactive = new ObservableList<DemoCollectionModel>(_models);
 
-            m_collectionPresenter = CollectionViewBuilder.Build<DemoCollectionModel, DemoCollectionItemView>(Request, OnItemCreated, OnItemDisposed);
+            m_collectionPresenter = CollectionPresenterBuilder.Build<DemoCollectionModel, DemoCollectionItemView>(Request, OnItemCreated, OnItemDisposed);
             m_collectionPresenter.Initialize(m_modelsReactive);
 
-            m_modelsReactive.SubscribeEvents(m_collectionPresenter.Add, m_collectionPresenter.Remove, m_collectionPresenter.Clear).AddTo(this);
+            m_modelsReactive
+                .SubscribeEvents(a => m_collectionPresenter.Add(a).Forget(), m_collectionPresenter.Remove, m_collectionPresenter.Clear)
+                .AddTo(this);
         }
 
 

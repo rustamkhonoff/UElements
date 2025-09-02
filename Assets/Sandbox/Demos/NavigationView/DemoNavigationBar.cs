@@ -11,12 +11,12 @@ namespace Demos.NavigationView
         [SerializeField] private CollectionItemRequest _switcherRequest;
         [SerializeField] private List<DemoNavigationModel> _navigationPageModels;
 
-        private INavigationSwitcherContext<DemoNavigationModel> m_navigationState;
+        private INavigationState<DemoNavigationModel> m_navigationState;
 
         private void Start()
         {
-            NavigationBarBuilder.Build<DemoNavigationModel, DemoNavigationSwitcherView>(_navigationPageModels, _contentParent, _switcherRequest,
-                out m_navigationState, out _);
+            NavigationBarBuilder.Build<DemoNavigationModel, DemoNavigationSwitcherView>
+                (_navigationPageModels, _contentParent, _switcherRequest, out m_navigationState, out _);
 
             m_navigationState.TrySwitch(_navigationPageModels[0]);
         }

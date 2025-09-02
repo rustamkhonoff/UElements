@@ -6,19 +6,22 @@ namespace Demos.CollectionView
     [Serializable]
     public class DemoCollectionModel
     {
-        public ReactiveProperty<string> Nickname = new();
-        public ReactiveProperty<int> Health = new();
+        public SerializableReactiveProperty<string> Nickname = new();
+        public SerializableReactiveProperty<int> Health = new();
 
-        public DemoCollectionModel(int health,string name)
+        public DemoCollectionModel() { }
+
+        public DemoCollectionModel(int health, string name)
         {
             Nickname.Value = name;
             Health.Value = health;
         }
+
         public void IncreaseAmount()
         {
             Health.Value += 1;
         }
 
-        public Observable<Unit> AnyValueChanged => Nickname.CombineLatest(Health, (_, _) => Unit.Default);
+        public Observable<(string, int)> AnyValueChanged => Nickname.CombineLatest(Health, (a, b) => (a, b));
     }
 }

@@ -6,53 +6,64 @@ using UnityEngine;
 
 namespace UElements.NavigationBar
 {
-    public class NavigationSwitcherPresenter<TPageModel, TSwitcherView> : CollectionModelPresenterBase<TPageModel, TSwitcherView>
-        where TPageModel : INavigationPageModel
-        where TSwitcherView : NavigationSwitcherView<TPageModel>
+    public class NavigationSwitcherPresenter<TModel, TView> : ICollectionItemPresenter<TModel, TView>
+        where TModel : INavigationPageModel
+        where TView : NavigationSwitcherView<TModel>
     {
-        private readonly RectTransform m_contentParent;
+        public TModel Model { get; }
+        public TView View { get; }
+
+        private readonly RectTransform m_pagesParent;
         private readonly CancellationTokenSource m_cancellationTokenSource = new();
-        private ElementBase m_elementBase;
-        private readonly INavigationSwitcherContext<TPageModel> m_navigationState;
+        private ElementBase m_activePage;
+        private readonly INavigationState<TModel> m_navigationState;
 
         public ReadOnlyReactiveProperty<bool> IsSelected => m_navigationState.ActivePage.Select(a => a.Key == Model.Key).ToReadOnlyReactiveProperty();
 
         public NavigationSwitcherPresenter(
-            TPageModel model, TSwitcherView view,
-            INavigationSwitcherContext<TPageModel> navigationState,
-            RectTransform contentParent)
-            : base(model, view)
+            TModel model, TView view,
+            INavigationState<TModel> navigationState,
+            RectTransform pagesParent)
         {
+            Model = model;
+            View = view;
             m_navigationState = navigationState;
-            m_contentParent = contentParent;
+            m_pagesParent = pagesParent;
         }
 
-        protected override void OnInitialize()
+
+        public void Initialize()
         {
-            m_navigationState.ActivePage.Where(a => a != null).Subscribe(HandleActivePageChanged).AddTo(m_cancellationTokenSource.Token);
+            m_navigationState.ActivePage
+                .Where(a => a != null)
+                .Subscribe(a => HandleActivePageChanged(a).Forget())
+                .AddTo(m_cancellationTokenSource.Token);
 
             View.OnSwitchRequest.Subscribe(a => m_navigationState.TrySwitch(a)).AddTo(m_cancellationTokenSource.Token);
             IsSelected.Subscribe(View.SetSelected).AddTo(m_cancellationTokenSource.Token);
         }
 
-        private async void HandleActivePageChanged(TPageModel model)
+        private async UniTask HandleActivePageChanged(TModel model)
         {
             bool isMe = Model.Key == model.Key;
             View.SetSelected(isMe);
 
-            if (Model.Key == model.Key && m_elementBase == null)
+            if (Model.Key == model.Key && m_activePage == null)
             {
-                m_elementBase = await ElementsGlobal.Elements.Create(model.ContentRequest.WithParent(m_contentParent));
+                m_activePage = await CreatePage(model);
             }
-            else if (m_elementBase != null)
+            else if (m_activePage != null)
             {
-                m_elementBase.Hide();
-                m_elementBase = null;
+                m_activePage.Hide();
+                m_activePage = null;
             }
         }
 
-        protected override void OnDispose()
+        private UniTask<ElementBase> CreatePage(TModel model) => ElementsGlobal.Elements.Create(model.ContentRequest.WithParent(m_pagesParent));
+
+        public void Dispose()
         {
+            View.Hide();
             m_cancellationTokenSource?.Cancel();
             m_cancellationTokenSource?.Dispose();
         }

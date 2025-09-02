@@ -1,6 +1,6 @@
 {
     "name": "UElements.CollectionView",
-    "rootNamespace": "",
+    "rootNamespace": "UElements.CollectionView",
     "references": [
         "GUID:421747c63533549708e5d9c41306271a",
         "GUID:f51ebe6a0ceec4240a699833d6309b23"

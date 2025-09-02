@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using R3;
 using TMPro;
 using UElements;
@@ -21,7 +22,7 @@ namespace Demos.CollectionView
 
             Model.AnyValueChanged
                 .Subscribe(_ => _text.SetText(Model.Nickname.Value + ":" + Model.Health.Value))
-                .AddTo(this);
+                .AddTo(LifetimeToken);
         }
 
         public void AddCallback(Action<DemoCollectionModel> action)

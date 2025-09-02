@@ -1,39 +1,42 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Cysharp.Threading.Tasks;
+using UElements.CollectionView;
 using UnityEngine;
 
 namespace UElements.NavigationBar
 {
     public static class NavigationBarBuilder
     {
-        public static void Build<TPageModel, TSwitcherView>(
-            IEnumerable<TPageModel> models,
+        public static UniTask Build<TModel, TView>(
+            IEnumerable<TModel> models,
             RectTransform contentParent,
             ElementRequest switcherRequest,
-            out INavigationSwitcherContext<TPageModel> navigationState,
-            out NavigationPresenter<TPageModel, TSwitcherView> presenter)
-            where TPageModel : INavigationPageModel
-            where TSwitcherView : NavigationSwitcherView<TPageModel>
+            out INavigationState<TModel> navigationState)
+            where TModel : INavigationPageModel
+            where TView : NavigationSwitcherView<TModel>
         {
-            Build(models, contentParent, _ => switcherRequest, out navigationState, out presenter);
+            return Build<TModel, TView>(models, contentParent, _ => switcherRequest, out navigationState);
         }
 
-        public static void Build<TPageModel, TSwitcherView>(
-            IEnumerable<TPageModel> models,
+        public static UniTask Build<TModel, TView>(
+            IEnumerable<TModel> models,
             RectTransform contentParent,
-            Func<TPageModel, ElementRequest> switcherRequestFactory,
-            out INavigationSwitcherContext<TPageModel> navigationState,
-            out NavigationPresenter<TPageModel, TSwitcherView> presenter)
-            where TPageModel : INavigationPageModel
-            where TSwitcherView : NavigationSwitcherView<TPageModel>
+            Func<TModel, ElementRequest> switcherRequestFactory,
+            out INavigationState<TModel> navigationState)
+            where TModel : INavigationPageModel
+            where TView : NavigationSwitcherView<TModel>
         {
-            navigationState = new NavigationContextAdapter<TPageModel>(new NavigationState<TPageModel>(models));
+            NavigationStateAdapter<TModel> state = new(new NavigationState<TModel>(models));
 
-            presenter = new NavigationPresenter<TPageModel, TSwitcherView>(
-                navigationState,
-                contentParent,
-                (model, token) => ElementsGlobal.Elements.Create<TSwitcherView, TPageModel>(model, switcherRequestFactory(model), token)
+            CollectionPresenter<TModel, TView> collectionPresenter = new(
+                (model, view) => new NavigationSwitcherPresenter<TModel, TView>(model, view, state, contentParent),
+                (model, token) => ElementsGlobal.Elements.Create<TView, TModel>(model, switcherRequestFactory(model), token)
             );
+            navigationState = state;
+
+            return UniTask.WhenAll(state.Models.Select(a => collectionPresenter.Add(a)));
         }
     }
 }

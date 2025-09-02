@@ -2,28 +2,33 @@ using System;
 
 namespace UElements.CollectionView
 {
-    public class CollectionItemModelPresenter<TModel, TView> : CollectionModelPresenterBase<TModel, TView> where TView : ModelElement<TModel>
+    public class CollectionItemPresenter<TModel, TView> : ICollectionItemPresenter<TModel, TView>
+        where TView : ModelElement<TModel>
     {
         private readonly Action<TModel, TView> m_initialize;
         private readonly Action<TModel, TView> m_dispose;
+        public TModel Model { get; }
+        public TView View { get; }
 
-        public CollectionItemModelPresenter(
+        public CollectionItemPresenter(
             TModel model, TView view,
             Action<TModel, TView> initialize,
             Action<TModel, TView> dispose)
-            : base(model, view)
         {
+            Model = model;
+            View = view;
             m_initialize = initialize;
             m_dispose = dispose;
         }
 
-        protected override void OnInitialize()
+        public void Initialize()
         {
             m_initialize?.Invoke(Model, View);
         }
 
-        protected override void OnDispose()
+        public void Dispose()
         {
+            View.Hide();
             m_dispose?.Invoke(Model, View);
         }
     }

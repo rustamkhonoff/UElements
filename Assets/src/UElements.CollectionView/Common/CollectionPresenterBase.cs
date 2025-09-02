@@ -2,35 +2,41 @@ using System;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace UElements.CollectionView
 {
-    public abstract class CollectionPresenterBase<TModel, TView, TPresenter> : IDisposable
+    public class CollectionPresenter<TModel, TView> : ICollectionPresenter<TModel, TView>
         where TView : ModelElement<TModel>
-        where TPresenter : CollectionModelPresenterBase<TModel, TView>
     {
-        public event Action<TModel, TView> OnCreated, OnDisposed;
+        public event Action<TModel, TView> OnCreated;
+        public event Action<TModel, TView> OnDisposing;
 
         private readonly ElementRequest m_itemRequest;
-        private readonly Func<TModel, TView, TPresenter> m_presenterFactory;
+        private readonly Func<TModel, TView, ICollectionItemPresenter<TModel, TView>> m_presenterFactory;
         private readonly Func<TModel, CancellationToken, UniTask<TView>> m_viewFactory;
-        private readonly Dictionary<TModel, TPresenter> m_presenters;
+        private readonly Dictionary<TModel, ICollectionItemPresenter<TModel, TView>> m_presenters;
 
         private CancellationTokenSource m_lifeTimeTokenSource = new();
 
-        public CollectionPresenterBase(
-            Func<TModel, TView, TPresenter> presenterFactory,
+        public CollectionPresenter(
+            Func<TModel, TView, ICollectionItemPresenter<TModel, TView>> presenterFactory,
             Func<TModel, CancellationToken, UniTask<TView>> viewFactory)
         {
             m_presenterFactory = presenterFactory;
             m_viewFactory = viewFactory;
-            m_presenters = new Dictionary<TModel, TPresenter>();
+            m_presenters = new Dictionary<TModel, ICollectionItemPresenter<TModel, TView>>();
         }
 
-        public bool TryGetCollectionItemPresenter(TModel model, out TPresenter presenter)
+        public IEnumerable<TModel> Models => m_presenters.Keys;
+        public Dictionary<TModel, ICollectionItemPresenter<TModel, TView>>.ValueCollection Presenters => m_presenters.Values;
+        public IEnumerable<TView> Views => Presenters.Select(a => a.View);
+
+
+        public bool TryGetCollectionItemPresenter(TModel model, out ICollectionItemPresenter<TModel, TView> presenter)
         {
-            presenter = null;
+            presenter = default;
 
             if (!m_presenters.ContainsKey(model)) return false;
             presenter = m_presenters[model];
@@ -38,18 +44,13 @@ namespace UElements.CollectionView
             return true;
         }
 
-        public async void Initialize(IEnumerable<TModel> data)
+        public virtual async void Initialize(IEnumerable<TModel> data)
         {
             foreach (TModel model in data)
-                await AddAsync(model);
+                await Add(model);
         }
 
-        public void Add(TModel model)
-        {
-            AddAsync(model).Forget();
-        }
-
-        public async UniTask<TView> AddAsync(TModel model)
+        public virtual async UniTask<TView> Add(TModel model)
         {
             if (model == null)
             {
@@ -64,7 +65,7 @@ namespace UElements.CollectionView
             }
 
             TView view = await m_viewFactory.Invoke(model, m_lifeTimeTokenSource.Token);
-            TPresenter presenterBase = m_presenterFactory.Invoke(model, view);
+            ICollectionItemPresenter<TModel, TView> presenterBase = m_presenterFactory.Invoke(model, view);
 
             OnCreated?.Invoke(model, view);
             presenterBase.Initialize();
@@ -74,7 +75,14 @@ namespace UElements.CollectionView
             return view;
         }
 
-        public void Remove(TModel model)
+        public virtual void Clear()
+        {
+            foreach ((TModel _, ICollectionItemPresenter<TModel, TView> value) in m_presenters)
+                Remove_Internal(value.Model);
+            m_presenters.Clear();
+        }
+
+        public virtual void Remove(TModel model)
         {
             if (model == null)
             {
@@ -93,20 +101,14 @@ namespace UElements.CollectionView
 
         private void Remove_Internal(TModel model)
         {
-            CollectionModelPresenterBase<TModel, TView> presenter = m_presenters[model];
+            ICollectionItemPresenter<TModel, TView> collectionItemPresenter = m_presenters[model];
 
-            OnDisposed?.Invoke(model, presenter.View);
-            presenter.Dispose();
+            OnDisposing?.Invoke(model, collectionItemPresenter.View);
+            collectionItemPresenter.Dispose();
         }
 
-        public void Clear()
-        {
-            foreach ((TModel _, CollectionModelPresenterBase<TModel, TView> value) in m_presenters)
-                Remove_Internal(value.Model);
-            m_presenters.Clear();
-        }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             Clear();
 

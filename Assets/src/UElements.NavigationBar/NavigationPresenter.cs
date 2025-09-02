@@ -6,32 +6,32 @@ using UnityEngine;
 
 namespace UElements.NavigationBar
 {
-    [Serializable]
-    public class NavigationPresenter<TPageModel, TSwitcherView> : IDisposable
-        where TSwitcherView : NavigationSwitcherView<TPageModel>
-        where TPageModel : INavigationPageModel
-    {
-        private readonly CollectionPresenterBase<TPageModel, TSwitcherView, NavigationSwitcherPresenter<TPageModel, TSwitcherView>>
-            m_collectionPresenter;
-
-        public NavigationPresenter(
-            INavigationSwitcherContext<TPageModel> state,
-            RectTransform contentParent,
-            Func<TPageModel, CancellationToken, UniTask<TSwitcherView>> switcherFactory)
-        {
-            m_collectionPresenter = new NavigationSwitchersCollectionPresenter<TPageModel, TSwitcherView>(
-                (model, view) => new NavigationSwitcherPresenter<TPageModel, TSwitcherView>(model, view, state, contentParent),
-                switcherFactory
-            );
-
-            foreach (TPageModel pageModel in state.Models)
-                m_collectionPresenter.Add(pageModel);
-        }
-
-
-        public void Dispose()
-        {
-            m_collectionPresenter.Dispose();
-        }
-    }
+    // public interface INavigationPresenter : IDisposable { }
+    //
+    // [Serializable]
+    // public class NavigationPresenter<TModel, TView> : IDisposable, INavigationPresenter where TView : NavigationSwitcherView<TModel>
+    //     where TModel : INavigationPageModel
+    // {
+    //     private readonly ICollectionPresenter<TModel, TView> m_collectionPresenter;
+    //
+    //     public NavigationPresenter(
+    //         INavigationState<TModel> state,
+    //         RectTransform contentParent,
+    //         Func<TModel, CancellationToken, UniTask<TView>> switcherFactory)
+    //     {
+    //         m_collectionPresenter = new CollectionPresenter<TModel, TView>(
+    //             (model, view) => new NavigationSwitcherPresenter<TModel, TView>(model, view, state, contentParent),
+    //             switcherFactory
+    //         );
+    //
+    //         foreach (TModel pageModel in state.Models)
+    //             m_collectionPresenter.Add(pageModel).Forget();
+    //     }
+    //
+    //
+    //     public void Dispose()
+    //     {
+    //         m_collectionPresenter.Dispose();
+    //     }
+    // }
 }

@@ -19,6 +19,21 @@ namespace UElements.R3
             return source.OnClickAsObservable().Subscribe(OnNext);
         }
 
+        public static IDisposable SubscribeClickWithState<T>(this Button source, Action<T> onNext, T state)
+        {
+            return source.OnClickAsObservable().Subscribe(_ => onNext?.Invoke(state));
+        }
+
+        public static IDisposable SubscribeClickWithState<T>(this Button source, Action<T> onNext, Func<T> state)
+        {
+            return source.OnClickAsObservable().Subscribe(_ => onNext?.Invoke(state()));
+        }
+
+        public static IDisposable SubscribeClickWithState<T>(this Button source, Action<T> onNext, ModelElement<T> model)
+        {
+            return source.OnClickAsObservable().Subscribe(_ => onNext?.Invoke(model.Model));
+        }
+
         public static IDisposable SubscribeClick(this Button source, Action onNext, Func<bool> valid)
         {
             void OnNext(Unit unit) => onNext?.Invoke();
