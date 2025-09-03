@@ -13,10 +13,9 @@ namespace Demos.NavigationView
 
         private INavigationState<DemoNavigationModel> m_navigationState;
 
-        private void Start()
+        private async void Start()
         {
-            NavigationBarBuilder.Build<DemoNavigationModel, DemoNavigationSwitcherView>
-                (_navigationPageModels, _contentParent, _switcherRequest, out m_navigationState, out _);
+            m_navigationState = await _navigationPageModels.BuildNavigationBar(_contentParent, _switcherRequest);
 
             m_navigationState.TrySwitch(_navigationPageModels[0]);
         }
