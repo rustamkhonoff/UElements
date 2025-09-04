@@ -35,7 +35,7 @@ namespace UElements.CollectionView
         {
             return new CollectionPresenter<TModel, TView>(
                 (model, view) => new CollectionItemPresenter<TModel, TView>(model, view, onCreated, onDispose),
-                (model, token) => ElementsGlobal.Elements.Create<TView, TModel>(model, request, token)
+                (model, token) => ElementsGlobal.Create<TView, TModel>(model, request, token)
             );
         }
 
@@ -59,7 +59,7 @@ namespace UElements.CollectionView
         {
             return new CollectionPresenter<TModel, TView>(
                 (model, view) => new CollectionItemPresenter<TModel, TView>(model, view, onCreated, onDispose),
-                (model, token) => ElementsGlobal.Elements.Create<TView, TModel>(model, request?.Invoke(model), token)
+                (model, token) => ElementsGlobal.Create<TView, TModel>(model, request?.Invoke(model), token)
             );
         }
     }

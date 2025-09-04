@@ -67,7 +67,7 @@ namespace UElements.NavigationBar
 
             ICollectionPresenter<TModel, TView> switchersPresenter = new CollectionPresenter<TModel, TView>(
                 (model, view) => new NavigationSwitcherPresenter<TModel, TView>(model, view, state, contentParent),
-                (model, token) => ElementsGlobal.Elements.Create<TView, TModel>(model, switcherRequestFactory(model), token)
+                (model, token) => ElementsGlobal.Create<TView, TModel>(model, switcherRequestFactory(model), token)
             );
 
             await UniTask.WhenAll(state.Models.Select(a => switchersPresenter.Add(a)));

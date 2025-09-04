@@ -1,46 +1,50 @@
-using System;
-using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
+using System;
 
 namespace UElements
 {
     public abstract class ElementBase : MonoBehaviour, IDisposable
     {
-        public event Action OnDestroying;
+        public event Action Disposing;
         public IElementController ElementController { get; set; } = new DefaultElementController();
         private CancellationTokenSource m_cancellationTokenSource = new();
-
+        private bool m_disposed;
         protected IElements Elements { get; private set; }
-
-        internal void Initialize(IElements elements)
-        {
-            Elements = elements;
-        }
-
-        public void Show() => Show(null);
-        public void Show(Action callback) => ElementController.Show(callback);
-        public void Hide() => Hide(null);
-
-        public void Hide(Action callback)
-        {
-            callback += () => Destroy(gameObject);
-            ElementController.Hide(callback);
-        }
-
+        internal void Initialize(IElements elements) => Elements = elements;
+        public void Show(Action callback) => ElementController.Show(this, callback);
+        public void Hide(Action callback) => ElementController.Hide(this, callback);
+        public void Close(Action callback) => ElementController.Hide(this, callback + (() => Destroy(gameObject)));
         public virtual void Initialize() { }
-        public virtual void Dispose() { }
 
-        public CancellationToken LifetimeToken => m_cancellationTokenSource.Token;
-
-        private void OnDestroy()
+        public void Dispose()
         {
-            Dispose();
-            OnDestroying?.Invoke();
+            if (m_disposed) return;
+            m_disposed = true;
+
+            Close(null);
+
+            OnDisposing();
+
+            CleanupBase();
+        }
+
+        private void CleanupBase()
+        {
             m_cancellationTokenSource?.Cancel();
             m_cancellationTokenSource?.Dispose();
             m_cancellationTokenSource = null;
             Elements = null;
+
+            Disposing?.Invoke();
+        }
+
+        protected virtual void OnDisposing() { }
+        public CancellationToken LifetimeToken => m_cancellationTokenSource.Token;
+
+        private void OnDestroy()
+        {
+            if (!m_disposed) Dispose();
         }
     }
 }

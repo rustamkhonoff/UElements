@@ -4,13 +4,15 @@ namespace UElements
 {
     public class DefaultElementController : IElementController
     {
-        public void Show(Action callback)
+        public void Show(ElementBase element, Action callback)
         {
+            element.gameObject.SetActive(true);
             callback?.Invoke();
         }
 
-        public void Hide(Action callback)
+        public void Hide(ElementBase element, Action callback)
         {
+            element.gameObject.SetActive(false);
             callback?.Invoke();
         }
     }

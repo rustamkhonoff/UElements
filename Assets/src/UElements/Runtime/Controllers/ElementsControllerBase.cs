@@ -13,8 +13,8 @@ namespace UElements
             Element.ElementController = this;
         }
 
-        public abstract void Show(Action callback);
-        public abstract void Hide(Action callback);
+        public abstract void Show(ElementBase element, Action callback);
+        public abstract void Hide(ElementBase element, Action callback);
 
         public virtual void Dispose() { }
 

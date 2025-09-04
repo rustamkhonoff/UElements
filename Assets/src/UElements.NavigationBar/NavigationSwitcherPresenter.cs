@@ -54,18 +54,18 @@ namespace UElements.NavigationBar
             }
             else if (m_activePage != null)
             {
-                m_activePage.Hide();
+                m_activePage.SafeDispose();
                 m_activePage = null;
             }
         }
 
-        private UniTask<ElementBase> CreatePage(TModel model) => ElementsGlobal.Elements.Create(model.ContentRequest.WithParent(m_pagesParent));
+        private UniTask<ElementBase> CreatePage(TModel model) => ElementsGlobal.Create(model.ContentRequest.WithParent(m_pagesParent));
 
         public void Dispose()
         {
-            if (View != null) View.Hide();
-            if (m_activePage != null) m_activePage.Hide();
-            
+            View.SafeDispose();
+            m_activePage.SafeDispose();
+
             m_cancellationTokenSource?.Cancel();
             m_cancellationTokenSource?.Dispose();
         }

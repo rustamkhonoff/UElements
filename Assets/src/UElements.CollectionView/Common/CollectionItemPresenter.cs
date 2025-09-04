@@ -28,7 +28,7 @@ namespace UElements.CollectionView
 
         public void Dispose()
         {
-            View.Hide();
+            View.Dispose();
             m_dispose?.Invoke(Model, View);
         }
     }

@@ -72,7 +72,7 @@ namespace UElements
             TryHandleRequestSettings(fixedRequest, key);
 
             T instance = m_elementsFactory.Instantiate(prefab, GetParent(fixedRequest));
-            instance.OnDestroying += () =>
+            instance.Disposing += () =>
             {
                 if (m_activeElementsCache.TryGetValue(key, out List<ElementBase> elementBases))
                     elementBases.Remove(instance);
@@ -98,10 +98,10 @@ namespace UElements
             return false;
         }
 
-        public void HideAll<T>(ElementRequest? request = null) where T : ElementBase
+        public void CloseAll<T>(ElementRequest? request = null) where T : ElementBase
         {
             if (m_activeElementsCache.TryGetValue(GetKey<T>(request), out List<ElementBase> cachedElements))
-                cachedElements.ForEach(a => a.Hide());
+                cachedElements.ForEach(a => a.Dispose());
         }
 
         public List<T> GetAll<T>(ElementRequest? request = null) where T : ElementBase
@@ -174,7 +174,7 @@ namespace UElements
                 m_activeElementsCache.TryGetValue(key, out List<ElementBase> cachedElements))
             {
                 if (cachedElements.Count >= 0)
-                    cachedElements.ForEach(a => a.Hide());
+                    cachedElements.ForEach(a => a.Dispose());
                 cachedElements.Clear();
             }
         }

@@ -4,7 +4,7 @@ namespace UElements
 {
     public interface IElementController
     {
-        void Show(Action callback);
-        void Hide(Action callback);
+        void Show(ElementBase element, Action callback);
+        void Hide(ElementBase element, Action callback);
     }
 }

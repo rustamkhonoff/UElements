@@ -1,6 +1,8 @@
 using System;
+using System.Threading;
+using UnityEngine;
 
-namespace UElements.Extensions
+namespace UElements
 {
     public static class DisposableExtensions
     {
@@ -9,5 +11,43 @@ namespace UElements.Extensions
             elementBase.LifetimeToken.Register(disposable.Dispose);
             return disposable;
         }
+
+        public static CancellationTokenRegistration AddTo(this ElementBase elementBase, CancellationToken ct)
+        {
+            Debug.Log(ct.IsCancellationRequested);
+
+            if (!ct.CanBeCanceled)
+                throw new ArgumentException("Require CancellationToken CanBeCanceled");
+            if (ct.IsCancellationRequested)
+            {
+                elementBase.Dispose();
+                return new CancellationTokenRegistration();
+            }
+
+            return ct.Register(elementBase.Dispose);
+        }
+
+        public static CancellationTokenRegistration AddTo(this ElementBase elementBase, CancellationTokenSource cts)
+        {
+            return elementBase.AddTo(cts.Token);
+        }
+    }
+
+    public static class ElementsExtensions
+    {
+        public static void Close<T>(this IElements elements) where T : ElementBase => elements.CloseAll<T>();
+    }
+
+    public static class ElementExtensions
+    {
+        public static void SafeDispose(this ElementBase elementBase)
+        {
+            if (elementBase == null) return;
+            elementBase.Dispose();
+        }
+
+        public static void Show(this ElementBase elementBase) => elementBase.Show(null);
+        public static void Close(this ElementBase elementBase) => elementBase.Close(null);
+        public static void Hide(this ElementBase elementBase) => elementBase.Hide(null);
     }
 }
