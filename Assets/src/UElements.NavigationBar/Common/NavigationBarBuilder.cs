@@ -3,6 +3,7 @@ using UElements.CollectionView;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using System;
+using R3;
 
 namespace UElements.NavigationBar
 {
@@ -14,7 +15,7 @@ namespace UElements.NavigationBar
             RectTransform contentParent,
             ElementRequest switcherRequest)
         {
-            return NavigationBarBuilder.Build<TModel, NavigationSwitcherView<TModel>>(models, contentParent, _ => switcherRequest);
+            return NavigationBarBuilder.Build<TModel, NavigationSwitcherViewBase<TModel>>(models, contentParent, _ => switcherRequest);
         }
 
         public static UniTask<INavigationState<TModel>> Build(
@@ -22,7 +23,7 @@ namespace UElements.NavigationBar
             RectTransform contentParent,
             Func<TModel, ElementRequest> switcherRequest)
         {
-            return NavigationBarBuilder.Build<TModel, NavigationSwitcherView<TModel>>(models, contentParent, switcherRequest);
+            return NavigationBarBuilder.Build<TModel, NavigationSwitcherViewBase<TModel>>(models, contentParent, switcherRequest);
         }
     }
 
@@ -50,7 +51,7 @@ namespace UElements.NavigationBar
             RectTransform contentParent,
             ElementRequest switcherRequest)
             where TModel : INavigationPageModel
-            where TView : NavigationSwitcherView<TModel>
+            where TView : NavigationSwitcherViewBase<TModel>
         {
             return Build<TModel, TView>(models, contentParent, _ => switcherRequest);
         }
@@ -60,17 +61,42 @@ namespace UElements.NavigationBar
             RectTransform contentParent,
             Func<TModel, ElementRequest> switcherRequestFactory)
             where TModel : INavigationPageModel
-            where TView : NavigationSwitcherView<TModel>
+            where TView : NavigationSwitcherViewBase<TModel>
         {
-            NavigationStateAdapter<TModel> state = new(new NavigationState<TModel>(models));
+            INavigationState<TModel> state = new NavigationState<TModel>(models);
 
-            CollectionPresenter<TModel, TView> collectionPresenter = new(
+            ICollectionPresenter<TModel, TView> switchersPresenter = new CollectionPresenter<TModel, TView>(
                 (model, view) => new NavigationSwitcherPresenter<TModel, TView>(model, view, state, contentParent),
                 (model, token) => ElementsGlobal.Elements.Create<TView, TModel>(model, switcherRequestFactory(model), token)
             );
-            await UniTask.WhenAll(state.Models.Select(a => collectionPresenter.Add(a)));
 
-            return state;
+            await UniTask.WhenAll(state.Models.Select(a => switchersPresenter.Add(a)));
+
+            return new NavigationContext<TModel, TView>(state, switchersPresenter);
+        }
+    }
+
+    public sealed class NavigationContext<TModel, TView> : INavigationState<TModel>
+        where TModel : INavigationPageModel
+        where TView : NavigationSwitcherViewBase<TModel>
+    {
+        private readonly INavigationState<TModel> m_state;
+        private readonly ICollectionPresenter<TModel, TView> m_presenter;
+
+        public NavigationContext(INavigationState<TModel> state, ICollectionPresenter<TModel, TView> presenter)
+        {
+            m_state = state;
+            m_presenter = presenter;
+        }
+
+        public ReadOnlyReactiveProperty<TModel> ActivePage => m_state.ActivePage;
+        public IReadOnlyCollection<TModel> Models => m_state.Models;
+        public bool TrySwitch(TModel model) => m_state.TrySwitch(model);
+
+        public void Dispose()
+        {
+            m_presenter.Dispose();
+            m_state.Dispose();
         }
     }
 }

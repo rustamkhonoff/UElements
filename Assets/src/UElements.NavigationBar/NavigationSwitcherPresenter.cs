@@ -8,15 +8,15 @@ namespace UElements.NavigationBar
 {
     public class NavigationSwitcherPresenter<TModel, TView> : ICollectionItemPresenter<TModel, TView>
         where TModel : INavigationPageModel
-        where TView : NavigationSwitcherView<TModel>
+        where TView : NavigationSwitcherViewBase<TModel>
     {
         public TModel Model { get; }
         public TView View { get; }
 
         private readonly RectTransform m_pagesParent;
         private readonly CancellationTokenSource m_cancellationTokenSource = new();
-        private ElementBase m_activePage;
         private readonly INavigationState<TModel> m_navigationState;
+        private ElementBase m_activePage;
 
         public ReadOnlyReactiveProperty<bool> IsSelected => m_navigationState.ActivePage.Select(a => a.Key == Model.Key).ToReadOnlyReactiveProperty();
 
@@ -30,7 +30,6 @@ namespace UElements.NavigationBar
             m_navigationState = navigationState;
             m_pagesParent = pagesParent;
         }
-
 
         public void Initialize()
         {
@@ -51,6 +50,7 @@ namespace UElements.NavigationBar
             if (Model.Key == model.Key && m_activePage == null)
             {
                 m_activePage = await CreatePage(model);
+                m_activePage.AddTo(m_cancellationTokenSource.Token);
             }
             else if (m_activePage != null)
             {
@@ -63,7 +63,9 @@ namespace UElements.NavigationBar
 
         public void Dispose()
         {
-            View.Hide();
+            if (View != null) View.Hide();
+            if (m_activePage != null) m_activePage.Hide();
+            
             m_cancellationTokenSource?.Cancel();
             m_cancellationTokenSource?.Dispose();
         }

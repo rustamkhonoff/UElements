@@ -13,7 +13,6 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Sandbox/Demos/NavigationView/PageA.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Sandbox/Installers/ProjectInstaller.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/src/UElements.NavigationBar/NavigationPresenter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.NavigationBar/NavigationState.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.NavigationBar/NavigationSwitcherPresenter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.R3/R3CollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
@@ -131,6 +130,7 @@
       <workItem from="1756190399672" duration="133000" />
       <workItem from="1756804064565" duration="16148000" />
       <workItem from="1756880790596" duration="2480000" />
+      <workItem from="1756968846301" duration="4701000" />
     </task>
     <servers />
   </component>

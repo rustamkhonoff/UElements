@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using UElements.CollectionView;
 using UElements.NavigationBar;
 using UnityEngine;
@@ -13,11 +15,17 @@ namespace Demos.NavigationView
 
         private INavigationState<DemoNavigationModel> m_navigationState;
 
-        private async void Start()
+        private void Start() => CreateNavigation().Forget();
+
+        [Button]
+        private async UniTask CreateNavigation()
         {
             m_navigationState = await _navigationPageModels.BuildNavigationBar(_contentParent, _switcherRequest);
 
             m_navigationState.TrySwitch(_navigationPageModels[0]);
         }
+
+        [Button]
+        private void DisposeNavigation() => m_navigationState?.Dispose();
     }
 }

@@ -13,25 +13,13 @@ namespace UElements.NavigationBar
         bool TrySwitch(TPageModel model);
     }
 
-    public class NavigationStateAdapter<TPageModel> : INavigationState<TPageModel> where TPageModel : INavigationPageModel
-    {
-        private readonly NavigationState<TPageModel> m_state;
-        public NavigationStateAdapter(NavigationState<TPageModel> state) => m_state = state;
-        public ReadOnlyReactiveProperty<TPageModel> ActivePage => m_state.ActivePage;
-        public IReadOnlyCollection<TPageModel> Models => m_state.Models;
-        public bool TrySwitch(TPageModel model) => m_state.TrySwitch(model);
-
-        public void Dispose() => m_state?.Dispose();
-    }
-
-    public class NavigationState<TPageModel> : IDisposable where TPageModel : INavigationPageModel
+    internal class NavigationState<TPageModel> : INavigationState<TPageModel>
+        where TPageModel : INavigationPageModel
     {
         private readonly Dictionary<string, TPageModel> m_models = new();
         private readonly Dictionary<TPageModel, string> m_reverseModelsLookup = new();
         private readonly ReactiveProperty<TPageModel> m_activePage = new();
-
         public ReadOnlyReactiveProperty<TPageModel> ActivePage => m_activePage;
-
         public IReadOnlyCollection<TPageModel> Models => m_models.Values;
 
         public NavigationState(IEnumerable<TPageModel> pages)
