@@ -10,26 +10,26 @@ namespace UElements.CollectionView
     public class CollectionPresenter<TModel, TView> : ICollectionPresenter<TModel, TView> where TView : ModelElement<TModel>
     {
         private readonly ElementRequest m_itemRequest;
-        private readonly Func<TModel, TView, IModelPresenter<TModel, TView>> m_presenterFactory;
+        private readonly Func<TModel, TView, ICollectionModelPresenter<TModel, TView>> m_presenterFactory;
         private readonly Func<TModel, CancellationToken, UniTask<TView>> m_viewFactory;
-        private readonly Dictionary<TModel, IModelPresenter<TModel, TView>> m_presenters;
+        private readonly Dictionary<TModel, ICollectionModelPresenter<TModel, TView>> m_presenters;
 
         private CancellationTokenSource m_lifeTimeTokenSource = new();
 
         public CollectionPresenter(
-            Func<TModel, TView, IModelPresenter<TModel, TView>> presenterFactory,
+            Func<TModel, TView, ICollectionModelPresenter<TModel, TView>> presenterFactory,
             Func<TModel, CancellationToken, UniTask<TView>> viewFactory)
         {
             m_presenterFactory = presenterFactory;
             m_viewFactory = viewFactory;
-            m_presenters = new Dictionary<TModel, IModelPresenter<TModel, TView>>();
+            m_presenters = new Dictionary<TModel, ICollectionModelPresenter<TModel, TView>>();
         }
 
-        public IEnumerable<TModel> Models => m_presenters.Keys;
-        public IEnumerable<IModelPresenter<TModel, ModelElement<TModel>>> Presenters => m_presenters.Values;
         public IEnumerable<TView> Views => Presenters.Select(a => a.View).Cast<TView>();
+        public IEnumerable<TModel> Models => m_presenters.Keys;
+        public IEnumerable<ICollectionModelPresenter<TModel, ModelElement<TModel>>> Presenters => m_presenters.Values;
 
-        public virtual async void Initialize(IEnumerable<TModel> data)
+        public virtual async UniTask Initialize(IEnumerable<TModel> data)
         {
             foreach (TModel model in data)
                 await Add(model);
@@ -50,7 +50,7 @@ namespace UElements.CollectionView
             }
 
             TView view = await m_viewFactory.Invoke(model, m_lifeTimeTokenSource.Token);
-            IModelPresenter<TModel, TView> presenterBase = m_presenterFactory.Invoke(model, view);
+            ICollectionModelPresenter<TModel, TView> presenterBase = m_presenterFactory.Invoke(model, view);
 
             presenterBase.Initialize();
 
@@ -60,7 +60,7 @@ namespace UElements.CollectionView
 
         public virtual void Clear()
         {
-            foreach ((TModel _, IModelPresenter<TModel, TView> value) in m_presenters)
+            foreach ((TModel _, ICollectionModelPresenter<TModel, TView> value) in m_presenters)
                 Remove_Internal(value.Model);
             m_presenters.Clear();
         }
@@ -84,9 +84,9 @@ namespace UElements.CollectionView
 
         private void Remove_Internal(TModel model)
         {
-            IModelPresenter<TModel, TView> modelPresenter = m_presenters[model];
+            ICollectionModelPresenter<TModel, TView> collectionModelPresenter = m_presenters[model];
 
-            modelPresenter.Dispose();
+            collectionModelPresenter.Dispose();
         }
 
 

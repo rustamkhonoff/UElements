@@ -25,7 +25,7 @@ namespace Demos.CollectionView
         }
 
         private ElementRequest RequestFactory(Model model) => model.Nickname.Value == "King" ? _kingRequest : _request;
-        private ModelPresenter PresenterFactory(Model arg1, ModelView arg2) => new(arg1, arg2);
+        private CollectionModelPresenter PresenterFactory(Model arg1, ModelView arg2) => new(arg1, arg2);
 
         private Model a = new(1000, "A");
         private Model b = new(100, "B");

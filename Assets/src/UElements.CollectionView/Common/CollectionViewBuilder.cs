@@ -10,12 +10,12 @@ namespace UElements.CollectionView
     {
         public static ICollectionPresenter<TModel> BuildCollectionPresenter<TModel>(
             this Func<TModel, ElementRequest> request,
-            Func<TModel, ModelElement<TModel>, IModelPresenter<TModel, ModelElement<TModel>>> presenter) =>
+            Func<TModel, ModelElement<TModel>, ICollectionModelPresenter<TModel, ModelElement<TModel>>> presenter) =>
             BuildCollectionPresenter<TModel, ModelElement<TModel>>(request, presenter);
 
         public static ICollectionPresenter<TModel, TView> BuildCollectionPresenter<TModel, TView>(
             this Func<TModel, ElementRequest> request,
-            Func<TModel, TView, IModelPresenter<TModel, TView>> presenter)
+            Func<TModel, TView, ICollectionModelPresenter<TModel, TView>> presenter)
             where TView : ModelElement<TModel>
         {
             return new CollectionPresenter<TModel, TView>(
@@ -25,14 +25,14 @@ namespace UElements.CollectionView
         }
 
         public static ICollectionPresenter<TModel> BuildCollectionPresenter<TModel>(
-            this Func<TModel, ModelElement<TModel>, IModelPresenter<TModel, ModelElement<TModel>>> presenter,
+            this Func<TModel, ModelElement<TModel>, ICollectionModelPresenter<TModel, ModelElement<TModel>>> presenter,
             Func<TModel, ElementRequest> request)
         {
             return BuildCollectionPresenter<TModel, ModelElement<TModel>>(presenter, request);
         }
 
         public static ICollectionPresenter<TModel, TView> BuildCollectionPresenter<TModel, TView>(
-            this Func<TModel, TView, IModelPresenter<TModel, TView>> presenter,
+            this Func<TModel, TView, ICollectionModelPresenter<TModel, TView>> presenter,
             Func<TModel, ElementRequest> request)
             where TView : ModelElement<TModel>
         {
@@ -44,7 +44,7 @@ namespace UElements.CollectionView
 
         public static ICollectionPresenter<TModel> BuildCollectionPresenter<TModel>(
             this IEnumerable<TModel> models,
-            Func<TModel, ModelElement<TModel>, IModelPresenter<TModel, ModelElement<TModel>>> presenter,
+            Func<TModel, ModelElement<TModel>, ICollectionModelPresenter<TModel, ModelElement<TModel>>> presenter,
             Func<TModel, ElementRequest> request)
         {
             return BuildCollectionPresenter<TModel, ModelElement<TModel>>(models, presenter, request);
@@ -52,7 +52,7 @@ namespace UElements.CollectionView
 
         public static ICollectionPresenter<TModel, TView> BuildCollectionPresenter<TModel, TView>(
             this IEnumerable<TModel> models,
-            Func<TModel, TView, IModelPresenter<TModel, TView>> presenter,
+            Func<TModel, TView, ICollectionModelPresenter<TModel, TView>> presenter,
             Func<TModel, ElementRequest> request)
             where TView : ModelElement<TModel>
         {

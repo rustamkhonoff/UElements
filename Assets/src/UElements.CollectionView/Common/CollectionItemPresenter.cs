@@ -2,7 +2,7 @@ using System;
 
 namespace UElements.CollectionView
 {
-    public class ModelPresenter<TModel, TView> : IModelPresenter<TModel, TView>
+    public class CollectionModelPresenter<TModel, TView> : ICollectionModelPresenter<TModel, TView>
         where TView : ModelElement<TModel>
     {
         private readonly Action<TModel, TView> m_initialize;
@@ -10,7 +10,7 @@ namespace UElements.CollectionView
         public TModel Model { get; }
         public TView View { get; }
 
-        public ModelPresenter(
+        public CollectionModelPresenter(
             TModel model, TView view,
             Action<TModel, TView> initialize,
             Action<TModel, TView> dispose)

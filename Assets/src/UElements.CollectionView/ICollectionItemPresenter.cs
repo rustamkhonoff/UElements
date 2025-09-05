@@ -1,6 +1,6 @@
 namespace UElements.CollectionView
 {
-    public interface IModelPresenter<out TModel, out TView>
+    public interface ICollectionModelPresenter<out TModel, out TView>
         where TView : ModelElement<TModel>
     {
         TModel Model { get; }
@@ -8,13 +8,13 @@ namespace UElements.CollectionView
         void Initialize();
         void Dispose();
     }
-    public abstract class ModelPresenterBase<TModel, TView> : IModelPresenter<TModel, TView>
+    public abstract class CollectionModelPresenterBase<TModel, TView> : ICollectionModelPresenter<TModel, TView>
         where TView : ModelElement<TModel>
     {
         public TModel Model { get; }
         public TView View { get; }
 
-        protected ModelPresenterBase(TModel model, TView view)
+        protected CollectionModelPresenterBase(TModel model, TView view)
         {
             Model = model;
             View = view;

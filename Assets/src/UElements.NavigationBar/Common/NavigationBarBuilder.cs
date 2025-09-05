@@ -3,101 +3,83 @@ using UElements.CollectionView;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using System;
+using System.Threading;
 using R3;
 
 namespace UElements.NavigationBar
 {
-    public static class NavigationBarBuilder<TModel>
-        where TModel : INavigationPageModel
-    {
-        public static UniTask<INavigationState<TModel>> Build(
-            IEnumerable<TModel> models,
-            RectTransform contentParent,
-            ElementRequest switcherRequest)
-        {
-            return NavigationBarBuilder.Build<TModel, NavigationSwitcherViewBase<TModel>>(models, contentParent, _ => switcherRequest);
-        }
-
-        public static UniTask<INavigationState<TModel>> Build(
-            IEnumerable<TModel> models,
-            RectTransform contentParent,
-            Func<TModel, ElementRequest> switcherRequest)
-        {
-            return NavigationBarBuilder.Build<TModel, NavigationSwitcherViewBase<TModel>>(models, contentParent, switcherRequest);
-        }
-    }
-
-    public static class NavigationBarBuilderExtensions
-    {
-        public static UniTask<INavigationState<TModel>> BuildNavigationBar<TModel>(this IEnumerable<TModel> models, RectTransform parent,
-            ElementRequest request)
-            where TModel : INavigationPageModel
-        {
-            return NavigationBarBuilder<TModel>.Build(models, parent, request);
-        }
-
-        public static UniTask<INavigationState<TModel>> BuildNavigationBar<TModel>(this IEnumerable<TModel> models, RectTransform parent,
-            Func<TModel, ElementRequest> request)
-            where TModel : INavigationPageModel
-        {
-            return NavigationBarBuilder<TModel>.Build(models, parent, request);
-        }
-    }
-
     public static class NavigationBarBuilder
     {
-        public static UniTask<INavigationState<TModel>> Build<TModel, TView>(this
-                IEnumerable<TModel> models,
-            RectTransform contentParent,
-            ElementRequest switcherRequest)
-            where TModel : INavigationPageModel
-            where TView : NavigationSwitcherViewBase<TModel>
-        {
-            return Build<TModel, TView>(models, contentParent, _ => switcherRequest);
-        }
-
-        public static async UniTask<INavigationState<TModel>> Build<TModel, TView>(
-            IEnumerable<TModel> models,
+        public static UniTask<INavigationPresenter<TModel>> Build<TModel, TView>(
             RectTransform contentParent,
             Func<TModel, ElementRequest> switcherRequestFactory)
             where TModel : INavigationPageModel
             where TView : NavigationSwitcherViewBase<TModel>
         {
-            INavigationState<TModel> state = new NavigationState<TModel>(models);
+            ReactiveCommand<TModel> switchCommand = new();
 
-            ICollectionPresenter<TModel, TView> switchersPresenter = new CollectionPresenter<TModel, TView>(
-                (model, view) => new NavigationSwitcherPresenter<TModel, TView>(model, view, state, contentParent),
-                (model, token) => ElementsGlobal.Create<TView, TModel>(model, switcherRequestFactory(model), token)
+            ICollectionPresenter<TModel> switchersCollection = new CollectionPresenter<TModel, TView>(
+                (model, view) => new NavigationModelPresenter<TModel, TView>(switchCommand, model, view),
+                (model, ct) => ElementsGlobal.Create<TView, TModel>(model, switcherRequestFactory(model), ct)
             );
 
-            await UniTask.WhenAll(state.Models.Select(a => switchersPresenter.Add(a)));
+            INavigationPresenter<TModel> presenter = new NavigationPresenter<TModel>(switchersCollection, contentParent);
+            INavigationPresenter<TModel> presenterWrapper = new NavigationPresenterCommandWrapper<TModel>(presenter, switchCommand);
 
-            return new NavigationStateWrapper<TModel, TView>(state, switchersPresenter);
+            return UniTask.FromResult(presenterWrapper);
         }
     }
 
-    public sealed class NavigationStateWrapper<TModel, TView> : INavigationState<TModel>
-        where TModel : INavigationPageModel
-        where TView : NavigationSwitcherViewBase<TModel>
+    public class NavigationPresenterCommandWrapper<TModel> : INavigationPresenter<TModel> where TModel : INavigationPageModel
     {
-        private readonly INavigationState<TModel> m_state;
-        private readonly ICollectionPresenter<TModel, TView> m_presenter;
+        private readonly INavigationPresenter<TModel> m_presenter;
+        private readonly ReactiveCommand<TModel> m_command;
+        private readonly CancellationTokenSource m_cts = new();
 
-        public NavigationStateWrapper(INavigationState<TModel> state, ICollectionPresenter<TModel, TView> presenter)
+        public NavigationPresenterCommandWrapper(INavigationPresenter<TModel> presenter, ReactiveCommand<TModel> command)
         {
-            m_state = state;
             m_presenter = presenter;
+            m_command = command;
+
+            command.Subscribe(a => TrySwitch(a)).AddTo(m_cts.Token);
         }
 
-        public ReadOnlyReactiveProperty<TModel> ActivePage => m_state.ActivePage;
-        public IReadOnlyCollection<TModel> Models => m_state.Models;
-        public bool TrySwitch(TModel model) => m_state.TrySwitch(model);
-        public bool TrySwitch(string key) => m_state.TrySwitch(key);
+        public ReadOnlyReactiveProperty<TModel> ActivePage => m_presenter.ActivePage;
+        public UniTask<bool> TrySwitch(TModel model) => m_presenter.TrySwitch(model);
+        public UniTask<bool> TrySwitch(string key) => m_presenter.TrySwitch(key);
+        public UniTask Add(TModel model) => m_presenter.Add(model);
+        public void Remove(TModel model) => m_presenter.Remove(model);
 
         public void Dispose()
         {
+            m_cts.Cancel();
+            m_cts.Dispose();
+            m_command.Dispose();
             m_presenter.Dispose();
-            m_state.Dispose();
+        }
+    }
+
+    public class NavigationModelPresenter<TModel, TView> : CollectionModelPresenterBase<TModel, TView>
+        where TModel : INavigationPageModel
+        where TView : NavigationSwitcherViewBase<TModel>
+    {
+        private readonly ReactiveCommand<TModel> m_switchCommand;
+        private readonly CancellationTokenSource m_cts = new();
+
+        public NavigationModelPresenter(ReactiveCommand<TModel> switchCommand, TModel model, TView view) : base(model, view)
+        {
+            m_switchCommand = switchCommand;
+        }
+
+        public override void Initialize()
+        {
+            View.OnSwitchRequest.Subscribe(m_switchCommand.Execute).AddTo(m_cts.Token);
+        }
+
+        public override void Dispose()
+        {
+            m_cts.Cancel();
+            m_cts.Dispose();
         }
     }
 }

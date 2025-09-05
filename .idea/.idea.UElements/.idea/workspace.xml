@@ -13,8 +13,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Sandbox/Demos/NavigationView/PageA.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Sandbox/Installers/ProjectInstaller.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/src/UElements.NavigationBar/NavigationState.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/src/UElements.NavigationBar/NavigationSwitcherPresenter.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/src/UElements.NavigationBar/NavigationPresenter.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.R3/R3CollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.States/Runtime/StatedElement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements/Runtime/Implementations/Addressables/AddressableElementsModule.cs" root0="FORCE_HIGHLIGHTING" />
@@ -31,6 +30,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTask.Factory.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTask.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTaskScheduler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTaskVoid.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d3152494c954d849c5b7d1ab09f81f6be00/b4/945e2c69/ObservableCollectionAdd`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d3152494c954d849c5b7d1ab09f81f6be00/c9/b36ce995/ObservableCollectionR3Extensions.cs" root0="SKIP_HIGHLIGHTING" />
@@ -148,7 +148,7 @@
       <workItem from="1756804064565" duration="16148000" />
       <workItem from="1756880790596" duration="2480000" />
       <workItem from="1756968846301" duration="13354000" />
-      <workItem from="1757055020773" duration="13007000" />
+      <workItem from="1757055020773" duration="21475000" />
     </task>
     <servers />
   </component>

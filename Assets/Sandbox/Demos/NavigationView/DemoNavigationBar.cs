@@ -13,19 +13,23 @@ namespace Demos.NavigationView
         [SerializeField] private CollectionItemRequest _switcherRequest;
         [SerializeField] private List<DemoNavigationModel> _navigationPageModels;
 
-        private INavigationState<DemoNavigationModel> m_navigationState;
+        private INavigationPresenter<DemoNavigationModel> m_navigationPresenter;
 
         private void Start() => CreateNavigation().Forget();
 
         [Button]
         private async UniTask CreateNavigation()
         {
-            m_navigationState = await _navigationPageModels.BuildNavigationBar(_contentParent, _switcherRequest);
+            m_navigationPresenter =
+                await NavigationBarBuilder.Build<DemoNavigationModel, NavigationSwitcherView>(_contentParent, _ => _switcherRequest);
 
-            m_navigationState.TrySwitch(_navigationPageModels[0]);
+            foreach (DemoNavigationModel navigationPageModel in _navigationPageModels)
+                await m_navigationPresenter.Add(navigationPageModel);
+
+            m_navigationPresenter.TrySwitch(_navigationPageModels[0]);
         }
 
         [Button]
-        private void DisposeNavigation() => m_navigationState?.Dispose();
+        private void DisposeNavigation() => m_navigationPresenter?.Dispose();
     }
 }

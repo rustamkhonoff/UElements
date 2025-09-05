@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Demos.NavigationView
 {
-    public class DemoNavigationSwitcherViewBase : NavigationSwitcherViewBase<DemoNavigationModel>
+    public class NavigationSwitcherView : NavigationSwitcherViewBase<DemoNavigationModel>
     {
         [SerializeField] private Image _image;
         [SerializeField] private Button _button;
