@@ -72,18 +72,18 @@ namespace UElements.NavigationBar
 
             await UniTask.WhenAll(state.Models.Select(a => switchersPresenter.Add(a)));
 
-            return new NavigationContext<TModel, TView>(state, switchersPresenter);
+            return new NavigationStateWrapper<TModel, TView>(state, switchersPresenter);
         }
     }
 
-    public sealed class NavigationContext<TModel, TView> : INavigationState<TModel>
+    public sealed class NavigationStateWrapper<TModel, TView> : INavigationState<TModel>
         where TModel : INavigationPageModel
         where TView : NavigationSwitcherViewBase<TModel>
     {
         private readonly INavigationState<TModel> m_state;
         private readonly ICollectionPresenter<TModel, TView> m_presenter;
 
-        public NavigationContext(INavigationState<TModel> state, ICollectionPresenter<TModel, TView> presenter)
+        public NavigationStateWrapper(INavigationState<TModel> state, ICollectionPresenter<TModel, TView> presenter)
         {
             m_state = state;
             m_presenter = presenter;
@@ -92,6 +92,7 @@ namespace UElements.NavigationBar
         public ReadOnlyReactiveProperty<TModel> ActivePage => m_state.ActivePage;
         public IReadOnlyCollection<TModel> Models => m_state.Models;
         public bool TrySwitch(TModel model) => m_state.TrySwitch(model);
+        public bool TrySwitch(string key) => m_state.TrySwitch(key);
 
         public void Dispose()
         {

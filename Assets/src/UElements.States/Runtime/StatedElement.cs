@@ -6,7 +6,12 @@ using UnityEngine;
 
 namespace UElements.States
 {
-    public abstract class StatedElement : Element
+    public interface IStatedElement
+    {
+        void SetState(State state, bool animate);
+    }
+
+    public abstract class StatedElement : Element, IStatedElement
     {
         [field: SerializeField,
 #if ODIN_INSPECTOR

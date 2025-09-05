@@ -1,38 +1,27 @@
-using System;
-using Cysharp.Threading.Tasks;
 using R3;
 using TMPro;
 using UElements;
-using UElements.R3;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Demos.CollectionView
 {
-    public class DemoCollectionItemView : ModelElement<DemoCollectionModel>
+    public class ModelView : ModelElement<Model>
     {
         [SerializeField] private TMP_Text _text;
         [SerializeField] private Button _click;
 
-        private Action<DemoCollectionModel> m_action;
+        public Observable<Unit> Clicked => m_clicked;
+        private Observable<Unit> m_clicked;
 
-        public override void Initialize()
+        protected override void Initialize()
         {
-            _click.SubscribeClick(() => m_action?.Invoke(Model)).AddTo(this);
-
-            Model.AnyValueChanged
-                .Subscribe(_ => _text.SetText(Model.Nickname.Value + ":" + Model.Health.Value))
-                .AddTo(LifetimeToken);
+            m_clicked = _click.OnClickAsObservable();
         }
 
-        public void AddCallback(Action<DemoCollectionModel> action)
+        public void SetText(string text)
         {
-            m_action += action;
-        }
-
-        public void RemoveCallback(Action<DemoCollectionModel> action)
-        {
-            m_action -= action;
+            _text.SetText(text);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Demos.NavigationView
         [SerializeField] private Image _bg;
         [SerializeField] private Color _a, _b;
 
-        public override void Initialize()
+        protected override void Initialize()
         {
             _image.sprite = Model.Icon;
             _button.SubscribeClick(Switch).AddTo(LifetimeToken);

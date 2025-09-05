@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-using UnityEngine;
 
 namespace UElements
 {
@@ -14,8 +13,6 @@ namespace UElements
 
         public static CancellationTokenRegistration AddTo(this ElementBase elementBase, CancellationToken ct)
         {
-            Debug.Log(ct.IsCancellationRequested);
-
             if (!ct.CanBeCanceled)
                 throw new ArgumentException("Require CancellationToken CanBeCanceled");
             if (ct.IsCancellationRequested)

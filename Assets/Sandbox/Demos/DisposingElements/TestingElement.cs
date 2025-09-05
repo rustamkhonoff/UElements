@@ -10,7 +10,7 @@ namespace Sandbox.Demos.DisposingElements
             Debug.Log("Disposing");
         }
 
-        public override void Initialize()
+        protected override void Initialize()
         {
             Debug.Log("Init");
         }

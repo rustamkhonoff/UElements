@@ -1,66 +1,67 @@
 using System;
-using System.Threading;
-using Cysharp.Threading.Tasks;
-using UnityEngine;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace UElements.CollectionView
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     public static class CollectionPresenterBuilder
     {
-        public static CollectionPresenter<TModel, TView> Build<TModel, TView>(
-            TView prefab,
-            RectTransform parent,
-            Action<TModel, TView> onCreated = null,
-            Action<TModel, TView> onDispose = null)
-            where TView : ModelElement<TModel>
-        {
-            return Build(new ElementRequest(prefab.gameObject, parent), onCreated, onDispose);
-        }
+        public static ICollectionPresenter<TModel> BuildCollectionPresenter<TModel>(
+            this Func<TModel, ElementRequest> request,
+            Func<TModel, ModelElement<TModel>, IModelPresenter<TModel, ModelElement<TModel>>> presenter) =>
+            BuildCollectionPresenter<TModel, ModelElement<TModel>>(request, presenter);
 
-        public static CollectionPresenter<TModel, TView> Build<TModel, TView>(
-            ElementRequest request,
-            RectTransform parent,
-            Action<TModel, TView> onCreated = null,
-            Action<TModel, TView> onDispose = null)
-            where TView : ModelElement<TModel>
-        {
-            return Build(request.WithParent(parent), onCreated, onDispose);
-        }
-
-        public static CollectionPresenter<TModel, TView> Build<TModel, TView>(
-            ElementRequest request,
-            Action<TModel, TView> onCreated = null,
-            Action<TModel, TView> onDispose = null)
+        public static ICollectionPresenter<TModel, TView> BuildCollectionPresenter<TModel, TView>(
+            this Func<TModel, ElementRequest> request,
+            Func<TModel, TView, IModelPresenter<TModel, TView>> presenter)
             where TView : ModelElement<TModel>
         {
             return new CollectionPresenter<TModel, TView>(
-                (model, view) => new CollectionItemPresenter<TModel, TView>(model, view, onCreated, onDispose),
-                (model, token) => ElementsGlobal.Create<TView, TModel>(model, request, token)
+                presenter,
+                (model, token) => ElementsGlobal.Create<TView, TModel>(model, request(model), token)
             );
         }
 
-        public static CollectionPresenter<TModel, TView> Build<TModel, TView>(
-            Func<TModel, CancellationToken, UniTask<TView>> viewFactory,
-            Action<TModel, TView> onCreated = null,
-            Action<TModel, TView> onDispose = null)
+        public static ICollectionPresenter<TModel> BuildCollectionPresenter<TModel>(
+            this Func<TModel, ModelElement<TModel>, IModelPresenter<TModel, ModelElement<TModel>>> presenter,
+            Func<TModel, ElementRequest> request)
+        {
+            return BuildCollectionPresenter<TModel, ModelElement<TModel>>(presenter, request);
+        }
+
+        public static ICollectionPresenter<TModel, TView> BuildCollectionPresenter<TModel, TView>(
+            this Func<TModel, TView, IModelPresenter<TModel, TView>> presenter,
+            Func<TModel, ElementRequest> request)
             where TView : ModelElement<TModel>
         {
             return new CollectionPresenter<TModel, TView>(
-                (model, view) => new CollectionItemPresenter<TModel, TView>(model, view, onCreated, onDispose),
-                viewFactory
+                presenter,
+                (model, token) => ElementsGlobal.Create<TView, TModel>(model, request(model), token)
             );
         }
 
-        public static CollectionPresenter<TModel, TView> Build<TModel, TView>(
-            Func<TModel, ElementRequest> request,
-            Action<TModel, TView> onCreated = null,
-            Action<TModel, TView> onDispose = null)
+        public static ICollectionPresenter<TModel> BuildCollectionPresenter<TModel>(
+            this IEnumerable<TModel> models,
+            Func<TModel, ModelElement<TModel>, IModelPresenter<TModel, ModelElement<TModel>>> presenter,
+            Func<TModel, ElementRequest> request)
+        {
+            return BuildCollectionPresenter<TModel, ModelElement<TModel>>(models, presenter, request);
+        }
+
+        public static ICollectionPresenter<TModel, TView> BuildCollectionPresenter<TModel, TView>(
+            this IEnumerable<TModel> models,
+            Func<TModel, TView, IModelPresenter<TModel, TView>> presenter,
+            Func<TModel, ElementRequest> request)
             where TView : ModelElement<TModel>
         {
-            return new CollectionPresenter<TModel, TView>(
-                (model, view) => new CollectionItemPresenter<TModel, TView>(model, view, onCreated, onDispose),
-                (model, token) => ElementsGlobal.Create<TView, TModel>(model, request?.Invoke(model), token)
+            CollectionPresenter<TModel, TView> presenterInstance = new(
+                presenter,
+                (model, token) => ElementsGlobal.Create<TView, TModel>(model, request(model), token)
             );
+            presenterInstance.Initialize(models);
+            return presenterInstance;
         }
     }
 }

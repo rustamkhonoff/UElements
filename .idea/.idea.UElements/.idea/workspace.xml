@@ -37,11 +37,17 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/10/a84072fa/Action`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/63/9021256d/IObservable`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/9c/0e2d68c5/Func`3.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8e6d0808da834443bd9d404f1359293f25c00/15/d3f910db/ObservableDictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8e6d0808da834443bd9d404f1359293f25c00/74/fa10f7b6/ISynchronizedView`2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8e6d0808da834443bd9d404f1359293f25c00/a6/1c8c0a70/ObservableList`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8e6d0808da834443bd9d404f1359293f25c00/f0/404d4d19/ObservableCollectionExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/8e6d0808da834443bd9d404f1359293f25c00/fd/78c0c0a4/IObservableCollection`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/00/11e71c26/ISubject`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/04/30514c3b/Disposable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/0d/b39b7947/ReadOnlyReactiveProperty`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/0e/67f55507/ObservableSubscribeExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/16/1f2631bb/ObservableExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/3f/e06d5a0f/Subject`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/45/617576e6/ReactivePropertyExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/55/3583a599/AnonymousObserver`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/7e/a5f39ef4/Result.cs" root0="SKIP_HIGHLIGHTING" />
@@ -52,7 +58,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/eaa93d1ff51f46939e13cc06b5754f3d177000/10/394d4e15/Component.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f5cef381160e49118a67ea125642e36a175c00/e7/bd2d5487/ISerializationCallbackReceiver.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/18f5482d17338a7bbdeae155929167e4a8be10b5d2e9aed96c2562ed98f34f/System.Collections.ObjectModel.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7d303c2bf72cd4cec95665b89c457d265d2b8ef3ed6da17cd4f85587c2f9de7/System.Linq.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8a522b806eac9bb894e6e4c5fe87f353457535e769447e79c6b396beecb5d0/System.Threading.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d44b17e136d09081da1e8fd0e8c83fde60e11818b9f2442d7ed8cb733fae895e/System.Collections.Generic.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ffe351aa6232372f4a3b8c3ff36a636f33de226f60e607acbfe569289d7289d/System.IO.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -140,6 +148,7 @@
       <workItem from="1756804064565" duration="16148000" />
       <workItem from="1756880790596" duration="2480000" />
       <workItem from="1756968846301" duration="13354000" />
+      <workItem from="1757055020773" duration="13007000" />
     </task>
     <servers />
   </component>

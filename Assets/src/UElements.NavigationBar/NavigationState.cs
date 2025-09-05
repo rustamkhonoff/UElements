@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using R3;
 using UnityEngine;
 
 namespace UElements.NavigationBar
 {
     public interface INavigationState<TPageModel> : IDisposable
+        where TPageModel : INavigationPageModel
     {
         ReadOnlyReactiveProperty<TPageModel> ActivePage { get; }
         IReadOnlyCollection<TPageModel> Models { get; }
         bool TrySwitch(TPageModel model);
+        bool TrySwitch(string key);
     }
 
     internal class NavigationState<TPageModel> : INavigationState<TPageModel>

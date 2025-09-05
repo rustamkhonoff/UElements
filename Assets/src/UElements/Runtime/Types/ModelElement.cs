@@ -2,7 +2,7 @@ namespace UElements
 {
     public class ModelElement<T> : ElementBase
     {
-        public T Model { get; internal set; }
+        public T Model { get; set; }
 
         internal void InitializeModel(T model)
         {

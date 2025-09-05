@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace UElements.NavigationBar
 {
-    public class NavigationSwitcherPresenter<TModel, TView> : ICollectionItemPresenter<TModel, TView>
+    public class NavigationSwitcherPresenter<TModel, TView> : IModelPresenter<TModel, TView>
         where TModel : INavigationPageModel
         where TView : NavigationSwitcherViewBase<TModel>
     {
@@ -35,19 +35,18 @@ namespace UElements.NavigationBar
         {
             m_navigationState.ActivePage
                 .Where(a => a != null)
-                .Subscribe(a => HandleActivePageChanged(a).Forget())
+                .Subscribe(a => HandleActivePageChanged(a, a.Key == Model.Key).Forget())
                 .AddTo(m_cancellationTokenSource.Token);
 
             View.OnSwitchRequest.Subscribe(a => m_navigationState.TrySwitch(a)).AddTo(m_cancellationTokenSource.Token);
             IsSelected.Subscribe(View.SetSelected).AddTo(m_cancellationTokenSource.Token);
         }
 
-        private async UniTask HandleActivePageChanged(TModel model)
+        private async UniTask HandleActivePageChanged(TModel model, bool selected)
         {
-            bool isMe = Model.Key == model.Key;
-            View.SetSelected(isMe);
+            View.SetSelected(selected);
 
-            if (Model.Key == model.Key && m_activePage == null)
+            if (selected && m_activePage == null)
             {
                 m_activePage = await CreatePage(model);
                 m_activePage.AddTo(m_cancellationTokenSource.Token);

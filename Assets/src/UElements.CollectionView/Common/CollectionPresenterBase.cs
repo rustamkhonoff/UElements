@@ -7,42 +7,27 @@ using System.Threading;
 
 namespace UElements.CollectionView
 {
-    public class CollectionPresenter<TModel, TView> : ICollectionPresenter<TModel, TView>
-        where TView : ModelElement<TModel>
+    public class CollectionPresenter<TModel, TView> : ICollectionPresenter<TModel, TView> where TView : ModelElement<TModel>
     {
-        public event Action<TModel, TView> OnCreated;
-        public event Action<TModel, TView> OnDisposing;
-
         private readonly ElementRequest m_itemRequest;
-        private readonly Func<TModel, TView, ICollectionItemPresenter<TModel, TView>> m_presenterFactory;
+        private readonly Func<TModel, TView, IModelPresenter<TModel, TView>> m_presenterFactory;
         private readonly Func<TModel, CancellationToken, UniTask<TView>> m_viewFactory;
-        private readonly Dictionary<TModel, ICollectionItemPresenter<TModel, TView>> m_presenters;
+        private readonly Dictionary<TModel, IModelPresenter<TModel, TView>> m_presenters;
 
         private CancellationTokenSource m_lifeTimeTokenSource = new();
 
         public CollectionPresenter(
-            Func<TModel, TView, ICollectionItemPresenter<TModel, TView>> presenterFactory,
+            Func<TModel, TView, IModelPresenter<TModel, TView>> presenterFactory,
             Func<TModel, CancellationToken, UniTask<TView>> viewFactory)
         {
             m_presenterFactory = presenterFactory;
             m_viewFactory = viewFactory;
-            m_presenters = new Dictionary<TModel, ICollectionItemPresenter<TModel, TView>>();
+            m_presenters = new Dictionary<TModel, IModelPresenter<TModel, TView>>();
         }
 
         public IEnumerable<TModel> Models => m_presenters.Keys;
-        public Dictionary<TModel, ICollectionItemPresenter<TModel, TView>>.ValueCollection Presenters => m_presenters.Values;
-        public IEnumerable<TView> Views => Presenters.Select(a => a.View);
-
-
-        public bool TryGetCollectionItemPresenter(TModel model, out ICollectionItemPresenter<TModel, TView> presenter)
-        {
-            presenter = default;
-
-            if (!m_presenters.ContainsKey(model)) return false;
-            presenter = m_presenters[model];
-
-            return true;
-        }
+        public IEnumerable<IModelPresenter<TModel, ModelElement<TModel>>> Presenters => m_presenters.Values;
+        public IEnumerable<TView> Views => Presenters.Select(a => a.View).Cast<TView>();
 
         public virtual async void Initialize(IEnumerable<TModel> data)
         {
@@ -50,7 +35,7 @@ namespace UElements.CollectionView
                 await Add(model);
         }
 
-        public virtual async UniTask<TView> Add(TModel model)
+        public virtual async UniTask<ModelElement<TModel>> Add(TModel model)
         {
             if (model == null)
             {
@@ -65,19 +50,17 @@ namespace UElements.CollectionView
             }
 
             TView view = await m_viewFactory.Invoke(model, m_lifeTimeTokenSource.Token);
-            ICollectionItemPresenter<TModel, TView> presenterBase = m_presenterFactory.Invoke(model, view);
+            IModelPresenter<TModel, TView> presenterBase = m_presenterFactory.Invoke(model, view);
 
-            OnCreated?.Invoke(model, view);
             presenterBase.Initialize();
 
             m_presenters[model] = presenterBase;
-
             return view;
         }
 
         public virtual void Clear()
         {
-            foreach ((TModel _, ICollectionItemPresenter<TModel, TView> value) in m_presenters)
+            foreach ((TModel _, IModelPresenter<TModel, TView> value) in m_presenters)
                 Remove_Internal(value.Model);
             m_presenters.Clear();
         }
@@ -101,10 +84,9 @@ namespace UElements.CollectionView
 
         private void Remove_Internal(TModel model)
         {
-            ICollectionItemPresenter<TModel, TView> collectionItemPresenter = m_presenters[model];
+            IModelPresenter<TModel, TView> modelPresenter = m_presenters[model];
 
-            OnDisposing?.Invoke(model, collectionItemPresenter.View);
-            collectionItemPresenter.Dispose();
+            modelPresenter.Dispose();
         }
 
 
