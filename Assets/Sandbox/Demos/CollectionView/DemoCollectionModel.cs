@@ -4,7 +4,7 @@ using R3;
 namespace Demos.CollectionView
 {
     [Serializable]
-    public class Model
+    internal class Model
     {
         public SerializableReactiveProperty<string> Nickname = new();
         public SerializableReactiveProperty<int> Health = new();

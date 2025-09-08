@@ -7,9 +7,9 @@ using UElements.R3;
 
 namespace Demos.CollectionView
 {
-    public class CollectionModelPresenter : CollectionModelPresenterBase<Model, ModelView>
+    internal class DemoCollectionModelPresenter : CollectionModelPresenterBase<Model, ModelView>
     {
-        public CollectionModelPresenter(Model model, ModelView view) : base(model, view) { }
+        public DemoCollectionModelPresenter(Model model, ModelView view) : base(model, view) { }
 
         private readonly CancellationTokenSource m_cts = new();
 

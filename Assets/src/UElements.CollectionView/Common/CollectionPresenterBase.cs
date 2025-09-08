@@ -85,7 +85,6 @@ namespace UElements.CollectionView
         private void Remove_Internal(TModel model)
         {
             ICollectionModelPresenter<TModel, TView> collectionModelPresenter = m_presenters[model];
-
             collectionModelPresenter.Dispose();
         }
 

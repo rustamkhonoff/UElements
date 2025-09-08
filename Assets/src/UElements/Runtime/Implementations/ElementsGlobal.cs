@@ -14,7 +14,7 @@ namespace UElements
 
         public static bool Initialized { get; private set; }
 
-        private static IElements Elements
+        public static IElements Elements
         {
             get
             {
@@ -26,7 +26,7 @@ namespace UElements
 
                 return _elements;
             }
-            set => _elements = value;
+            private set => _elements = value;
         }
 
         internal static void Initialize(IElements elements)

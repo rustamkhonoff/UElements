@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace Demos.CollectionView
 {
-    public class DemoCollectionViewTest : MonoBehaviour
+    internal class DemoCollectionViewTest : MonoBehaviour
     {
         [SerializeField] private List<Model> _models = new();
         [SerializeField] private CollectionItemRequest _request;
@@ -25,7 +25,7 @@ namespace Demos.CollectionView
         }
 
         private ElementRequest RequestFactory(Model model) => model.Nickname.Value == "King" ? _kingRequest : _request;
-        private CollectionModelPresenter PresenterFactory(Model arg1, ModelView arg2) => new(arg1, arg2);
+        private DemoCollectionModelPresenter PresenterFactory(Model arg1, ModelView arg2) => new(arg1, arg2);
 
         private Model a = new(1000, "A");
         private Model b = new(100, "B");

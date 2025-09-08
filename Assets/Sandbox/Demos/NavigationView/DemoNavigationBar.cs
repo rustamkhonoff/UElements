@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UElements.CollectionView;
 using UElements.NavigationBar;
@@ -12,24 +12,25 @@ namespace Demos.NavigationView
         [SerializeField] private RectTransform _contentParent;
         [SerializeField] private CollectionItemRequest _switcherRequest;
         [SerializeField] private List<DemoNavigationModel> _navigationPageModels;
+        [SerializeField] private DemoNavigationModel _a;
 
-        private INavigationPresenter<DemoNavigationModel> m_navigationPresenter;
+        private INavigation<DemoNavigationModel> m_navigation;
 
-        private void Start() => CreateNavigation().Forget();
-
-        [Button]
-        private async UniTask CreateNavigation()
+        private async void Start()
         {
-            m_navigationPresenter =
-                await NavigationBarBuilder.Build<DemoNavigationModel, NavigationSwitcherView>(_contentParent, _ => _switcherRequest);
-
+            m_navigation = await NavigationBuilder.BuildNavigation<DemoNavigationModel, NavigationTab>(_ => _switcherRequest, _contentParent);
             foreach (DemoNavigationModel navigationPageModel in _navigationPageModels)
-                await m_navigationPresenter.Add(navigationPageModel);
-
-            m_navigationPresenter.TrySwitch(_navigationPageModels[0]);
+                await m_navigation.Add(navigationPageModel);
+            m_navigation.TrySwitch(_navigationPageModels[0]);
         }
 
-        [Button]
-        private void DisposeNavigation() => m_navigationPresenter?.Dispose();
+        private void OnDestroy()
+        {
+            m_navigation.Dispose();
+        }
+
+        [Button] public void DisposeNavigation() => m_navigation.Dispose();
+        [Button] private void AddModel() => m_navigation.Add(_a);
+        [Button] private void RemoveModel() => m_navigation.Remove(_a);
     }
 }

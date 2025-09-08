@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Demos.CollectionView
 {
-    public class ModelView : ModelElement<Model>
+    internal class ModelView : ModelElement<Model>
     {
         [SerializeField] private TMP_Text _text;
         [SerializeField] private Button _click;

@@ -1,0 +1,26 @@
+{
+    "name": "UElements.LitMotion",
+    "rootNamespace": "UElements.LitMotion",
+    "references": [
+        "GUID:3b570a5146f9d4f0fa107ed4559471a3",
+        "GUID:c6596d457155c4290bf548fa20c19c22",
+        "GUID:421747c63533549708e5d9c41306271a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UELEMENTS_LITMOTION"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.annulusgames.lit-motion",
+            "expression": "0.0.0",
+            "define": "UELEMENTS_LITMOTION"
+        }
+    ],
+    "noEngineReferences": false
+}
