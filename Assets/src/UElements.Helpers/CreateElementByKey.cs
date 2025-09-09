@@ -1,38 +1,36 @@
-using System;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Web;
-using Newtonsoft.Json;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace UElements.Helpers
 {
-    public class CreateElementByRequestOnStart : MonoBehaviour
+    public class CreateElementByRequest : MonoBehaviour
     {
-        [SerializeField] private ElementRequest _request;
-        [SerializeField] private string _params;
+        [Serializable]
+        public enum ModelType
+        {
+            None = 0,
+            Params = 1,
+            Query = 2
+        }
+
+        [SerializeField] internal ElementRequest _request;
+        [SerializeField] internal ModelType _modelType;
+        [SerializeField] internal Param[] _params;
+        [SerializeField] internal string _query;
+        private IElements Elements => ElementsGlobal.Elements;
 
         private async void Start()
         {
-            if (_params != null)
+            Dictionary<string, string> model = _modelType switch
             {
-                Type type = await ElementsGlobal.GetElementTypeForRequest(_request);
-                if (UElementsExtensions.IsSubclassOfRawGeneric(type, typeof(ModelElement<>)))
-                {
-                    Type modelType = UElementsExtensions.GetGenericBaseTypeArgument(type, typeof(ModelElement<>));
-                    if (modelType != null)
-                    {
-                        NameValueCollection dict = HttpUtility.ParseQueryString(_params);
-                        string json = JsonConvert.SerializeObject(dict.Cast<string>().ToDictionary(k => k, v => dict[v]));
-                        object a = JsonConvert.DeserializeObject(json, modelType);
-                        ElementsGlobal.Create(_request, a);
-                    }
-                }
-            }
-            else
-            {
-                ElementsGlobal.Create(_request);
-            }
+                ModelType.None => new Dictionary<string, string>(),
+                ModelType.Params => _params.FromParams(),
+                ModelType.Query => _query.FromQuery(),
+                _ => new Dictionary<string, string>()
+            };
+
+            await Elements.CreateElementWithQueryParams(_request, model);
         }
     }
 }

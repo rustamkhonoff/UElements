@@ -390,7 +390,11 @@ MonoBehaviour:
     <Parent>k__BackingField: {fileID: 0}
     <OnlyOneInstance>k__BackingField: 1
     <CustomPrefabReference>k__BackingField: {fileID: 0}
-  _params: PageKey=c
+  _modelType: 1
+  _params:
+  - <Key>k__BackingField: PageKey
+    <Value>k__BackingField: c
+  _query: PageKey=b
 --- !u!1 &1041713923
 GameObject:
   m_ObjectHideFlags: 0

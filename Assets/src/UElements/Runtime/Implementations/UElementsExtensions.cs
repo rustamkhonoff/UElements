@@ -1,28 +1,33 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using static UElements.UElementsExtensions;
 
 namespace UElements
 {
     public static class ModelElementHelper
     {
-        public static readonly MethodInfo ModelInitializeMethodInfo;
+        private static MethodInfo _modelInitializeMethodInfo;
 
-        static ModelElementHelper()
+        [RuntimeInitializeOnLoadMethod]
+        private static void CacheMethodInfo()
         {
-            ModelInitializeMethodInfo = typeof(ModelElementHelper).GetMethod(nameof(Initialize));
+            _modelInitializeMethodInfo = typeof(ModelElementHelper).GetMethod(nameof(Initialize), BindingFlags.Static | BindingFlags.NonPublic);
         }
 
-        public static void InitializeElementWithModel(Type modelType, object instance, object model)
+        private static void InitializeElementWithModel(Type modelType, object instance, object model)
         {
-            ModelInitializeMethodInfo.MakeGenericMethod(modelType).Invoke(null, new[] { instance, model });
+            _modelInitializeMethodInfo.MakeGenericMethod(modelType).Invoke(null, new[] { instance, model });
         }
 
         public static bool TryInitializeModel(object instance, object model)
         {
-            Type modelType = UElementsExtensions.GetGenericBaseTypeArgument(instance.GetType(), typeof(ModelElement<>));
+            Type modelType = GetGenericBaseTypeArgument(instance.GetType(), typeof(ModelElement<>));
             if (modelType != null && modelType == model.GetType())
             {
                 InitializeElementWithModel(modelType, instance, model);
@@ -32,7 +37,31 @@ namespace UElements
             return false;
         }
 
-        public static void Initialize<T>(ModelElement<T> element, T model)
+        public static async UniTask<ElementBase> CreateElementWithQueryParams(
+            this IElements elements,
+            ElementRequest request,
+            Dictionary<string, string> modelParams)
+        {
+            if (modelParams.Count <= 0) return await ElementsGlobal.Create(request);
+
+            Type type = await elements.GetElementTypeForRequest(request);
+
+            if (type == null || !IsSubclassOfRawGeneric(type, typeof(ModelElement<>)))
+                return await ElementsGlobal.Create(request);
+
+            Type modelType = GetGenericBaseTypeArgument(type, typeof(ModelElement<>));
+            if (modelType == null)
+            {
+                Debug.LogException(new InvalidCastException("Model from params"));
+                return await ElementsGlobal.Create(request);
+            }
+
+            string json = JsonConvert.SerializeObject(modelParams);
+            object model = JsonConvert.DeserializeObject(json, modelType);
+            return await ElementsGlobal.Create(request, model);
+        }
+
+        private static void Initialize<T>(ModelElement<T> element, T model)
         {
             element.InitializeModel(model);
         }
