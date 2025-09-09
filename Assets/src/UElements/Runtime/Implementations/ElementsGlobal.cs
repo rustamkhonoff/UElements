@@ -43,6 +43,12 @@ namespace UElements
             OnDisposed?.Invoke();
         }
 
+        public static UniTask<Type> GetElementTypeForRequest(ElementRequest request) => Elements.GetElementTypeForRequest(request);
+        public static UniTask<ElementBase> Create(ElementRequest request, object model, CancellationToken cancellationToken = default)
+        {
+            return Elements.Create(request, model, cancellationToken);
+        }
+
         public static UniTask<ElementBase> Create(ElementRequest request, CancellationToken cancellationToken = default)
         {
             return Elements.Create(request, cancellationToken);

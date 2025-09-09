@@ -266,7 +266,11 @@ MonoBehaviour:
     <Parent>k__BackingField: {fileID: 7182527449267301305}
   _navigationPageModels:
   - <Key>k__BackingField: a
-    <Prefab>k__BackingField: {fileID: 1182100429898139110, guid: 477af19560f70417a91be5445c1caf46, type: 3}
+    <ContentRequest>k__BackingField:
+      <Key>k__BackingField: 
+      <Parent>k__BackingField: {fileID: 0}
+      <OnlyOneInstance>k__BackingField: 0
+      <CustomPrefabReference>k__BackingField: {fileID: 1182100429898139110, guid: 477af19560f70417a91be5445c1caf46, type: 3}
     <Icon>k__BackingField: {fileID: 21300000, guid: 02265214a693f406cab4ae21ba5b7be4, type: 3}
     <Locked>k__BackingField:
       value: 0
@@ -275,7 +279,11 @@ MonoBehaviour:
     <Name>k__BackingField:
       value: Items
   - <Key>k__BackingField: b
-    <Prefab>k__BackingField: {fileID: 1543653416994432883, guid: b82a4cb93cc1a4a90aada6ea71fd4b61, type: 3}
+    <ContentRequest>k__BackingField:
+      <Key>k__BackingField: 
+      <Parent>k__BackingField: {fileID: 0}
+      <OnlyOneInstance>k__BackingField: 0
+      <CustomPrefabReference>k__BackingField: {fileID: 1543653416994432883, guid: b82a4cb93cc1a4a90aada6ea71fd4b61, type: 3}
     <Icon>k__BackingField: {fileID: 21300000, guid: dc49697fc59af40daa53ef0d5c66523f, type: 3}
     <Locked>k__BackingField:
       value: 0
@@ -284,7 +292,11 @@ MonoBehaviour:
     <Name>k__BackingField:
       value: Home
   - <Key>k__BackingField: c
-    <Prefab>k__BackingField: {fileID: 9146905157317640033, guid: 12aa14655cbf94927a8889d8f7c8cb34, type: 3}
+    <ContentRequest>k__BackingField:
+      <Key>k__BackingField: 
+      <Parent>k__BackingField: {fileID: 0}
+      <OnlyOneInstance>k__BackingField: 0
+      <CustomPrefabReference>k__BackingField: {fileID: 9146905157317640033, guid: 12aa14655cbf94927a8889d8f7c8cb34, type: 3}
     <Icon>k__BackingField: {fileID: 21300000, guid: 8c86746a11ac849aa991c8e1dfafb050, type: 3}
     <Locked>k__BackingField:
       value: 0
@@ -293,17 +305,25 @@ MonoBehaviour:
     <Name>k__BackingField:
       value: Town
   - <Key>k__BackingField: d
-    <Prefab>k__BackingField: {fileID: 1182100429898139110, guid: 477af19560f70417a91be5445c1caf46, type: 3}
+    <ContentRequest>k__BackingField:
+      <Key>k__BackingField: DemoNavigationBar
+      <Parent>k__BackingField: {fileID: 0}
+      <OnlyOneInstance>k__BackingField: 0
+      <CustomPrefabReference>k__BackingField: {fileID: 0}
     <Icon>k__BackingField: {fileID: 21300000, guid: 8ad2a6875a9f04b66a5077db294d90cf, type: 3}
     <Locked>k__BackingField:
-      value: 1
+      value: 0
     <BadgeActive>k__BackingField:
       value: 0
     <Name>k__BackingField:
       value: Shop
   _a:
     <Key>k__BackingField: e
-    <Prefab>k__BackingField: {fileID: 8712742655621539927}
+    <ContentRequest>k__BackingField:
+      <Key>k__BackingField: 
+      <Parent>k__BackingField: {fileID: 0}
+      <OnlyOneInstance>k__BackingField: 0
+      <CustomPrefabReference>k__BackingField: {fileID: 0}
     <Icon>k__BackingField: {fileID: 21300000, guid: 2dcf683d97621446e9fafdd964394fd3, type: 3}
     <Locked>k__BackingField:
       value: 0

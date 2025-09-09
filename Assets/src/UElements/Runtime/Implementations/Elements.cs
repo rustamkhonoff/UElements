@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -30,6 +31,19 @@ namespace UElements
                 m_providers.Add(provider.Key, provider);
 
             ElementsGlobal.Initialize(this);
+        }
+
+        public async UniTask<ElementBase> Create(ElementRequest request, object model, CancellationToken cancellationToken = default)
+        {
+            ElementBase instance = await Create_Internal<ElementBase>(request, cancellationToken);
+            
+            if (!ModelElementHelper.TryInitializeModel(instance, model)) 
+                Debug.LogWarning($"Trying to create element with model {model.GetType()}");
+
+            instance.Initialize(this);
+            instance.Initialize();
+            instance.Show();
+            return instance;
         }
 
         public async UniTask<ElementBase> Create(ElementRequest request, CancellationToken cancellationToken = default)
@@ -64,7 +78,7 @@ namespace UElements
         private async UniTask<T> Create_Internal<T>(ElementRequest? request = null, CancellationToken cancellationToken = default)
             where T : ElementBase
         {
-            ElementRequest fixedRequest = request != null ? request.Value : ElementRequest.Default;
+            ElementRequest fixedRequest = request ?? ElementRequest.Default;
             string key = GetKey<T>(fixedRequest);
 
             T prefab = await GetPrefab<T>(key, request, cancellationToken);
@@ -132,6 +146,12 @@ namespace UElements
         {
             if (m_providers.TryGetValue(key, out IElementsProvider provider))
                 provider.Release();
+        }
+
+        public async UniTask<Type> GetElementTypeForRequest(ElementRequest request)
+        {
+            object prefab = await GetPrefab<ElementBase>(request.Key, request);
+            return prefab.GetType();
         }
 
         private UniTask<T> GetPrefab<T>(string key, ElementRequest? request, CancellationToken cancellationToken = default) where T : ElementBase

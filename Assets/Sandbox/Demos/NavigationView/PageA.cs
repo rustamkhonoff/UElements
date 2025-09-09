@@ -38,7 +38,7 @@ namespace Demos.NavigationView
             _name.SubscribeEndEdit(a => _user.Name = a).AddTo(this);
             _age.SubscribeEndEdit(a => _user.Age = int.Parse(a)).AddTo(this);
             _mail.SubscribeEndEdit(a => _user.Mail = a).AddTo(this);
-
+        
             Load();
         }
 

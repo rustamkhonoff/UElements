@@ -8,6 +8,27 @@ namespace UElements.NavigationBar
 {
     public static class NavigationBuilder
     {
+        public static async UniTask<INavigation<TModel>> BuildNavigation<TModel>(this IEnumerable<TModel> models,
+            ElementRequest tabElementRequest, RectTransform contentParent, TModel initial = default)
+            where TModel : INavigationPageModel
+        {
+            INavigation<TModel> navigation = await BuildNavigation<TModel, NavigationTabViewBase<TModel>>(_ => tabElementRequest, contentParent);
+            foreach (TModel model in models) await navigation.Add(model);
+            if (initial != null) navigation.TrySwitch(initial);
+            return navigation;
+        }
+
+        public static async UniTask<INavigation<TModel>> BuildNavigation<TModel>(this IEnumerable<TModel> models,
+            Func<TModel, ElementRequest> tabElementRequest, RectTransform contentParent, TModel initial = default)
+            where TModel : INavigationPageModel
+        {
+            INavigation<TModel> navigation = await BuildNavigation<TModel, NavigationTabViewBase<TModel>>(tabElementRequest, contentParent);
+            foreach (TModel model in models)
+                await navigation.Add(model);
+            if (initial != null) navigation.TrySwitch(initial);
+            return navigation;
+        }
+
         public static UniTask<INavigation<TModel>> BuildNavigation<TModel, TView>(Func<TModel, ElementRequest> request, RectTransform parent)
             where TModel : INavigationPageModel
             where TView : NavigationTabViewBase<TModel>

@@ -1,14 +1,20 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using Demos.NavigationView;
+using Newtonsoft.Json;
 using Sirenix.OdinInspector;
+using UElements;
 using UElements.CollectionView;
 using UElements.NavigationBar;
 using UnityEngine;
 
-namespace Demos.NavigationView
+namespace Sandbox.Demos.NavigationView
 {
-    public class DemoNavigationBar : MonoBehaviour
+    public class DemoNavigationBar : ModelElement<DemoNavigationBar.ViewModel>
     {
+        public record ViewModel(string PageKey);
+
         [SerializeField] private RectTransform _contentParent;
         [SerializeField] private CollectionItemRequest _switcherRequest;
         [SerializeField] private List<DemoNavigationModel> _navigationPageModels;
@@ -16,21 +22,26 @@ namespace Demos.NavigationView
 
         private INavigation<DemoNavigationModel> m_navigation;
 
-        private async void Start()
+
+        protected override async void Initialize()
         {
-            m_navigation = await NavigationBuilder.BuildNavigation<DemoNavigationModel, NavigationTab>(_ => _switcherRequest, _contentParent);
-            foreach (DemoNavigationModel navigationPageModel in _navigationPageModels)
-                await m_navigation.Add(navigationPageModel);
-            m_navigation.TrySwitch(_navigationPageModels[0]);
+            m_navigation = await _navigationPageModels.BuildNavigation(_switcherRequest, _contentParent);
+
+            if (Model is not null && !string.IsNullOrEmpty(Model.PageKey))
+            {
+                if (!m_navigation.TrySwitch(Model.PageKey))
+                    m_navigation.TrySwitch(_navigationPageModels[0]);
+            }
+            else
+            {
+                m_navigation.TrySwitch(_navigationPageModels[0]);
+            }
         }
 
-        private void OnDestroy()
-        {
-            m_navigation.Dispose();
-        }
+        [Button] public void DisposeNavigation() => m_navigation?.Dispose();
+        [Button] private void AddModel() => m_navigation?.Add(_a);
+        [Button] private void RemoveModel() => m_navigation?.Remove(_a);
 
-        [Button] public void DisposeNavigation() => m_navigation.Dispose();
-        [Button] private void AddModel() => m_navigation.Add(_a);
-        [Button] private void RemoveModel() => m_navigation.Remove(_a);
+        protected override void OnDisposing() => m_navigation?.Dispose();
     }
 }

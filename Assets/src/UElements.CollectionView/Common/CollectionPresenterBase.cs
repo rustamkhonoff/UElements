@@ -93,8 +93,8 @@ namespace UElements.CollectionView
         {
             Clear();
 
-            m_lifeTimeTokenSource.Cancel();
-            m_lifeTimeTokenSource.Dispose();
+            m_lifeTimeTokenSource?.Cancel();
+            m_lifeTimeTokenSource?.Dispose();
             m_lifeTimeTokenSource = null;
         }
     }

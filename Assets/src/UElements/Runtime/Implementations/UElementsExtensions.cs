@@ -1,10 +1,43 @@
 using System;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
 namespace UElements
 {
+    public static class ModelElementHelper
+    {
+        public static readonly MethodInfo ModelInitializeMethodInfo;
+
+        static ModelElementHelper()
+        {
+            ModelInitializeMethodInfo = typeof(ModelElementHelper).GetMethod(nameof(Initialize));
+        }
+
+        public static void InitializeElementWithModel(Type modelType, object instance, object model)
+        {
+            ModelInitializeMethodInfo.MakeGenericMethod(modelType).Invoke(null, new[] { instance, model });
+        }
+
+        public static bool TryInitializeModel(object instance, object model)
+        {
+            Type modelType = UElementsExtensions.GetGenericBaseTypeArgument(instance.GetType(), typeof(ModelElement<>));
+            if (modelType != null && modelType == model.GetType())
+            {
+                InitializeElementWithModel(modelType, instance, model);
+                return true;
+            }
+
+            return false;
+        }
+
+        public static void Initialize<T>(ModelElement<T> element, T model)
+        {
+            element.InitializeModel(model);
+        }
+    }
+
     public static class UElementsExtensions
     {
         public static string GetKey<T>(ElementRequest? elementRequest) where T : ElementBase
@@ -38,6 +71,33 @@ namespace UElements
             }
 
             return "null";
+        }
+
+        public static bool IsSubclassOfRawGeneric(Type type, Type genericBase)
+        {
+            while (type != null && type != typeof(object))
+            {
+                var cur = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+                if (cur == genericBase)
+                    return true;
+
+                type = type.BaseType;
+            }
+
+            return false;
+        }
+
+        public static Type GetGenericBaseTypeArgument(Type type, Type genericBase)
+        {
+            while (type != null && type != typeof(object))
+            {
+                if (type.IsGenericType && type.GetGenericTypeDefinition() == genericBase)
+                    return type.GetGenericArguments()[0];
+
+                type = type.BaseType;
+            }
+
+            return null;
         }
 
         public static bool IsEmptyKey(string key)
