@@ -18,9 +18,16 @@ namespace UElements.Helpers
         [SerializeField] internal ModelType _modelType;
         [SerializeField] internal Param[] _params;
         [SerializeField] internal string _query;
+        [SerializeField] private bool _createOnStart;
         private IElements Elements => ElementsGlobal.Elements;
 
-        private async void Start()
+        private void Start()
+        {
+            if (_createOnStart)
+                Create();
+        }
+
+        public async void Create()
         {
             Dictionary<string, string> model = _modelType switch
             {
