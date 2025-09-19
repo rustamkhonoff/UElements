@@ -5,6 +5,30 @@ using UnityEngine;
 namespace UElements
 {
     [Serializable]
+    public struct TypedElementRequest
+    {
+        public enum Type
+        {
+            Key = 0,
+            Reference = 1
+        }
+
+        public Type RequestType;
+        public string Key;
+        public GameObject CustomPrefabReference;
+        public Transform Parent;
+        public bool OnlyOneInstance;
+
+        public static implicit operator ElementRequest(TypedElementRequest elementRequest)
+        {
+            if (elementRequest.RequestType is Type.Reference)
+                return new ElementRequest(elementRequest.CustomPrefabReference, elementRequest.Parent, elementRequest.OnlyOneInstance);
+            else
+                return new ElementRequest(elementRequest.Key, elementRequest.Parent, elementRequest.OnlyOneInstance);
+        }
+    }
+
+    [Serializable]
     public struct ElementRequest
     {
         [field: SerializeField] [CanBeNull] public string Key { get; private set; }
@@ -25,6 +49,14 @@ namespace UElements
             Key = null;
             Parent = parent;
             OnlyOneInstance = false;
+            CustomPrefabReference = customPrefabReference;
+        }
+
+        public ElementRequest(GameObject customPrefabReference, Transform parent, bool onlyOneInstance)
+        {
+            Key = null;
+            Parent = parent;
+            OnlyOneInstance = onlyOneInstance;
             CustomPrefabReference = customPrefabReference;
         }
 

@@ -33,6 +33,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTaskScheduler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTaskVoid.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/34ba1ebf387142c2b7749b42cfef2fb629200/ae/97dbabb6/ImmutableList.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d3152494c954d849c5b7d1ab09f81f6be00/b4/945e2c69/ObservableCollectionAdd`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d3152494c954d849c5b7d1ab09f81f6be00/c9/b36ce995/ObservableCollectionR3Extensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/10/a84072fa/Action`1.cs" root0="SKIP_HIGHLIGHTING" />
@@ -60,7 +61,12 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/cb/a5afc40e/ReactiveProperty`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a6479622a9314fcba3eb70d4da8dd46092e00/d2/154d1618/DisposableBuilder.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/af9ee0c5a8cb435a8fc77f3f1c1a3657ac310/59/428307d7/JsonConvert.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e23b4c8f9acd4e9bab40e0237d631867305000/7b/fb739a0b/OdinAttributeProcessor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e23b4c8f9acd4e9bab40e0237d631867305000/86/6f529655/InspectorProperty.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e23b4c8f9acd4e9bab40e0237d631867305000/bc/7a8c8fb8/OdinAttributeProcessor`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/eaa93d1ff51f46939e13cc06b5754f3d177000/10/394d4e15/Component.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f00548962438470a9b953f55f995ce1219c00/29/da9d9fd6/ShowIfAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f00548962438470a9b953f55f995ce1219c00/c2/0d474141/CustomValueDrawerAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f5cef381160e49118a67ea125642e36a175c00/e7/bd2d5487/ISerializationCallbackReceiver.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/18f5482d17338a7bbdeae155929167e4a8be10b5d2e9aed96c2562ed98f34f/System.Collections.ObjectModel.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4c410f9649148441cfcae4bfdfcd4715fd4d7eee34e791a27c79dbc3bf82c/System.Collections.Specialized.cs" root0="SKIP_HIGHLIGHTING" />
@@ -159,6 +165,8 @@
       <workItem from="1757055020773" duration="21475000" />
       <workItem from="1757312036986" duration="17041000" />
       <workItem from="1757399259145" duration="6733000" />
+      <workItem from="1757592338098" duration="687000" />
+      <workItem from="1758272271337" duration="4400000" />
     </task>
     <servers />
   </component>

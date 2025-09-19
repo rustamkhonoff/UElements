@@ -11,11 +11,16 @@ namespace UElements
         private CancellationTokenSource m_cancellationTokenSource = new();
         private bool m_disposed;
         protected IElements Elements { get; private set; }
-        internal void Initialize(IElements elements) => Elements = elements;
+        internal void Initialize(IElements elements)
+        {
+            Elements = elements;
+            Initialize();
+        }
+
         public void Show(Action callback) => ElementController.Show(this, callback);
         public void Hide(Action callback) => ElementController.Hide(this, callback);
         public void Close(Action callback) => ElementController.Hide(this, callback + (() => Destroy(gameObject)));
-        protected internal virtual void Initialize() { }
+        protected virtual void Initialize() { }
         protected virtual void OnDisposing() { }
 
         public void Dispose()

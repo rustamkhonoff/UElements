@@ -36,12 +36,11 @@ namespace UElements
         public async UniTask<ElementBase> Create(ElementRequest request, object model, CancellationToken cancellationToken = default)
         {
             ElementBase instance = await Create_Internal<ElementBase>(request, cancellationToken);
-            
-            if (!ModelElementHelper.TryInitializeModel(instance, model)) 
+
+            if (!ModelElementHelper.TryInitializeModel(instance, model))
                 Debug.LogWarning($"Trying to create element with model {model.GetType()}");
 
             instance.Initialize(this);
-            instance.Initialize();
             instance.Show();
             return instance;
         }
@@ -50,7 +49,6 @@ namespace UElements
         {
             ElementBase instance = await Create_Internal<ElementBase>(request, cancellationToken);
             instance.Initialize(this);
-            instance.Initialize();
             instance.Show();
             return instance;
         }
@@ -59,7 +57,6 @@ namespace UElements
         {
             T instance = await Create_Internal<T>(request, cancellationToken);
             instance.Initialize(this);
-            instance.Initialize();
             instance.Show();
             return instance;
         }
@@ -68,9 +65,8 @@ namespace UElements
             where T : ModelElement<TModel>
         {
             T instance = await Create_Internal<T>(request, cancellationToken);
-            instance.Initialize(this);
             instance.InitializeModel(model);
-            instance.Initialize();
+            instance.Initialize(this);
             instance.Show();
             return instance;
         }
