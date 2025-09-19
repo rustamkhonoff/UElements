@@ -31,7 +31,7 @@ namespace Demos.NavigationView
             [Key(2)] public string Mail { get; set; }
         }
 
-        protected override void Initialize()
+        public override void Initialize()
         {
             _save.SubscribeClick(Save).AddTo(this);
             _load.SubscribeClick(Load).AddTo(this);

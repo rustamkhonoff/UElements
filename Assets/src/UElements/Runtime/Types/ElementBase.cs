@@ -20,7 +20,7 @@ namespace UElements
         public void Show(Action callback) => ElementController.Show(this, callback);
         public void Hide(Action callback) => ElementController.Hide(this, callback);
         public void Close(Action callback) => ElementController.Hide(this, callback + (() => Destroy(gameObject)));
-        protected virtual void Initialize() { }
+        public virtual void Initialize() { }
         protected virtual void OnDisposing() { }
 
         public void Dispose()

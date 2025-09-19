@@ -24,7 +24,7 @@ namespace Sandbox.Demos.NavigationView
 
 
         
-        protected override async void Initialize()
+        public override async void Initialize()
         {
             m_navigation = await _navigationPageModels.BuildNavigation(_switcherRequest, _contentParent);
 

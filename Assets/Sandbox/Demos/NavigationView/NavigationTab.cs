@@ -24,7 +24,7 @@ namespace Demos.NavigationView
         [SerializeField] private StatedElement _badgeActive;
         [SerializeField] private TMP_Text _text;
 
-        protected override void Initialize()
+        public override void Initialize()
         {
             _image.sprite = Model.Icon;
             _button.SubscribeClick(TrySwitch).AddToElement(this);
