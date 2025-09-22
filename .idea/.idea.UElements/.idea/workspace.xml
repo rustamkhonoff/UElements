@@ -65,6 +65,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e23b4c8f9acd4e9bab40e0237d631867305000/86/6f529655/InspectorProperty.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e23b4c8f9acd4e9bab40e0237d631867305000/bc/7a8c8fb8/OdinAttributeProcessor`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/eaa93d1ff51f46939e13cc06b5754f3d177000/10/394d4e15/Component.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/eaa93d1ff51f46939e13cc06b5754f3d177000/66/e3fa03c7/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f00548962438470a9b953f55f995ce1219c00/29/da9d9fd6/ShowIfAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f00548962438470a9b953f55f995ce1219c00/c2/0d474141/CustomValueDrawerAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f5cef381160e49118a67ea125642e36a175c00/e7/bd2d5487/ISerializationCallbackReceiver.cs" root0="SKIP_HIGHLIGHTING" />
@@ -166,7 +167,7 @@
       <workItem from="1757312036986" duration="17041000" />
       <workItem from="1757399259145" duration="6733000" />
       <workItem from="1757592338098" duration="687000" />
-      <workItem from="1758272271337" duration="4400000" />
+      <workItem from="1758272271337" duration="6254000" />
     </task>
     <servers />
   </component>

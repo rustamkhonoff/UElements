@@ -14,7 +14,7 @@ namespace Demos.CollectionView
         public Observable<Unit> Clicked => m_clicked;
         private Observable<Unit> m_clicked;
 
-        protected override void Initialize()
+        public override void Initialize()
         {
             m_clicked = _click.OnClickAsObservable();
         }

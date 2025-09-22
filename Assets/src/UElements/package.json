@@ -8,8 +8,5 @@
   "author": {
     "name": "rustamkhonoff",
     "email": "rustamkhonoff@gmail.com"
-  },
-  "dependencies": {
-    "com.cysharp.unitask": "2.5.0"
   }
 }
