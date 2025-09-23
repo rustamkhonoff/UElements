@@ -1,0 +1,11 @@
+{
+  "name": "com.rustamkhonoff.uelements.r3",
+  "version": "1.0.0",
+  "displayName": "UElements.R3",
+  "unity": "2021.3",
+  "unityRelease": "21f1",
+  "author": {
+    "name": "rustamkhonoff",
+    "email": "rustamkhonoff@gmail.com"
+  }
+}
