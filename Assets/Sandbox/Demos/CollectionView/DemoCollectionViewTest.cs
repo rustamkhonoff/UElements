@@ -19,9 +19,9 @@ namespace Demos.CollectionView
 
         private ICollectionPresenter<Model> m_collectionPresenter;
 
-        private void Start()
+        private async void Start()
         {
-            m_collectionPresenter = _models.BuildCollectionPresenter<Model, ModelView>(PresenterFactory, RequestFactory);
+            m_collectionPresenter = await _models.BuildCollectionPresenter<Model, ModelView>(PresenterFactory, RequestFactory);
         }
 
         private ElementRequest RequestFactory(Model model) => model.Nickname.Value == "King" ? _kingRequest : _request;

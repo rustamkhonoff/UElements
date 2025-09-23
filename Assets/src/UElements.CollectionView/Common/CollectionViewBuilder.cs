@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Cysharp.Threading.Tasks;
 
 namespace UElements.CollectionView
 {
@@ -9,26 +10,17 @@ namespace UElements.CollectionView
     public static class CollectionPresenterBuilder
     {
         public static ICollectionPresenter<TModel> BuildCollectionPresenter<TModel>(
-            this Func<TModel, ElementRequest> request,
-            Func<TModel, ModelElement<TModel>, ICollectionModelPresenter<TModel, ModelElement<TModel>>> presenter) =>
-            BuildCollectionPresenter<TModel, ModelElement<TModel>>(request, presenter);
-
-        public static ICollectionPresenter<TModel, TView> BuildCollectionPresenter<TModel, TView>(
-            this Func<TModel, ElementRequest> request,
-            Func<TModel, TView, ICollectionModelPresenter<TModel, TView>> presenter)
-            where TView : ModelElement<TModel>
-        {
-            return new CollectionPresenter<TModel, TView>(
-                presenter,
-                (model, token) => ElementsGlobal.Create<TView, TModel>(model, request(model), token)
-            );
-        }
-
-        public static ICollectionPresenter<TModel> BuildCollectionPresenter<TModel>(
             this Func<TModel, ModelElement<TModel>, ICollectionModelPresenter<TModel, ModelElement<TModel>>> presenter,
             Func<TModel, ElementRequest> request)
         {
             return BuildCollectionPresenter<TModel, ModelElement<TModel>>(presenter, request);
+        }
+
+        public static ICollectionPresenter<TModel> BuildCollectionPresenter<TModel>(
+            this Func<TModel, ModelElement<TModel>, ICollectionModelPresenter<TModel, ModelElement<TModel>>> presenter,
+            ElementRequest request)
+        {
+            return BuildCollectionPresenter<TModel, ModelElement<TModel>>(presenter, _ => request);
         }
 
         public static ICollectionPresenter<TModel, TView> BuildCollectionPresenter<TModel, TView>(
@@ -42,7 +34,7 @@ namespace UElements.CollectionView
             );
         }
 
-        public static ICollectionPresenter<TModel> BuildCollectionPresenter<TModel>(
+        public static UniTask<ICollectionPresenter<TModel, ModelElement<TModel>>> BuildCollectionPresenter<TModel>(
             this IEnumerable<TModel> models,
             Func<TModel, ModelElement<TModel>, ICollectionModelPresenter<TModel, ModelElement<TModel>>> presenter,
             Func<TModel, ElementRequest> request)
@@ -50,7 +42,31 @@ namespace UElements.CollectionView
             return BuildCollectionPresenter<TModel, ModelElement<TModel>>(models, presenter, request);
         }
 
-        public static ICollectionPresenter<TModel, TView> BuildCollectionPresenter<TModel, TView>(
+        public static UniTask<ICollectionPresenter<TModel, ModelElement<TModel>>> BuildCollectionPresenter<TModel>(
+            this IEnumerable<TModel> models,
+            Func<TModel, ModelElement<TModel>, ICollectionModelPresenter<TModel, ModelElement<TModel>>> presenter,
+            ElementRequest request)
+        {
+            return BuildCollectionPresenter<TModel, ModelElement<TModel>>(models, presenter, _ => request);
+        }
+
+        public static UniTask<ICollectionPresenter<TModel, ModelElement<TModel>>> BuildCollectionPresenter<TModel>(
+            this IEnumerable<TModel> models,
+            Func<TModel, ElementRequest> request)
+        {
+            return BuildCollectionPresenter<TModel, ModelElement<TModel>>(models,
+                (model, view) => new CollectionModelPresenter<TModel, ModelElement<TModel>>(model, view), request);
+        }
+
+        public static UniTask<ICollectionPresenter<TModel, ModelElement<TModel>>> BuildCollectionPresenter<TModel>(
+            this IEnumerable<TModel> models,
+            ElementRequest request)
+        {
+            return BuildCollectionPresenter<TModel, ModelElement<TModel>>(models,
+                (model, view) => new CollectionModelPresenter<TModel, ModelElement<TModel>>(model, view), _ => request);
+        }
+
+        public static async UniTask<ICollectionPresenter<TModel, TView>> BuildCollectionPresenter<TModel, TView>(
             this IEnumerable<TModel> models,
             Func<TModel, TView, ICollectionModelPresenter<TModel, TView>> presenter,
             Func<TModel, ElementRequest> request)
@@ -60,7 +76,7 @@ namespace UElements.CollectionView
                 presenter,
                 (model, token) => ElementsGlobal.Create<TView, TModel>(model, request(model), token)
             );
-            presenterInstance.Initialize(models);
+            await presenterInstance.Initialize(models);
             return presenterInstance;
         }
     }

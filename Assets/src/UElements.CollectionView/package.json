@@ -1,7 +1,7 @@
 {
   "name": "com.rustamkhonoff.uelements.collectioview",
-  "version": "1.0.0",
-  "displayName": "UElements [Collection View]",
+  "version": "1.0.1",
+  "displayName": "UElements.CollectionView",
   "unity": "2021.3",
   "unityRelease": "21f1",
   "author": {
