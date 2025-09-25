@@ -190,7 +190,9 @@ namespace UElements
                 m_activeElementsCache.TryGetValue(key, out List<ElementBase> cachedElements))
             {
                 if (cachedElements.Count >= 0)
-                    cachedElements.ForEach(a => a.Dispose());
+                    for (int i = cachedElements.Count - 1; i >= 0; i--)
+                        cachedElements[i].Dispose();
+
                 cachedElements.Clear();
             }
         }

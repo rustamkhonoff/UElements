@@ -574,9 +574,9 @@ MonoBehaviour:
   _request:
     RequestType: 1
     Key: 
-    CustomPrefabReference: {fileID: 0}
+    CustomPrefabReference: {fileID: 1182100429898139110, guid: 477af19560f70417a91be5445c1caf46, type: 3}
     Parent: {fileID: 0}
-    OnlyOneInstance: 0
+    OnlyOneInstance: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
