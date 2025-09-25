@@ -26,7 +26,7 @@ namespace UElements
     {
         bool HasActive<T>(ElementRequest? request = null) where T : ElementBase;
         [CanBeNull] T GetActive<T>(ElementRequest? request = null) where T : ElementBase;
-        void CloseAll<T>(ElementRequest? request = null) where T : ElementBase;
+        UniTask CloseAll<T>(ElementRequest? request = null) where T : ElementBase;
         List<T> GetAll<T>(ElementRequest? request = null) where T : ElementBase;
     }
 }

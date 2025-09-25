@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace UElements
@@ -13,8 +14,8 @@ namespace UElements
             Element.ElementController = this;
         }
 
-        public abstract void Show(ElementBase element, Action callback);
-        public abstract void Hide(ElementBase element, Action callback);
+        public abstract UniTask Show(ElementBase element, Action callback);
+        public abstract UniTask Hide(ElementBase element, Action callback);
 
         public virtual void Dispose() { }
 

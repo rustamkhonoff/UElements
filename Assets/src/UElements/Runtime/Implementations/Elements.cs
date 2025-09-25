@@ -41,7 +41,8 @@ namespace UElements
                 Debug.LogWarning($"Trying to create element with model {model.GetType()}");
 
             instance.Initialize(this);
-            instance.Show();
+            await instance.InitializeAsync();
+            await instance.Show();
             return instance;
         }
 
@@ -49,7 +50,8 @@ namespace UElements
         {
             ElementBase instance = await Create_Internal<ElementBase>(request, cancellationToken);
             instance.Initialize(this);
-            instance.Show();
+            await instance.InitializeAsync();
+            await instance.Show();
             return instance;
         }
 
@@ -57,7 +59,8 @@ namespace UElements
         {
             T instance = await Create_Internal<T>(request, cancellationToken);
             instance.Initialize(this);
-            instance.Show();
+            await instance.InitializeAsync();
+            await instance.Show();
             return instance;
         }
 
@@ -67,7 +70,8 @@ namespace UElements
             T instance = await Create_Internal<T>(request, cancellationToken);
             instance.InitializeModel(model);
             instance.Initialize(this);
-            instance.Show();
+            await instance.InitializeAsync();
+            await instance.Show();
             return instance;
         }
 
@@ -82,11 +86,11 @@ namespace UElements
             TryHandleRequestSettings(fixedRequest, key);
 
             T instance = m_elementsFactory.Instantiate(prefab, GetParent(fixedRequest));
-            instance.Disposing += () =>
+            instance.LifetimeToken.Register(() =>
             {
                 if (m_activeElementsCache.TryGetValue(key, out List<ElementBase> elementBases))
                     elementBases.Remove(instance);
-            };
+            });
 
             AddToCache(instance, key);
 
@@ -108,10 +112,14 @@ namespace UElements
             return false;
         }
 
-        public void CloseAll<T>(ElementRequest? request = null) where T : ElementBase
+        public async UniTask CloseAll<T>(ElementRequest? request = null) where T : ElementBase
         {
             if (m_activeElementsCache.TryGetValue(GetKey<T>(request), out List<ElementBase> cachedElements))
-                cachedElements.ForEach(a => a.Dispose());
+            {
+                foreach (ElementBase cachedElement in cachedElements)
+                    await cachedElement.Close();
+                cachedElements.Clear();
+            }
         }
 
         public List<T> GetAll<T>(ElementRequest? request = null) where T : ElementBase
@@ -191,8 +199,7 @@ namespace UElements
             {
                 if (cachedElements.Count >= 0)
                     for (int i = cachedElements.Count - 1; i >= 0; i--)
-                        cachedElements[i].Dispose();
-
+                        cachedElements[i].Close().Forget();
                 cachedElements.Clear();
             }
         }

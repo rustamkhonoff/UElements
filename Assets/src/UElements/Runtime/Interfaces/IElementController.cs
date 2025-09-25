@@ -1,10 +1,11 @@
 using System;
+using Cysharp.Threading.Tasks;
 
 namespace UElements
 {
     public interface IElementController
     {
-        void Show(ElementBase element, Action callback);
-        void Hide(ElementBase element, Action callback);
+        UniTask Show(ElementBase element, Action callback);
+        UniTask Hide(ElementBase element, Action callback);
     }
 }

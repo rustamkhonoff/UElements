@@ -30,7 +30,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/CancellationTokenExtensions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTask.Factory.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTask.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTaskScheduler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTaskScheduler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTaskVoid.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/34ba1ebf387142c2b7749b42cfef2fb629200/ae/97dbabb6/ImmutableList.cs" root0="SKIP_HIGHLIGHTING" />
@@ -168,6 +168,8 @@
       <workItem from="1757399259145" duration="6733000" />
       <workItem from="1757592338098" duration="687000" />
       <workItem from="1758272271337" duration="6254000" />
+      <workItem from="1758792971643" duration="267000" />
+      <workItem from="1758806020925" duration="645000" />
     </task>
     <servers />
   </component>

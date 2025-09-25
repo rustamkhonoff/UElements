@@ -1,19 +1,22 @@
 using System;
+using Cysharp.Threading.Tasks;
 
 namespace UElements
 {
     public class DefaultElementController : IElementController
     {
-        public void Show(ElementBase element, Action callback)
+        public UniTask Show(ElementBase element, Action callback)
         {
             element.gameObject.SetActive(true);
             callback?.Invoke();
+            return UniTask.CompletedTask;
         }
 
-        public void Hide(ElementBase element, Action callback)
+        public UniTask Hide(ElementBase element, Action callback)
         {
             element.gameObject.SetActive(false);
             callback?.Invoke();
+            return UniTask.CompletedTask;
         }
     }
 }

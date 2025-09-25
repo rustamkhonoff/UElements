@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using Cysharp.Threading.Tasks;
 
 namespace UElements
 {
@@ -43,8 +44,8 @@ namespace UElements
             elementBase.Dispose();
         }
 
-        public static void Show(this ElementBase elementBase) => elementBase.Show(null);
-        public static void Close(this ElementBase elementBase) => elementBase.Close(null);
-        public static void Hide(this ElementBase elementBase) => elementBase.Hide(null);
+        public static UniTask Show(this ElementBase elementBase) => elementBase.Show(null);
+        public static UniTask Close(this ElementBase elementBase) => elementBase.Close(null);
+        public static UniTask Hide(this ElementBase elementBase) => elementBase.Hide(null);
     }
 }

@@ -1,6 +1,7 @@
 using System.Threading;
 using UnityEngine;
 using System;
+using Cysharp.Threading.Tasks;
 
 namespace UElements
 {
@@ -11,16 +12,23 @@ namespace UElements
         private CancellationTokenSource m_cancellationTokenSource = new();
         private bool m_disposed;
         protected IElements Elements { get; private set; }
+
         internal void Initialize(IElements elements)
         {
             Elements = elements;
             Initialize();
         }
 
-        public void Show(Action callback) => ElementController.Show(this, callback);
-        public void Hide(Action callback) => ElementController.Hide(this, callback);
-        public void Close(Action callback) => ElementController.Hide(this, callback + (() => Destroy(gameObject)));
+        public UniTask Show(Action callback) => ElementController.Show(this, callback);
+        public UniTask Hide(Action callback) => ElementController.Hide(this, callback);
+        public UniTask Close(Action callback) => ElementController.Hide(this, callback + (() => Destroy(gameObject)));
         public virtual void Initialize() { }
+
+        public virtual UniTask InitializeAsync()
+        {
+            return UniTask.CompletedTask;
+        }
+
         protected virtual void OnDisposing() { }
 
         public void Dispose()
@@ -28,7 +36,7 @@ namespace UElements
             if (m_disposed) return;
             m_disposed = true;
 
-            Close(null);
+            Close(null).Forget();
 
             OnDisposing();
 
