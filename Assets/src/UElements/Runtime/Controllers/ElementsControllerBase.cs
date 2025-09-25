@@ -14,8 +14,8 @@ namespace UElements
             Element.ElementController = this;
         }
 
-        public abstract UniTask Show(ElementBase element, Action callback);
-        public abstract UniTask Hide(ElementBase element, Action callback);
+        public abstract UniTask Show(ElementBase element);
+        public abstract UniTask Hide(ElementBase element);
 
         public virtual void Dispose() { }
 

@@ -5,17 +5,15 @@ namespace UElements
 {
     public class DefaultElementController : IElementController
     {
-        public UniTask Show(ElementBase element, Action callback)
+        public UniTask Show(ElementBase element)
         {
             element.gameObject.SetActive(true);
-            callback?.Invoke();
             return UniTask.CompletedTask;
         }
 
-        public UniTask Hide(ElementBase element, Action callback)
+        public UniTask Hide(ElementBase element)
         {
             element.gameObject.SetActive(false);
-            callback?.Invoke();
             return UniTask.CompletedTask;
         }
     }

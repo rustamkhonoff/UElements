@@ -13,15 +13,32 @@ namespace UElements
         private bool m_disposed;
         protected IElements Elements { get; private set; }
 
-        internal void Initialize(IElements elements)
+        internal UniTask Initialize(IElements elements)
         {
             Elements = elements;
             Initialize();
+            return InitializeAsync();
         }
 
-        public UniTask Show(Action callback) => ElementController.Show(this, callback);
-        public UniTask Hide(Action callback) => ElementController.Hide(this, callback);
-        public UniTask Close(Action callback) => ElementController.Hide(this, callback + (() => Destroy(gameObject)));
+        public async UniTask Show(Action callback)
+        {
+            await ElementController.Show(this);
+            callback?.Invoke();
+        }
+
+        public async UniTask Hide(Action callback)
+        {
+            await ElementController.Hide(this);
+            callback?.Invoke();
+        }
+
+        public async UniTask Close(Action callback)
+        {
+            await ElementController.Hide(this);
+            callback?.Invoke();
+            Destroy(gameObject);
+        }
+
         public virtual void Initialize() { }
 
         public virtual UniTask InitializeAsync()
