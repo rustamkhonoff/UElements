@@ -13,7 +13,6 @@ namespace UElements.LitMotion
             Handle.Cancel();
         }
     }
-
     public abstract class LMotionStatedData
     {
         [field: SerializeField] public float Duration { get; private set; } = 0.25f;

@@ -54,7 +54,6 @@ namespace UElements.States
                 m_wasNullComposite = false;
             }
         }
-
         public bool PartOfComposition => Composite == null;
     }
 

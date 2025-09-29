@@ -13,6 +13,7 @@ namespace UElements.LitMotion
         public class Data : LMotionStatedData
         {
             [field: SerializeField] public float Value { get; private set; }
+            public void Set(float value) => Value = value;
         }
 
         [SerializeField] private UnityEvent<float> _event;
@@ -40,5 +41,8 @@ namespace UElements.LitMotion
                 _event?.Invoke(data.Value);
             }
         }
+        public void SetActiveData(float data) => _datas.Active.Set(data);
+        public void SetDefaultData(float data) => _datas.Default.Set(data);
+        public void SetDisabledData(float data) => _datas.Disabled.Set(data);
     }
 }
