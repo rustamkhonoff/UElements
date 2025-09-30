@@ -13,9 +13,12 @@ namespace UElements.NavigationBar
             m_parent = parent;
         }
 
-        public UniTask<ElementBase> Create(TModel model)
+        public async UniTask<ElementBase> Create(TModel model)
         {
-            return ElementsGlobal.Create(model.ContentRequest.WithParent(m_parent));
+            if (await ElementsGlobal.GetElementTypeForRequest(model.ContentRequest) == typeof(ModelElement<TModel>))
+                return await ElementsGlobal.Create(model, model.ContentRequest.WithParent(m_parent));
+            else
+                return await ElementsGlobal.Create(model.ContentRequest.WithParent(m_parent));
         }
     }
 }

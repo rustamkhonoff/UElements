@@ -58,7 +58,7 @@ namespace UElements
 
             string json = JsonConvert.SerializeObject(modelParams);
             object model = JsonConvert.DeserializeObject(json, modelType);
-            return await ElementsGlobal.Create(request, model);
+            return await ElementsGlobal.Create(model, request);
         }
 
         private static void Initialize<T>(ModelElement<T> element, T model)

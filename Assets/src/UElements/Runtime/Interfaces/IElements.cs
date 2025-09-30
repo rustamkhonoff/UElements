@@ -16,7 +16,7 @@ namespace UElements
 
     public interface IElementsCreator
     {
-        UniTask<ElementBase> Create(ElementRequest request, object model, CancellationToken cancellationToken = default);
+        UniTask<ElementBase> Create(object model, ElementRequest request, CancellationToken cancellationToken = default);
         UniTask<ElementBase> Create(ElementRequest request, CancellationToken cancellationToken = default);
         UniTask<T> Create<T>(ElementRequest? request = null, CancellationToken cancellationToken = default) where T : Element;
         UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null, CancellationToken token = default) where T : ModelElement<TModel>;

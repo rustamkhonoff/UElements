@@ -141,8 +141,7 @@ namespace UElements.NavigationBar
         private async UniTask OnActivePageChangedAsync(TModel model)
         {
             m_activeContent.SafeDispose();
-            if (model != null)
-                m_activeContent = await m_factory.Create(model);
+            if (model != null) m_activeContent = await m_factory.Create(model);
         }
 
         public bool TrySwitch(TModel model)

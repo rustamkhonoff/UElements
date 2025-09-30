@@ -44,9 +44,10 @@ namespace UElements
         }
 
         public static UniTask<Type> GetElementTypeForRequest(ElementRequest request) => Elements.GetElementTypeForRequest(request);
-        public static UniTask<ElementBase> Create(ElementRequest request, object model, CancellationToken cancellationToken = default)
+
+        public static UniTask<ElementBase> Create(object model, ElementRequest request, CancellationToken cancellationToken = default)
         {
-            return Elements.Create(request, model, cancellationToken);
+            return Elements.Create(model, request, cancellationToken);
         }
 
         public static UniTask<ElementBase> Create(ElementRequest request, CancellationToken cancellationToken = default)

@@ -33,7 +33,7 @@ namespace UElements
             ElementsGlobal.Initialize(this);
         }
 
-        public async UniTask<ElementBase> Create(ElementRequest request, object model, CancellationToken cancellationToken = default)
+        public async UniTask<ElementBase> Create(object model, ElementRequest request, CancellationToken cancellationToken = default)
         {
             ElementBase instance = await Create_Internal<ElementBase>(request, cancellationToken);
 

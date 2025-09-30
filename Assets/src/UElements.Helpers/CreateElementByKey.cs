@@ -18,7 +18,7 @@ namespace UElements.Helpers
         [SerializeField] internal ModelType _modelType;
         [SerializeField] internal Param[] _params;
         [SerializeField] internal string _query;
-        [SerializeField] private bool _createOnStart;
+        [SerializeField] internal bool _createOnStart;
         private IElements Elements => ElementsGlobal.Elements;
 
         private void Start()
