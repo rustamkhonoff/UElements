@@ -19,7 +19,7 @@ namespace UElements.Helpers
         [SerializeField] internal Param[] _params;
         [SerializeField] internal string _query;
         [SerializeField] internal bool _createOnStart;
-        private IElements Elements => ElementsGlobal.Elements;
+        private IElements Elements => ElementsGlobal.Instance;
 
         private void Start()
         {

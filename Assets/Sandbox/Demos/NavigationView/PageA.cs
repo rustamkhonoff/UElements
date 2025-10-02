@@ -12,6 +12,8 @@ namespace Demos.NavigationView
 {
     public class PageA : Element
     {
+        public Subject<User> OnEndEdit = new(); 
+        
         [SerializeField] private User _user;
         [SerializeField] private TMP_InputField _name, _age, _mail;
         [SerializeField] private Button _save, _load;
@@ -50,6 +52,7 @@ namespace Demos.NavigationView
             User tempUser = MessagePackSerializer.Deserialize<User>(bytes);
             Debug.Log(tempUser.Age + ":" + tempUser.Name + ":" + tempUser.Mail);
 
+            OnEndEdit.OnNext(tempUser);
             Debug.Log("Saved");
         }
 

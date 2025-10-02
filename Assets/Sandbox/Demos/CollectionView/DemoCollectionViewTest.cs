@@ -1,12 +1,7 @@
-using System;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
-using ObservableCollections;
-using R3;
 using Sirenix.OdinInspector;
 using UElements;
 using UElements.CollectionView;
-using UElements.R3;
 using UnityEngine;
 
 namespace Demos.CollectionView
@@ -17,15 +12,18 @@ namespace Demos.CollectionView
         [SerializeField] private CollectionItemRequest _request;
         [SerializeField] private CollectionItemRequest _kingRequest;
 
-        private ICollectionPresenter<Model> m_collectionPresenter;
+        private ICollectionPresenter<Model, ModelView> m_collectionPresenter;
 
         private async void Start()
         {
-            m_collectionPresenter = await _models.BuildCollectionPresenter<Model, ModelView>(PresenterFactory, RequestFactory);
+            m_collectionPresenter = await _models.BuildCollectionPresenter<Model, ModelView>(PresenterFactory);
         }
 
-        private ElementRequest RequestFactory(Model model) => model.Nickname.Value == "King" ? _kingRequest : _request;
-        private DemoCollectionModelPresenter PresenterFactory(Model arg1, ModelView arg2) => new(arg1, arg2);
+        private ICollectionModelPresenter<Model, ModelView> PresenterFactory(Model arg)
+        {
+            return new DemoElementCollectionItemPresenter(arg, model => ElementsGlobal.Instance.Create<ModelView>(_request));
+        }
+
 
         private Model a = new(1000, "A");
         private Model b = new(100, "B");
@@ -38,22 +36,5 @@ namespace Demos.CollectionView
         [Button] private void RemoveC() => m_collectionPresenter.Remove(c);
 
         private void OnDestroy() => m_collectionPresenter.Dispose();
-    }
-
-    public static class Test
-    {
-        public static IDisposable BindToCollection<TModel>(this ICollectionPresenter<TModel> presenter, IObservableCollection<TModel> collection)
-        {
-            CompositeDisposable compositeDisposable = new();
-
-            presenter.Initialize(collection);
-            collection.SubscribeEvents(
-                added => presenter.Add(added).Forget(),
-                presenter.Remove,
-                presenter.Clear
-            ).AddTo(compositeDisposable);
-
-            return compositeDisposable;
-        }
     }
 }

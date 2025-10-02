@@ -13,7 +13,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Sandbox/Demos/NavigationView/PageA.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Sandbox/Installers/ProjectInstaller.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/src/UElements.NavigationBar/NavigatorState.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/src/UElements.NavigationBar/NavigationBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.R3/R3CollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.States/Runtime/StatedElement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements/Runtime/Implementations/Addressables/AddressableElementsModule.cs" root0="FORCE_HIGHLIGHTING" />
@@ -97,7 +97,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;rider.run.widget.enabled.cache&quot;: &quot;false&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -172,7 +172,12 @@
       <workItem from="1758806020925" duration="1524000" />
       <workItem from="1758886870440" duration="475000" />
       <workItem from="1759133371314" duration="739000" />
-      <workItem from="1759228882378" duration="1335000" />
+      <workItem from="1759228882378" duration="2112000" />
+      <workItem from="1759386676258" duration="14593000" />
+      <workItem from="1759405792323" duration="36000" />
+      <workItem from="1759405844455" duration="32000" />
+      <workItem from="1759405892214" duration="150000" />
+      <workItem from="1759406123352" duration="7495000" />
     </task>
     <servers />
   </component>
@@ -183,5 +188,9 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using LitMotion;
 using LitMotion.Extensions;
 using R3;
@@ -13,7 +12,7 @@ using UnityEngine.UI;
 
 namespace Demos.NavigationView
 {
-    public class NavigationTab : NavigationTabViewBase<DemoNavigationModel>
+    public class NavigationTab : NavigationTab<DemoNavigationModel>
     {
         [SerializeField] private Image _image;
         [SerializeField] private Button _button;
@@ -24,22 +23,21 @@ namespace Demos.NavigationView
         [SerializeField] private StatedElement _badgeActive;
         [SerializeField] private TMP_Text _text;
 
+
         public override void Initialize()
         {
             _image.sprite = Model.Icon;
-            _button.SubscribeClick(TrySwitch).AddToElement(this);
             Model.Locked.Subscribe(_locked.SetState).AddToElement(this);
             Model.BadgeActive.CombineLatest(Model.Locked, (badge, locked) => badge && !locked).Subscribe(_badgeActive.SetState).AddToElement(this);
             Model.Name.SubscribeToText(_text).AddToElement(this);
         }
 
-        private void TrySwitch()
+        public override void RegisterRequest(Action switchRequest)
         {
-            if (Model.Locked.Value) return;
-            Switch();
+            _button.SubscribeClick(switchRequest).AddToElement(this);
         }
 
-        protected override void OnSetState(bool state)
+        public override void SetState(bool state)
         {
             _selected.SetState(state);
             LMotion.Create(_bg.color, _a.Or(_b, state), 0.25f).BindToColor(_bg).AddTo(this);

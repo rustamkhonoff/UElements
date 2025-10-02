@@ -14,7 +14,7 @@ namespace UElements
 
         public static bool Initialized { get; private set; }
 
-        public static IElements Elements
+        public static IElements Instance
         {
             get
             {
@@ -32,73 +32,73 @@ namespace UElements
         internal static void Initialize(IElements elements)
         {
             Initialized = true;
-            Elements = elements;
-            OnInitialized?.Invoke(Elements);
+            Instance = elements;
+            OnInitialized?.Invoke(Instance);
         }
 
         internal static void Dispose()
         {
             Initialized = false;
-            Elements = null;
+            Instance = null;
             OnDisposed?.Invoke();
         }
 
-        public static UniTask<Type> GetElementTypeForRequest(ElementRequest request) => Elements.GetElementTypeForRequest(request);
+        public static UniTask<Type> GetElementTypeForRequest(ElementRequest request) => Instance.GetElementTypeForRequest(request);
 
         public static UniTask<ElementBase> Create(object model, ElementRequest request, CancellationToken cancellationToken = default)
         {
-            return Elements.Create(model, request, cancellationToken);
+            return Instance.Create(model, request, cancellationToken);
         }
 
         public static UniTask<ElementBase> Create(ElementRequest request, CancellationToken cancellationToken = default)
         {
-            return Elements.Create(request, cancellationToken);
+            return Instance.Create(request, cancellationToken);
         }
 
         public static UniTask<T> Create<T>(ElementRequest? request = null, CancellationToken cancellationToken = default) where T : Element
         {
-            return Elements.Create<T>(request, cancellationToken);
+            return Instance.Create<T>(request, cancellationToken);
         }
 
         public static UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null, CancellationToken token = default)
             where T : ModelElement<TModel>
         {
-            return Elements.Create<T, TModel>(model, request, token);
+            return Instance.Create<T, TModel>(model, request, token);
         }
 
         public static bool HasActive<T>(ElementRequest? request = null) where T : ElementBase
         {
-            return Elements.HasActive<T>(request);
+            return Instance.HasActive<T>(request);
         }
 
         public static T GetActive<T>(ElementRequest? request = null) where T : ElementBase
         {
-            return Elements.GetActive<T>(request);
+            return Instance.GetActive<T>(request);
         }
 
         public static void HideAll<T>(ElementRequest? request = null) where T : ElementBase
         {
-            Elements.CloseAll<T>(request);
+            Instance.CloseAll<T>(request);
         }
 
         public static List<T> GetAll<T>(ElementRequest? request = null) where T : ElementBase
         {
-            return Elements.GetAll<T>(request);
+            return Instance.GetAll<T>(request);
         }
 
         public static UniTask PrewarmProvider(string moduleKey)
         {
-            return Elements.PrewarmProvider(moduleKey);
+            return Instance.PrewarmProvider(moduleKey);
         }
 
         public static void Release()
         {
-            Elements.Release();
+            Instance.Release();
         }
 
         public static void Release(string key)
         {
-            Elements.Release(key);
+            Instance.Release(key);
         }
     }
 }

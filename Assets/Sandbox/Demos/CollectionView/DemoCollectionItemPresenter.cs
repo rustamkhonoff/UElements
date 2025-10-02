@@ -1,4 +1,4 @@
-using System.Threading;
+using System;
 using Cysharp.Threading.Tasks;
 using R3;
 using UElements;
@@ -7,29 +7,23 @@ using UElements.R3;
 
 namespace Demos.CollectionView
 {
-    internal class DemoCollectionModelPresenter : CollectionModelPresenterBase<Model, ModelView>
+    internal class DemoElementCollectionItemPresenter : ElementCollectionItemPresenter<Model, ModelView>
     {
-        public DemoCollectionModelPresenter(Model model, ModelView view) : base(model, view) { }
+        public DemoElementCollectionItemPresenter(Model model, Func<Model, UniTask<ModelView>> viewFactory) : base(model, viewFactory) { }
 
-        private readonly CancellationTokenSource m_cts = new();
-
-        public override void Initialize()
+        public override async UniTask Enable()
         {
-            View.AddTo(m_cts);
+            await base.Enable();
+
+            View.AddTo(LifetimeToken);
 
             Model.AnyValueChanged
                 .Subscribe(data => View.SetText(data.name + ":" + data.health))
-                .AddTo(m_cts.Token);
+                .AddTo(LifetimeToken);
 
             View.Clicked
                 .SubscribeCallback(Model.IncreaseAmount)
-                .AddTo(m_cts.Token);
-        }
-
-        public override void Dispose()
-        {
-            m_cts.Cancel();
-            m_cts.Dispose();
+                .AddTo(LifetimeToken);
         }
     }
 }

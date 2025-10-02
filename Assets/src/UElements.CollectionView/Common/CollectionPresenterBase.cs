@@ -2,32 +2,26 @@ using System;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
 namespace UElements.CollectionView
 {
-    public class CollectionPresenter<TModel, TView> : ICollectionPresenter<TModel, TView> where TView : ModelElement<TModel>
+    public class CollectionPresenter<TModel, TView> : ICollectionPresenter<TModel, TView>
     {
         private readonly ElementRequest m_itemRequest;
-        private readonly Func<TModel, TView, ICollectionModelPresenter<TModel, TView>> m_presenterFactory;
-        private readonly Func<TModel, CancellationToken, UniTask<TView>> m_viewFactory;
+        private readonly Func<TModel, ICollectionModelPresenter<TModel, TView>> m_presenterFactory;
         private readonly Dictionary<TModel, ICollectionModelPresenter<TModel, TView>> m_presenters;
 
         private CancellationTokenSource m_lifeTimeTokenSource = new();
 
-        public CollectionPresenter(
-            Func<TModel, TView, ICollectionModelPresenter<TModel, TView>> presenterFactory,
-            Func<TModel, CancellationToken, UniTask<TView>> viewFactory)
+        public CollectionPresenter(Func<TModel, ICollectionModelPresenter<TModel, TView>> presenterFactory)
         {
             m_presenterFactory = presenterFactory;
-            m_viewFactory = viewFactory;
             m_presenters = new Dictionary<TModel, ICollectionModelPresenter<TModel, TView>>();
         }
 
-        public IEnumerable<TView> Views => Presenters.Select(a => a.View).Cast<TView>();
         public IEnumerable<TModel> Models => m_presenters.Keys;
-        public IEnumerable<ICollectionModelPresenter<TModel, ModelElement<TModel>>> Presenters => m_presenters.Values;
+        public IEnumerable<ICollectionModelPresenter<TModel, TView>> Presenters => m_presenters.Values;
 
         public virtual async UniTask Initialize(IEnumerable<TModel> data)
         {
@@ -35,27 +29,26 @@ namespace UElements.CollectionView
                 await Add(model);
         }
 
-        public virtual async UniTask<ModelElement<TModel>> Add(TModel model)
+        public virtual UniTask Add(TModel model)
         {
             if (model == null)
             {
                 Debug.LogException(new NullReferenceException());
-                return null;
+                return default;
             }
 
             if (m_presenters.ContainsKey(model))
             {
                 Debug.LogException(new InvalidOperationException("Model already has presenter, aborting"));
-                return null;
+                return default;
             }
 
-            TView view = await m_viewFactory.Invoke(model, m_lifeTimeTokenSource.Token);
-            ICollectionModelPresenter<TModel, TView> presenterBase = m_presenterFactory.Invoke(model, view);
+            ICollectionModelPresenter<TModel, TView> presenterBase = m_presenterFactory.Invoke(model);
 
-            presenterBase.Initialize();
 
             m_presenters[model] = presenterBase;
-            return view;
+
+            return presenterBase.Enable();
         }
 
         public virtual void Clear()
@@ -85,7 +78,7 @@ namespace UElements.CollectionView
         private void Remove_Internal(TModel model)
         {
             ICollectionModelPresenter<TModel, TView> collectionModelPresenter = m_presenters[model];
-            collectionModelPresenter.Dispose();
+            collectionModelPresenter.Disable();
         }
 
 
