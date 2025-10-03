@@ -31,16 +31,16 @@ namespace UElements.NavigationBar
             ContentCreated?.Invoke(ActivePage, obj);
         }
 
-        private void HandlePageChanged(NavigationEntry<TModel> obj)
+        private void HandlePageChanged(TModel obj)
         {
-            PageChanged?.Invoke(obj.Model);
+            PageChanged?.Invoke(obj);
         }
 
         public TModel ActivePage => m_state.ActivePage;
 
-        public UniTask Add(TModel model, Func<TModel, INavigationContentPresenter> contentBuilder)
+        public UniTask Add(TModel model)
         {
-            m_state.Register(model, contentBuilder);
+            m_state.Register(model);
             return m_collection.Add(model);
         }
 

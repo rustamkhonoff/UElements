@@ -10,6 +10,8 @@ namespace UElements.NavigationBar
     {
         private readonly INavigationState<TModel> m_state;
         private readonly Func<TModel, UniTask<TView>> m_viewFunc;
+        public TModel Model { get; }
+        public TView View { get; private set; }
 
         public NavigationTabPresenter(INavigationState<TModel> state, TModel model, Func<TModel, UniTask<TView>> viewFunc)
         {
@@ -17,9 +19,6 @@ namespace UElements.NavigationBar
             m_viewFunc = viewFunc;
             Model = model;
         }
-
-        public TModel Model { get; }
-        public TView View { get; private set; }
 
         public async UniTask Enable()
         {
@@ -31,9 +30,9 @@ namespace UElements.NavigationBar
             View.SetInitialState(m_state.ActivePage != null && Model.Key == m_state.ActivePage.Key);
         }
 
-        private void HandlePageChanged(NavigationEntry<TModel> obj)
+        private void HandlePageChanged(TModel obj)
         {
-            View.SetState(obj.Model != null && obj.Model.Key == Model.Key);
+            View.SetState(obj != null && obj.Key == Model.Key);
         }
 
         private void OnSwitchRequested()

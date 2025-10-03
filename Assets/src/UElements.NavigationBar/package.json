@@ -1,7 +1,7 @@
 {
   "name": "com.rustamkhonoff.uelements.navigationbar",
-  "version": "1.0.0",
-  "displayName": "UElements [Navigation Bar]",
+  "version": "1.1.0",
+  "displayName": "UElements.NavigationBar",
   "unity": "2021.3",
   "unityRelease": "21f1",
   "author": {

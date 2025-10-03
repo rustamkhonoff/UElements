@@ -21,14 +21,9 @@ namespace Sandbox.Demos.NavigationView
 
         public override async void Initialize()
         {
-            m_navigation = await NavigationBuilder.BuildNavigation<DemoNavigationModel, NavigationTab>(CreateSwitcher);
+            m_navigation = await _navigationPageModels.BuildNavigation(CreateSwitcher, GetContentBuilder, _navigationPageModels[0]);
             m_navigation.PageChanged += HandlePageChange;
             m_navigation.ContentCreated += ContentCreated;
-
-            foreach (DemoNavigationModel navigationPageModel in _navigationPageModels)
-                await m_navigation.Add(navigationPageModel, GetContentBuilder);
-
-            m_navigation.TrySwitch(_navigationPageModels[0].Key);
         }
 
         private UniTask<NavigationTab> CreateSwitcher(DemoNavigationModel arg1)
@@ -39,7 +34,7 @@ namespace Sandbox.Demos.NavigationView
         [Button]
         private void Add()
         {
-            m_navigation.Add(_hidden, GetContentBuilder);
+            m_navigation.Add(_hidden);
         }
 
         [Button]

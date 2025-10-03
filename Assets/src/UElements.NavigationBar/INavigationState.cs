@@ -5,9 +5,9 @@ namespace UElements.NavigationBar
     public interface INavigationState<TModel>
         where TModel : INavigationModel
     {
-        event Action<NavigationEntry<TModel>> PageChanged;
+        event Action<TModel> PageChanged;
         TModel ActivePage { get; }
-        void Register(TModel model, Func<TModel, INavigationContentPresenter> contentBuilder);
+        void Register(TModel model);
         void UnRegister(TModel model);
         bool TrySwitch(string key);
     }
