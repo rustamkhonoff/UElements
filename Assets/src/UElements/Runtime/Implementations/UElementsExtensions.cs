@@ -42,23 +42,23 @@ namespace UElements
             ElementRequest request,
             Dictionary<string, string> modelParams)
         {
-            if (modelParams.Count <= 0) return await ElementsGlobal.Create(request);
+            if (modelParams.Count <= 0) return await ElementsGlobal.Instance.Create(request);
 
             Type type = await elements.GetElementTypeForRequest(request);
 
             if (type == null || !IsSubclassOfRawGeneric(type, typeof(ModelElement<>)))
-                return await ElementsGlobal.Create(request);
+                return await ElementsGlobal.Instance.Create(request);
 
             Type modelType = GetGenericBaseTypeArgument(type, typeof(ModelElement<>));
             if (modelType == null)
             {
                 Debug.LogException(new InvalidCastException("Model from params"));
-                return await ElementsGlobal.Create(request);
+                return await ElementsGlobal.Instance.Create(request);
             }
 
             string json = JsonConvert.SerializeObject(modelParams);
             object model = JsonConvert.DeserializeObject(json, modelType);
-            return await ElementsGlobal.Create(model, request);
+            return await ElementsGlobal.Instance.Create(model, request);
         }
 
         private static void Initialize<T>(ModelElement<T> element, T model)

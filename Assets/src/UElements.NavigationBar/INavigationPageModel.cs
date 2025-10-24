@@ -37,7 +37,7 @@ namespace UElements.NavigationBar
 
         public async UniTask Enable()
         {
-            m_elementBase = await ElementsGlobal.Create(m_selector(m_model));
+            m_elementBase = await ElementsGlobal.Instance.Create(m_selector(m_model));
             m_onViewCreated?.Invoke(m_elementBase);
         }
 
@@ -66,7 +66,7 @@ namespace UElements.NavigationBar
 
         public async UniTask Enable()
         {
-            m_view = await ElementsGlobal.Create<TView>(m_selector(m_model));
+            m_view = await ElementsGlobal.Instance.Create<TView>(m_selector(m_model));
             m_onViewCreated?.Invoke(m_view);
         }
 

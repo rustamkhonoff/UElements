@@ -17,7 +17,7 @@ namespace Sandbox.Demos.DisposingElements
 
         [Button] private async void Create()
         {
-            m_element = await ElementsGlobal.Create<TestingElement>(_prefab.gameObject);
+            m_element = await ElementsGlobal.Instance.Create<TestingElement>(_prefab.gameObject);
             m_element.AddTo(m_cancellationTokenSource);
         }
 

@@ -31,6 +31,21 @@ namespace Sandbox.Demos.NavigationView
             return ElementsGlobal.Instance.Create<NavigationTab, DemoNavigationModel>(arg1, _navigationBarElementRequest);
         }
 
+        private INavigationContentPresenter GetContentBuilder(DemoNavigationModel model)
+        {
+            if (model.Key == "a")
+            {
+                return new ElementNavigationContentPresenter<DemoNavigationModel, PageA>
+                (
+                    model,
+                    a => a.ElementRequest,
+                    view => view.OnEndEdit.Subscribe(a => Debug.Log(a.Name))
+                );
+            }
+
+            return new ElementNavigationContentPresenter<DemoNavigationModel>(model, a => a.ElementRequest);
+        }
+
         [Button]
         private void Add()
         {
@@ -48,20 +63,6 @@ namespace Sandbox.Demos.NavigationView
             Debug.Log(o);
         }
 
-        private INavigationContentPresenter GetContentBuilder(DemoNavigationModel model)
-        {
-            if (model.Key == "a")
-            {
-                return new ElementNavigationContentPresenter<DemoNavigationModel, PageA>
-                (
-                    model,
-                    a => a.ElementRequest,
-                    view => view.OnEndEdit.Subscribe(a => Debug.Log(a.Name))
-                );
-            }
-
-            return new ElementNavigationContentPresenter<DemoNavigationModel>(model, a => a.ElementRequest);
-        }
 
         private void HandlePageChange(INavigationModel navigationModel)
         {

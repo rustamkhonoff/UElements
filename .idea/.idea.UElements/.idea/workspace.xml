@@ -119,7 +119,7 @@
       <method v="2" />
     </configuration>
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2022.3.62f1/Unity.app/Contents/MacOS/Unity" />
+      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2022.3.62f2/Unity.app/Contents/MacOS/Unity" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath $PROJECT_DIR$ -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -178,7 +178,10 @@
       <workItem from="1759405844455" duration="32000" />
       <workItem from="1759405892214" duration="150000" />
       <workItem from="1759406123352" duration="7707000" />
-      <workItem from="1759471956875" duration="2005000" />
+      <workItem from="1759471956875" duration="3053000" />
+      <workItem from="1761120041480" duration="147000" />
+      <workItem from="1761222694654" duration="719000" />
+      <workItem from="1761284833280" duration="2336000" />
     </task>
     <servers />
   </component>

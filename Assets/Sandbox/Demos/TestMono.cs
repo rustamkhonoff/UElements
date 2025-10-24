@@ -10,6 +10,6 @@ namespace Sandbox.Demos
         [SerializeField] private TypedElementRequest _request;
 
         [Button]
-        private void Create() => ElementsGlobal.Create(_request);
+        private void Create() => ElementsGlobal.Instance.Create(_request);
     }
 }

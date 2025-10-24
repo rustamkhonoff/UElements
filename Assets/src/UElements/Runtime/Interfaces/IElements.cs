@@ -16,10 +16,16 @@ namespace UElements
 
     public interface IElementsCreator
     {
-        UniTask<ElementBase> Create(object model, ElementRequest request, CancellationToken cancellationToken = default);
-        UniTask<ElementBase> Create(ElementRequest request, CancellationToken cancellationToken = default);
-        UniTask<T> Create<T>(ElementRequest? request = null, CancellationToken cancellationToken = default) where T : Element;
-        UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null, CancellationToken token = default) where T : ModelElement<TModel>;
+        UniTask<ElementBase> Create(object model, ElementRequest request, CancellationToken createToken = default,
+            CancellationToken lifetimeToken = default);
+
+        UniTask<ElementBase> Create(ElementRequest request, CancellationToken createToken = default, CancellationToken lifetimeToken = default);
+
+        UniTask<T> Create<T>(ElementRequest? request = null, CancellationToken createToken = default, CancellationToken lifetimeToken = default)
+            where T : Element;
+
+        UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null, CancellationToken createToken = default,
+            CancellationToken lifetimeToken = default) where T : ModelElement<TModel>;
     }
 
     public interface IElements : IElementsProviders, IElementsCreator

@@ -20,6 +20,12 @@ namespace UElements
             return InitializeAsync();
         }
 
+        public async UniTask Show(Action callback, IElementController customController)
+        {
+            await customController.Show(this);
+            callback?.Invoke();
+        }
+
         public async UniTask Show(Action callback)
         {
             await ElementController.Show(this);
@@ -32,11 +38,23 @@ namespace UElements
             callback?.Invoke();
         }
 
+        public async UniTask Hide(Action callback, IElementController customController)
+        {
+            await customController.Hide(this);
+            callback?.Invoke();
+        }
+
         public async UniTask Close(Action callback)
         {
             await ElementController.Hide(this);
             callback?.Invoke();
             Destroy(gameObject);
+        }
+
+        public async UniTask Close(Action callback, IElementController customController)
+        {
+            await customController.Hide(this);
+            callback?.Invoke();
         }
 
         public virtual void Initialize() { }

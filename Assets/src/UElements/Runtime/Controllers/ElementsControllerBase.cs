@@ -12,20 +12,21 @@ namespace UElements
         private void Awake()
         {
             Element.ElementController = this;
+            OnAwake();
         }
+
+        protected virtual void OnAwake() { }
 
         public abstract UniTask Show(ElementBase element);
         public abstract UniTask Hide(ElementBase element);
-
         public virtual void Dispose() { }
+        protected virtual void OnReset() { }
 
         private void OnDestroy()
         {
             Dispose();
             Element.ElementController = new DefaultElementController();
         }
-
-        protected virtual void OnReset() { }
 
         private void Reset()
         {
