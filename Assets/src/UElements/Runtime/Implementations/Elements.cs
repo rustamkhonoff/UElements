@@ -95,7 +95,7 @@ namespace UElements
                     elementBases.Remove(instance);
             });
 
-            instance.AddTo(lifetimeToken);
+            lifetimeToken.Register(instance.Dispose);
 
             AddToCache(instance, key);
 
