@@ -11,6 +11,7 @@ namespace UElements
         public IElementController ElementController { get; set; } = new DefaultElementController();
         private CancellationTokenSource m_cancellationTokenSource = new();
         private bool m_disposed;
+        private bool m_closed;
         protected IElements Elements { get; private set; }
 
         internal UniTask Initialize(IElements elements)
@@ -20,22 +21,20 @@ namespace UElements
             return InitializeAsync();
         }
 
+        public UniTask Show(Action callback)
+        {
+            return Show(callback, ElementController);
+        }
+
         public async UniTask Show(Action callback, IElementController customController)
         {
             await customController.Show(this);
             callback?.Invoke();
         }
 
-        public async UniTask Show(Action callback)
+        public UniTask Hide(Action callback)
         {
-            await ElementController.Show(this);
-            callback?.Invoke();
-        }
-
-        public async UniTask Hide(Action callback)
-        {
-            await ElementController.Hide(this);
-            callback?.Invoke();
+            return Hide(callback, ElementController);
         }
 
         public async UniTask Hide(Action callback, IElementController customController)
@@ -44,17 +43,21 @@ namespace UElements
             callback?.Invoke();
         }
 
-        public async UniTask Close(Action callback)
+        public UniTask Close(Action callback)
         {
-            await ElementController.Hide(this);
-            callback?.Invoke();
-            Destroy(gameObject);
+            return Close(callback, ElementController);
         }
 
         public async UniTask Close(Action callback, IElementController customController)
         {
+            if (m_closed) return;
+            m_closed = true;
+
             await customController.Hide(this);
             callback?.Invoke();
+
+            CleanupBase();
+            Destroy(gameObject);
         }
 
         public virtual void Initialize() { }
@@ -71,11 +74,13 @@ namespace UElements
             if (m_disposed) return;
             m_disposed = true;
 
-            Close(null).Forget();
-
             OnDisposing();
 
-            CleanupBase();
+            if (!m_closed)
+            {
+                CleanupBase();
+                Destroy(gameObject);
+            }
         }
 
         private void CleanupBase()
@@ -92,7 +97,8 @@ namespace UElements
 
         private void OnDestroy()
         {
-            if (!m_disposed) Dispose();
+            if (!m_disposed)
+                Dispose();
         }
     }
 }
