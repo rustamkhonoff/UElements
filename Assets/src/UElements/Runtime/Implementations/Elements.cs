@@ -44,7 +44,7 @@ namespace UElements
                 Debug.LogWarning($"Trying to create element with model {model.GetType()}");
 
             await instance.Initialize(this);
-            await instance.Show();
+            await ShowElement(instance, request);
             return instance;
         }
 
@@ -53,7 +53,7 @@ namespace UElements
         {
             ElementBase instance = await Create_Internal<ElementBase>(request, createToken, lifetimeToken);
             await instance.Initialize(this);
-            await instance.Show();
+            await ShowElement(instance, request);
             return instance;
         }
 
@@ -62,7 +62,7 @@ namespace UElements
         {
             T instance = await Create_Internal<T>(request, createToken, lifetimeToken);
             await instance.Initialize(this);
-            await instance.Show();
+            await ShowElement(instance, request);
             return instance;
         }
 
@@ -73,7 +73,7 @@ namespace UElements
             T instance = await Create_Internal<T>(request, createToken, lifetimeToken);
             instance.InitializeModel(model);
             await instance.Initialize(this);
-            await instance.Show();
+            await ShowElement(instance, request);
             return instance;
         }
 
@@ -207,6 +207,14 @@ namespace UElements
                         cachedElements[i].Close().Forget();
                 cachedElements.Clear();
             }
+        }
+
+        private async UniTask ShowElement(ElementBase elementBase, ElementRequest? request)
+        {
+            if (request is { AwaitShow: true })
+                await elementBase.Show();
+            else
+                elementBase.Show().Forget();
         }
 
         private Transform GetParent(ElementRequest? elementRequest)

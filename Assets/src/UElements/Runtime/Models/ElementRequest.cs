@@ -35,6 +35,7 @@ namespace UElements
         [field: SerializeField] [CanBeNull] public Transform Parent { get; private set; }
         [field: SerializeField] public bool OnlyOneInstance { get; private set; }
         [field: SerializeField] [CanBeNull] public GameObject CustomPrefabReference { get; private set; }
+        [field: SerializeField] public bool AwaitShow { get; private set; }
 
         public ElementRequest(string key, Transform parent, bool onlyOneInstance)
         {
@@ -42,6 +43,7 @@ namespace UElements
             Parent = parent;
             OnlyOneInstance = onlyOneInstance;
             CustomPrefabReference = null;
+            AwaitShow = true;
         }
 
         public ElementRequest(GameObject customPrefabReference, Transform parent)
@@ -50,6 +52,7 @@ namespace UElements
             Parent = parent;
             OnlyOneInstance = false;
             CustomPrefabReference = customPrefabReference;
+            AwaitShow = true;
         }
 
         public ElementRequest(GameObject customPrefabReference, Transform parent, bool onlyOneInstance)
@@ -58,6 +61,7 @@ namespace UElements
             Parent = parent;
             OnlyOneInstance = onlyOneInstance;
             CustomPrefabReference = customPrefabReference;
+            AwaitShow = true;
         }
 
         public ElementRequest(string key)
@@ -66,6 +70,7 @@ namespace UElements
             Parent = null;
             OnlyOneInstance = true;
             CustomPrefabReference = null;
+            AwaitShow = true;
         }
 
         public ElementRequest(Transform parent)
@@ -74,6 +79,7 @@ namespace UElements
             Parent = parent;
             OnlyOneInstance = true;
             CustomPrefabReference = null;
+            AwaitShow = true;
         }
 
         public ElementRequest WithOnlyOneInstance(bool value)
@@ -97,6 +103,12 @@ namespace UElements
         public ElementRequest WithCustomPrefab(GameObject prefab)
         {
             CustomPrefabReference = prefab;
+            return this;
+        }
+
+        public ElementRequest WithAwaitShow(bool awaitShow)
+        {
+            AwaitShow = awaitShow;
             return this;
         }
 
