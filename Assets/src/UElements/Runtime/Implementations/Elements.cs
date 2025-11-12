@@ -211,7 +211,7 @@ namespace UElements
 
         private async UniTask ShowElement(ElementBase elementBase, ElementRequest? request)
         {
-            if (request is { AwaitShow: true })
+            if (request is { })
                 await elementBase.Show();
             else
                 elementBase.Show().Forget();

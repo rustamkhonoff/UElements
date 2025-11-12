@@ -16,12 +16,12 @@ namespace Demos.CollectionView
 
         private async void Start()
         {
-            m_collectionPresenter = await _models.BuildCollectionPresenter<Model, ModelView>(PresenterFactory);
+            m_collectionPresenter = await _models.BuildCollectionPresenter(PresenterFactory);
         }
 
         private ICollectionModelPresenter<Model, ModelView> PresenterFactory(Model arg)
         {
-            return new DemoElementCollectionItemPresenter(arg, model => ElementsGlobal.Instance.Create<ModelView>(_request));
+            return new DemoElementCollectionItemPresenter(arg, _ => ElementsGlobal.Instance.Create<ModelView>(_request));
         }
 
 
