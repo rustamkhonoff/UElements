@@ -31,6 +31,18 @@ namespace UElements.Zenject
             return container;
         }
 
+        public static ContainerBuilder AddUElements<TFactory>(this ContainerBuilder container, string configurationPath = "ElementsConfigurationScriptableObject")
+            where TFactory : IElementsFactory
+        {
+            container.AddSingleton(typeof(Elements), typeof(IElements), typeof(IDisposable));
+            container.AddSingleton(typeof(TFactory), typeof(IElementsFactory));
+            container.AddSingleton(_ => Resources.Load<ElementsConfigurationScriptableObject>(configurationPath), typeof(IElementsConfiguration));
+
+            container.OnContainerBuilt += Initialize;
+
+            return container;
+        }
+
         private static void Initialize(Container obj)
         {
             obj.Resolve<IElements>();
