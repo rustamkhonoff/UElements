@@ -12,9 +12,10 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Sandbox/Demos/NavigationView/PageA.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Sandbox/Installers/ProjectInstaller.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Sandbox/Zenject/ProjectInstaller.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.NavigationBar/NavigationBuilder.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.R3/R3CollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/src/UElements.Reflex/Runtime/ReflexExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.States/Runtime/StatedElement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements/Runtime/Implementations/Addressables/AddressableElementsModule.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements/Runtime/Implementations/Addressables/AddressableElementsProvider.cs" root0="FORCE_HIGHLIGHTING" />
@@ -32,6 +33,9 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTask.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTaskScheduler.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@06067cd4c8/Runtime/UniTaskVoid.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.gustavopsantos.reflex@3d382e6e1d/Core/Container.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.gustavopsantos.reflex@3d382e6e1d/Core/ContainerBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.gustavopsantos.reflex@3d382e6e1d/Injectors/AttributeInjector.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/34ba1ebf387142c2b7749b42cfef2fb629200/ae/97dbabb6/ImmutableList.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d3152494c954d849c5b7d1ab09f81f6be00/b4/945e2c69/ObservableCollectionAdd`1.cs" root0="SKIP_HIGHLIGHTING" />
@@ -186,6 +190,8 @@
       <workItem from="1761828553498" duration="1052000" />
       <workItem from="1761911077563" duration="953000" />
       <workItem from="1762842702219" duration="970000" />
+      <workItem from="1762955456719" duration="587000" />
+      <workItem from="1763105603152" duration="1519000" />
     </task>
     <servers />
   </component>

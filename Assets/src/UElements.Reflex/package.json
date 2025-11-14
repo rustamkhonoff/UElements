@@ -1,0 +1,12 @@
+{
+  "name": "com.rustamkhonoff.uelements.reflex",
+  "version": "1.0.0",
+  "displayName": "UElements.Reflex",
+  "description": "UElements Reflex extension",
+  "unity": "2021.3",
+  "unityRelease": "21f1",
+  "author": {
+    "name": "rustamkhonoff",
+    "email": "rustamkhonoff@gmail.com"
+  }
+}

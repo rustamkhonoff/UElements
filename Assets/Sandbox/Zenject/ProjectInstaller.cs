@@ -3,7 +3,7 @@ using Zenject;
 
 namespace Sandbox.Installers
 {
-    public class ProjectInstaller : MonoInstaller
+    public class ZenjectProjectInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
