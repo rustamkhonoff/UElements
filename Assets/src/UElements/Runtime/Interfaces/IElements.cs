@@ -6,14 +6,6 @@ using JetBrains.Annotations;
 
 namespace UElements
 {
-    public interface IElementsProviders
-    {
-        UniTask PrewarmProvider(string moduleKey);
-        void Release();
-        void Release(string key);
-        UniTask<Type> GetElementTypeForRequest(ElementRequest request);
-    }
-
     public interface IElementsCreator
     {
         UniTask<ElementBase> Create(object model, ElementRequest request, CancellationToken createToken = default,
@@ -28,11 +20,15 @@ namespace UElements
             CancellationToken lifetimeToken = default) where T : ModelElement<TModel>;
     }
 
-    public interface IElements : IElementsProviders, IElementsCreator
+    public interface IElements : IElementsCreator
     {
         bool HasActive<T>(ElementRequest? request = null) where T : ElementBase;
         [CanBeNull] T GetActive<T>(ElementRequest? request = null) where T : ElementBase;
         UniTask CloseAll<T>(ElementRequest? request = null) where T : ElementBase;
         List<T> GetAll<T>(ElementRequest? request = null) where T : ElementBase;
+        UniTask PrewarmProvider(string moduleKey);
+        void Release();
+        void Release(string key);
+        UniTask<Type> GetElementTypeForRequest(ElementRequest request);
     }
 }
