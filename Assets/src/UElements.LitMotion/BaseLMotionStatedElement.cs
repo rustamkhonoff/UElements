@@ -12,7 +12,13 @@ namespace UElements.LitMotion
         {
             Handle.Cancel();
         }
+
+        protected override void OnDisposing()
+        {
+            CancelAnimations();
+        }
     }
+
     public abstract class LMotionStatedData
     {
         [field: SerializeField] public float Duration { get; private set; } = 0.25f;
