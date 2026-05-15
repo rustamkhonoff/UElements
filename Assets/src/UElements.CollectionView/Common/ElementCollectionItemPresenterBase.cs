@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 
 namespace UElements.CollectionView
 {
-    public class ElementCollectionItemPresenter<TModel, TView> : ICollectionModelPresenter<TModel, TView>
+    public abstract class ElementCollectionItemPresenterBase<TModel, TView> : ICollectionItemPresenter<TModel>
         where TView : Element
     {
         private readonly Func<TModel, UniTask<TView>> m_viewFactory;
@@ -14,7 +14,7 @@ namespace UElements.CollectionView
         private readonly CancellationTokenSource m_ct = new();
         protected CancellationToken LifetimeToken => m_ct.Token;
 
-        public ElementCollectionItemPresenter(TModel model, Func<TModel, UniTask<TView>> viewFactory)
+        protected ElementCollectionItemPresenterBase(TModel model, Func<TModel, UniTask<TView>> viewFactory)
         {
             m_viewFactory = viewFactory;
             Model = model;

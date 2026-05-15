@@ -13,7 +13,7 @@ namespace UElements.LitMotion
             Handle.Cancel();
         }
 
-        protected override void OnDisposing()
+        protected override void DeInitialize()
         {
             CancelAnimations();
         }

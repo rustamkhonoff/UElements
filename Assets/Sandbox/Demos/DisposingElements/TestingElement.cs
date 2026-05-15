@@ -5,7 +5,7 @@ namespace Sandbox.Demos.DisposingElements
 {
     public class TestingElement : Element
     {
-        protected override void OnDisposing()
+        protected override void DeInitialize()
         {
             Debug.Log("Disposing");
         }

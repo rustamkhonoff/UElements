@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 
 namespace UElements.NavigationBar
 {
@@ -7,11 +8,11 @@ namespace UElements.NavigationBar
     {
         public event Action<object> ContentCreated;
 
-        private readonly INavigationState<TModel> m_state;
+        private readonly NavigationState<TModel> m_state;
         private readonly Func<TModel, INavigationContentPresenter> m_presenterBuilder;
         private INavigationContentPresenter m_activePresenter;
 
-        public NavigationPresenter(INavigationState<TModel> state, Func<TModel, INavigationContentPresenter> presenterBuilder)
+        public NavigationPresenter(NavigationState<TModel> state, Func<TModel, INavigationContentPresenter> presenterBuilder)
         {
             m_state = state;
             m_presenterBuilder = presenterBuilder;
@@ -20,7 +21,8 @@ namespace UElements.NavigationBar
 
         private async void OnActivePageChanged(TModel model)
         {
-            m_activePresenter?.Disable();
+            if (m_activePresenter != null)
+                await m_activePresenter.Disable();
 
             INavigationContentPresenter newPresenter = m_presenterBuilder(model);
 
@@ -37,7 +39,8 @@ namespace UElements.NavigationBar
 
         public void Dispose()
         {
-            m_activePresenter?.Disable();
+            if (m_activePresenter != null)
+                m_activePresenter.Disable().Forget();
             m_state.PageChanged -= OnActivePageChanged;
         }
     }

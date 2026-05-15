@@ -5,15 +5,16 @@ using R3;
 using TMPro;
 using UElements;
 using UElements.NavigationBar;
-using UElements.R3;
 using UElements.States;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Demos.NavigationView
 {
-    public class NavigationTab : NavigationTab<DemoNavigationModel>
+    public class ElementNavigationTabBase : ElementNavigationTabBase<DemoNavigationModel>
     {
+        public override event Action SwitchRequested;
+
         [SerializeField] private Image _image;
         [SerializeField] private Button _button;
         [SerializeField] private Image _bg;
@@ -23,18 +24,18 @@ namespace Demos.NavigationView
         [SerializeField] private StatedElement _badgeActive;
         [SerializeField] private TMP_Text _text;
 
-
         public override void Initialize()
         {
             _image.sprite = Model.Icon;
             Model.Locked.Subscribe(_locked.SetState).AddTo(this);
             Model.BadgeActive.CombineLatest(Model.Locked, (badge, locked) => badge && !locked).Subscribe(_badgeActive.SetState).AddTo(this);
             Model.Name.SubscribeToText(_text).AddTo(this);
+            _button.onClick.AddListener(RequestSwitch);
         }
 
-        public override void RegisterRequest(Action switchRequest)
+        private void RequestSwitch()
         {
-            _button.SubscribeClick(switchRequest).AddTo(this);
+            SwitchRequested?.Invoke();
         }
 
         public override void SetState(bool state)
@@ -47,6 +48,11 @@ namespace Demos.NavigationView
         {
             _selected.SetState(state);
             _bg.color = state ? _a : _b;
+        }
+
+        protected override void DeInitialize()
+        {
+            _button.onClick.RemoveListener(RequestSwitch);
         }
     }
 

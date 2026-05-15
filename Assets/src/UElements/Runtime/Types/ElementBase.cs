@@ -71,7 +71,7 @@ namespace UElements
             return new CloseDisposable(this);
         }
 
-        protected virtual void OnDisposing() { }
+        protected virtual void DeInitialize() { }
 
         private void CleanupBase()
         {
@@ -88,7 +88,7 @@ namespace UElements
 
             try
             {
-                OnDisposing();
+                DeInitialize();
             }
             catch (Exception e)
             {

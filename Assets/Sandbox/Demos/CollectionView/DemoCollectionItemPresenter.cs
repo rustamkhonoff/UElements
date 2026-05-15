@@ -7,9 +7,9 @@ using UElements.R3;
 
 namespace Demos.CollectionView
 {
-    internal class DemoElementCollectionItemPresenter : ElementCollectionItemPresenter<Model, ModelView>
+    internal class DemoElementCollectionItemPresenterBase : ElementCollectionItemPresenterBase<Model, ModelView>
     {
-        public DemoElementCollectionItemPresenter(Model model, Func<Model, UniTask<ModelView>> viewFactory) : base(model, viewFactory) { }
+        public DemoElementCollectionItemPresenterBase(Model model, Func<Model, UniTask<ModelView>> viewFactory) : base(model, viewFactory) { }
 
         public override async UniTask Enable()
         {

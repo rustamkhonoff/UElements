@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 
 namespace UElements.CollectionView
 {
-    public interface ICollectionModelPresenter<out TModel, out TView>
+    public interface ICollectionItemPresenter<out TModel>
     {
         TModel Model { get; }
         UniTask Enable();

@@ -12,16 +12,16 @@ namespace Demos.CollectionView
         [SerializeField] private CollectionItemRequest _request;
         [SerializeField] private CollectionItemRequest _kingRequest;
 
-        private ICollectionPresenter<Model, ModelView> m_collectionPresenter;
+        private ICollectionPresenter<Model> m_collectionPresenter;
 
         private async void Start()
         {
             m_collectionPresenter = await _models.BuildCollectionPresenter(PresenterFactory);
         }
 
-        private ICollectionModelPresenter<Model, ModelView> PresenterFactory(Model arg)
+        private ICollectionItemPresenter<Model> PresenterFactory(Model arg)
         {
-            return new DemoElementCollectionItemPresenter(arg, _ => ElementsGlobal.Instance.Create<ModelView>(_request));
+            return new DemoElementCollectionItemPresenterBase(arg, _ => ElementsGlobal.Instance.Create<ModelView>(_request));
         }
 
 

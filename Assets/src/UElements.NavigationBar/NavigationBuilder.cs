@@ -7,9 +7,11 @@ namespace UElements.NavigationBar
 {
     public static class NavigationBuilder
     {
-        public async static UniTask<INavigation<TModel>> BuildNavigation<TModel, TTab>(this IEnumerable<TModel> models,
+        public async static UniTask<INavigation<TModel>> BuildNavigation<TModel, TTab>(
+            this IEnumerable<TModel> models,
             Func<TModel, UniTask<TTab>> navFactory,
-            Func<TModel, INavigationContentPresenter> contentPresenterFactory, string defaultPage = null)
+            Func<TModel, INavigationContentPresenter> contentPresenterFactory, string defaultPage = null
+        )
             where TModel : INavigationModel
             where TTab : INavigationTab
         {
@@ -19,9 +21,11 @@ namespace UElements.NavigationBar
             return navigation;
         }
 
-        public async static UniTask<INavigation<TModel>> BuildNavigation<TModel, TTab>(this IEnumerable<TModel> models,
+        public async static UniTask<INavigation<TModel>> BuildNavigation<TModel, TTab>(
+            this IEnumerable<TModel> models,
             Func<TModel, UniTask<TTab>> navFactory,
-            Func<TModel, INavigationContentPresenter> contentPresenterFactory, TModel defaultPage = default)
+            Func<TModel, INavigationContentPresenter> contentPresenterFactory, TModel defaultPage = default
+        )
             where TModel : INavigationModel
             where TTab : INavigationTab
         {
@@ -31,14 +35,16 @@ namespace UElements.NavigationBar
             return navigation;
         }
 
-        public static INavigation<TModel> BuildNavigation<TModel, TTab>(Func<TModel, UniTask<TTab>> navFactory,
-            Func<TModel, INavigationContentPresenter> contentPresenterFactory)
+        public static INavigation<TModel> BuildNavigation<TModel, TTab>(
+            Func<TModel, UniTask<TTab>> navFactory,
+            Func<TModel, INavigationContentPresenter> contentPresenterFactory
+        )
             where TModel : INavigationModel
             where TTab : INavigationTab
         {
-            INavigationState<TModel> state = new NavigationState<TModel>();
+            NavigationState<TModel> state = new NavigationState<TModel>();
 
-            ICollectionPresenter<TModel, TTab> collectionPresenter = CollectionPresenterBuilder.BuildCollectionPresenter<TModel, TTab>(
+            ICollectionPresenter<TModel> collectionPresenter = CollectionBuilder.BuildCollectionPresenter<TModel>(
                 model => new NavigationTabPresenter<TModel, TTab>(state, model, navFactory)
             );
 

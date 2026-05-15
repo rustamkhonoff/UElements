@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace UElements.NavigationBar
 {
-    public class NavigationState<TModel> : INavigationState<TModel>
+    public class NavigationState<TModel>
         where TModel : INavigationModel
     {
         public event Action<TModel> PageChanged;
@@ -24,8 +25,15 @@ namespace UElements.NavigationBar
 
         public bool TrySwitch(string key)
         {
-            if (ActivePage != null && ActivePage.Key == key) return false;
-            if (!m_pages.TryGetValue(key, out TModel entry)) return false;
+            //Same page
+            if (ActivePage != null && ActivePage.Key == key)
+                return false;
+
+            if (!m_pages.TryGetValue(key, out TModel entry))
+            {
+                Debug.LogException(new KeyNotFoundException($"There is no Page model with given key {key}"));
+                return false;
+            }
 
             ActivePage = entry;
             PageChanged?.Invoke(entry);

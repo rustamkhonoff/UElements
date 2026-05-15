@@ -4,16 +4,16 @@ using UElements.CollectionView;
 
 namespace UElements.NavigationBar
 {
-    public class NavigationTabPresenter<TModel, TView> : ICollectionModelPresenter<TModel, TView>
+    public class NavigationTabPresenter<TModel, TView> : ICollectionItemPresenter<TModel>
         where TModel : INavigationModel
         where TView : INavigationTab
     {
-        private readonly INavigationState<TModel> m_state;
+        private readonly NavigationState<TModel> m_state;
         private readonly Func<TModel, UniTask<TView>> m_viewFunc;
         public TModel Model { get; }
         public TView View { get; private set; }
 
-        public NavigationTabPresenter(INavigationState<TModel> state, TModel model, Func<TModel, UniTask<TView>> viewFunc)
+        public NavigationTabPresenter(NavigationState<TModel> state, TModel model, Func<TModel, UniTask<TView>> viewFunc)
         {
             m_state = state;
             m_viewFunc = viewFunc;
@@ -22,11 +22,10 @@ namespace UElements.NavigationBar
 
         public async UniTask Enable()
         {
-            View = await m_viewFunc(Model);
-
             m_state.PageChanged += HandlePageChanged;
 
-            View.RegisterRequest(OnSwitchRequested);
+            View = await m_viewFunc(Model);
+            View.SwitchRequested += OnSwitchRequested;
             View.SetInitialState(m_state.ActivePage != null && Model.Key == m_state.ActivePage.Key);
         }
 
@@ -43,7 +42,12 @@ namespace UElements.NavigationBar
         public async UniTask Disable()
         {
             m_state.PageChanged -= HandlePageChanged;
-            await View.Close();
+
+            if (View != null)
+            {
+                View.SwitchRequested -= OnSwitchRequested;
+                await View.Close();
+            }
         }
     }
 }

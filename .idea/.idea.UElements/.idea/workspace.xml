@@ -41,6 +41,7 @@
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.mathijsbakker.extenject@c1c05ff5b1/Runtime/Main/IInstantiator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/UI/Core/Button.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/jp.hadashikick.vcontainer@6e6972730c/Runtime/Unity/ObjectResolverUnityExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/jp.hadashikick.vcontainer@6e6972730c/Runtime/Unity/VContainerSettings.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/34ba1ebf387142c2b7749b42cfef2fb629200/ae/97dbabb6/ImmutableList.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d3152494c954d849c5b7d1ab09f81f6be00/b4/945e2c69/ObservableCollectionAdd`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4d3152494c954d849c5b7d1ab09f81f6be00/c9/b36ce995/ObservableCollectionR3Extensions.cs" root0="SKIP_HIGHLIGHTING" />
@@ -204,7 +205,7 @@
       <workItem from="1767778850807" duration="559000" />
       <workItem from="1776067769172" duration="366000" />
       <workItem from="1778760855588" duration="13000" />
-      <workItem from="1778836734077" duration="9701000" />
+      <workItem from="1778836734077" duration="12274000" />
     </task>
     <servers />
   </component>

@@ -26,9 +26,9 @@ namespace Sandbox.Demos.NavigationView
             m_navigation.ContentCreated += ContentCreated;
         }
 
-        private UniTask<NavigationTab> CreateSwitcher(DemoNavigationModel arg1)
+        private UniTask<ElementNavigationTabBase> CreateSwitcher(DemoNavigationModel arg1)
         {
-            return ElementsGlobal.Instance.Create<NavigationTab, DemoNavigationModel>(arg1, _navigationBarElementRequest);
+            return ElementsGlobal.Instance.Create<ElementNavigationTabBase, DemoNavigationModel>(arg1, _navigationBarElementRequest);
         }
 
         private INavigationContentPresenter GetContentBuilder(DemoNavigationModel model)
@@ -72,7 +72,7 @@ namespace Sandbox.Demos.NavigationView
 
         [Button] public void DisposeNavigation() => m_navigation?.Dispose();
 
-        protected override void OnDisposing()
+        protected override void DeInitialize()
         {
             m_navigation.ContentCreated -= ContentCreated;
             m_navigation.PageChanged -= HandlePageChange;

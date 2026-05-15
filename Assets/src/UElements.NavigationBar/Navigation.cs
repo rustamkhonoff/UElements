@@ -10,13 +10,13 @@ namespace UElements.NavigationBar
         public event Action<TModel> PageChanged;
         public event Action<TModel, object> ContentCreated;
 
-        private readonly INavigationState<TModel> m_state;
+        private readonly NavigationState<TModel> m_state;
         private readonly INavigationPresenter m_presenter;
-        private readonly ICollectionPresenter<TModel, TTabView> m_collection;
+        private readonly ICollectionPresenter<TModel> m_collection;
 
         public Navigation(
-            INavigationState<TModel> state,
-            ICollectionPresenter<TModel, TTabView> collection,
+            NavigationState<TModel> state,
+            ICollectionPresenter<TModel> collection,
             INavigationPresenter presenter)
         {
             m_state = state;
