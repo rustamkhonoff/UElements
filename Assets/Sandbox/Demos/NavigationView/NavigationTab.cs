@@ -27,14 +27,14 @@ namespace Demos.NavigationView
         public override void Initialize()
         {
             _image.sprite = Model.Icon;
-            Model.Locked.Subscribe(_locked.SetState).AddToElement(this);
-            Model.BadgeActive.CombineLatest(Model.Locked, (badge, locked) => badge && !locked).Subscribe(_badgeActive.SetState).AddToElement(this);
-            Model.Name.SubscribeToText(_text).AddToElement(this);
+            Model.Locked.Subscribe(_locked.SetState).AddTo(this);
+            Model.BadgeActive.CombineLatest(Model.Locked, (badge, locked) => badge && !locked).Subscribe(_badgeActive.SetState).AddTo(this);
+            Model.Name.SubscribeToText(_text).AddTo(this);
         }
 
         public override void RegisterRequest(Action switchRequest)
         {
-            _button.SubscribeClick(switchRequest).AddToElement(this);
+            _button.SubscribeClick(switchRequest).AddTo(this);
         }
 
         public override void SetState(bool state)

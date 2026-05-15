@@ -23,7 +23,7 @@ namespace UElements.CollectionView
         public virtual async UniTask Enable()
         {
             View = await m_viewFactory.Invoke(Model);
-            View.AddTo(m_ct);
+            View.AddTo(m_ct.Token);
         }
 
         public virtual UniTask Disable()

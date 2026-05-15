@@ -21,7 +21,8 @@ namespace UElements
         public Elements(
             IEnumerable<IElementsProvider> elementsProvider,
             IElementsFactory elementsFactory,
-            IElementsConfiguration elementsConfiguration)
+            IElementsConfiguration elementsConfiguration
+        )
         {
             m_elementsFactory = elementsFactory;
             m_elementsConfiguration = elementsConfiguration;
@@ -32,73 +33,6 @@ namespace UElements
                 m_providers.Add(provider.Key, provider);
 
             ElementsGlobal.Initialize(this);
-        }
-
-        public async UniTask<ElementBase> Create(object model, ElementRequest request, CancellationToken createToken = default,
-            CancellationToken lifetimeToken = default)
-        {
-            ElementBase instance = await Create_Internal<ElementBase>(request, createToken, lifetimeToken);
-
-            if (!ModelElementHelper.TryInitializeModel(instance, model))
-                Debug.LogWarning($"Trying to create element with model {model.GetType()}");
-
-            await instance.Initialize(this);
-            await ShowElement(instance, request);
-            return instance;
-        }
-
-        public async UniTask<ElementBase> Create(ElementRequest request, CancellationToken createToken = default,
-            CancellationToken lifetimeToken = default)
-        {
-            ElementBase instance = await Create_Internal<ElementBase>(request, createToken, lifetimeToken);
-            await instance.Initialize(this);
-            await ShowElement(instance, request);
-            return instance;
-        }
-
-        public async UniTask<T> Create<T>(ElementRequest? request = null, CancellationToken createToken = default,
-            CancellationToken lifetimeToken = default) where T : Element
-        {
-            T instance = await Create_Internal<T>(request, createToken, lifetimeToken);
-            await instance.Initialize(this);
-            await ShowElement(instance, request);
-            return instance;
-        }
-
-        public async UniTask<T> Create<T, TModel>(TModel model, ElementRequest? request = null, CancellationToken createToken = default,
-            CancellationToken lifetimeToken = default)
-            where T : ModelElement<TModel>
-        {
-            T instance = await Create_Internal<T>(request, createToken, lifetimeToken);
-            instance.InitializeModel(model);
-            await instance.Initialize(this);
-            await ShowElement(instance, request);
-            return instance;
-        }
-
-        private async UniTask<T> Create_Internal<T>(ElementRequest? request = null, CancellationToken cancellationToken = default,
-            CancellationToken lifetimeToken = default)
-            where T : ElementBase
-        {
-            ElementRequest fixedRequest = request ?? ElementRequest.Default;
-            string key = GetKey<T>(fixedRequest);
-
-            T prefab = await GetPrefab<T>(key, request, cancellationToken);
-
-            TryHandleRequestSettings(fixedRequest, key);
-
-            T instance = m_elementsFactory.Instantiate(prefab, GetParent(fixedRequest));
-            instance.LifetimeToken.Register(() =>
-            {
-                if (m_activeElementsCache.TryGetValue(key, out List<ElementBase> elementBases))
-                    elementBases.Remove(instance);
-            });
-
-            lifetimeToken.Register(instance.Dispose);
-
-            AddToCache(instance, key);
-
-            return instance;
         }
 
         public T GetActive<T>(ElementRequest? request = null) where T : ElementBase
@@ -144,13 +78,13 @@ namespace UElements
             return provider.Prewarm();
         }
 
-        public void Release()
+        public void ReleaseAllProviders()
         {
             foreach (IElementsProvider elementsProvider in m_providers.Values)
                 elementsProvider.Release();
         }
 
-        public void Release(string key)
+        public void ReleaseProvider(string key)
         {
             if (m_providers.TryGetValue(key, out IElementsProvider provider))
                 provider.Release();
@@ -189,44 +123,116 @@ namespace UElements
             m_activeElementsCache[key].Add(elementBase);
         }
 
+        private async UniTask ShowElement(ElementBase elementBase)
+        {
+            await elementBase.Show();
+        }
+
+        private Transform GetParent(ElementRequest? elementRequest)
+        {
+            if (elementRequest.HasValue && elementRequest.Value.Parent != null)
+                return elementRequest.Value.Parent;
+
+            EnsureRootExist();
+            return m_elementsRoot.Parent;
+        }
+
         private void EnsureRootExist()
         {
             if (m_elementsRoot != null) return;
             m_elementsRoot = m_elementsFactory.Instantiate(m_elementsConfiguration.ElementsRootPrefab);
         }
 
-        private void TryHandleRequestSettings(ElementRequest? elementRequest, string key)
+        public async UniTask<ElementBase> Create(object model, ElementCreateOptions options)
         {
-            if (!elementRequest.HasValue) return;
+            ElementBase instance = await Create_Internal<ElementBase>(options);
 
-            if (elementRequest.Value.OnlyOneInstance && m_activeElementsCache.TryGetValue(key, out List<ElementBase> cachedElements))
-            {
-                if (cachedElements.Count >= 0)
-                    for (int i = cachedElements.Count - 1; i >= 0; i--)
-                        cachedElements[i].Close().Forget();
-                cachedElements.Clear();
-            }
+            if (!ModelElementHelper.TryInitializeModel(instance, model))
+                Debug.LogWarning($"Trying to create element with model {model.GetType()}");
+
+            await InitializeElement(instance);
+            await ShowElement(instance);
+            return instance;
         }
 
-        private async UniTask ShowElement(ElementBase elementBase, ElementRequest? request)
+        public async UniTask<ElementBase> Create(ElementCreateOptions options)
         {
-            if (request is { })
-                await elementBase.Show();
-            else
-                elementBase.Show().Forget();
+            ElementBase instance = await Create_Internal<ElementBase>(options);
+            await InitializeElement(instance);
+            await ShowElement(instance);
+            return instance;
         }
 
-        private Transform GetParent(ElementRequest? elementRequest)
+        public async UniTask<T> Create<T>(ElementCreateOptions options) where T : Element
         {
-            if (elementRequest.HasValue && elementRequest.Value.Parent != null)
+            T instance = await Create_Internal<T>(options);
+            await InitializeElement(instance);
+            await ShowElement(instance);
+            return instance;
+        }
+
+        public async UniTask<T> Create<T, TModel>(TModel model, ElementCreateOptions options) where T : ModelElement<TModel>
+        {
+            T instance = await Create_Internal<T>(options);
+            instance.InitializeModel(model);
+            await InitializeElement(instance);
+            await ShowElement(instance);
+            return instance;
+        }
+
+        private async UniTask InitializeElement(ElementBase elementBase)
+        {
+            elementBase.InitializeElements(this);
+            await elementBase.InitializeAsync();
+            // ReSharper disable once MethodHasAsyncOverload
+            elementBase.Initialize();
+        }
+
+        private async UniTask<T> Create_Internal<T>(ElementCreateOptions options)
+            where T : ElementBase
+        {
+            ElementRequest request = options.Request;
+            string key = GetKey<T>(request);
+
+            T prefab = await GetPrefab<T>(key, request, options.CreationToken);
+
+            options.CreationToken.ThrowIfCancellationRequested();
+
+            if (prefab == null)
+                throw new InvalidOperationException($"Element prefab not found. Key: {key}");
+
+            await HandleOnlyOneInstance(request, key);
+
+            T instance = m_elementsFactory.Instantiate(prefab, GetParent(request));
+
+            AddToCache(instance, key);
+            BindCacheRemoving(instance, key);
+            BindCloseToLifetime(instance, options.LifetimeToken);
+
+            return instance;
+        }
+
+        private async UniTask HandleOnlyOneInstance(ElementRequest request, string key)
+        {
+            if (!request.OnlyOneInstance)
+                return;
+
+            if (!m_activeElementsCache.TryGetValue(key, out List<ElementBase> cachedElements))
+                return;
+
+            for (int i = cachedElements.Count - 1; i >= 0; i--)
+                await cachedElements[i].Close();
+
+            cachedElements.Clear();
+        }
+
+        private void BindCacheRemoving(ElementBase instance, string key)
+        {
+            instance.LifetimeToken.Register(() =>
             {
-                return elementRequest.Value.Parent;
-            }
-            else
-            {
-                EnsureRootExist();
-                return m_elementsRoot.Parent;
-            }
+                if (m_activeElementsCache.TryGetValue(key, out List<ElementBase> elements))
+                    elements.Remove(instance);
+            }, instance);
         }
 
         public void Dispose()

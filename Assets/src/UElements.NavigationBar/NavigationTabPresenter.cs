@@ -40,12 +40,10 @@ namespace UElements.NavigationBar
             m_state.TrySwitch(Model.Key);
         }
 
-        public UniTask Disable()
+        public async UniTask Disable()
         {
             m_state.PageChanged -= HandlePageChanged;
-            View.Dispose();
-
-            return UniTask.CompletedTask;
+            await View.Close();
         }
     }
 }

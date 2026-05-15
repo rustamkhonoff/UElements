@@ -18,7 +18,7 @@ namespace Sandbox.Demos.DisposingElements
         [Button] private async void Create()
         {
             m_element = await ElementsGlobal.Instance.Create<TestingElement>(_prefab.gameObject);
-            m_element.AddTo(m_cancellationTokenSource);
+            m_element.AddTo(m_cancellationTokenSource.Token);
         }
 
         [Button] private void Dispose() => m_element.SafeDispose();

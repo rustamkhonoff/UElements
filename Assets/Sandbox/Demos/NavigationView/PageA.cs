@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using MessagePack;
 using R3;
-using Reflex.Attributes;
 using TMPro;
 using UElements;
 using UElements.R3;
@@ -13,8 +12,8 @@ namespace Demos.NavigationView
 {
     public class PageA : Element
     {
-        public Subject<User> OnEndEdit = new(); 
-        
+        public Subject<User> OnEndEdit = new();
+
         [SerializeField] private User _user;
         [SerializeField] private TMP_InputField _name, _age, _mail;
         [SerializeField] private Button _save, _load;
@@ -41,7 +40,7 @@ namespace Demos.NavigationView
             _name.SubscribeEndEdit(a => _user.Name = a).AddTo(this);
             _age.SubscribeEndEdit(a => _user.Age = int.Parse(a)).AddTo(this);
             _mail.SubscribeEndEdit(a => _user.Mail = a).AddTo(this);
-        
+
             Load();
         }
 

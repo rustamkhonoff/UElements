@@ -1,0 +1,27 @@
+{
+    "name": "UElements.VContainer",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:421747c63533549708e5d9c41306271a",
+        "GUID:2989156728e454921b5f55d04ffa8319",
+        "GUID:119427a112aa642fda5515697d8634ee"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "VCONTAINER"
+    ],
+    "versionDefines": [
+        {
+            "name": "jp.hadashikick.vcontainer",
+            "expression": "0.0.0",
+            "define": "VCONTAINER"
+        }
+    ],
+    "noEngineReferences": false
+}

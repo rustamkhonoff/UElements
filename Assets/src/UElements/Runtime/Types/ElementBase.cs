@@ -5,101 +5,147 @@ using UnityEngine;
 
 namespace UElements
 {
-    public abstract class ElementBase : MonoBehaviour, IDisposable
+    public abstract class ElementBase : MonoBehaviour
     {
-        public event Action Disposing;
+        private bool m_closing;
+        private bool m_cleanedUp;
 
+        private readonly CancellationTokenSource m_lifetimeCts = new();
+        public CancellationToken LifetimeToken => m_lifetimeCts?.Token ?? CancellationToken.None;
+        protected IElements Elements { get; private set; }
         public IElementController ElementController { get; set; } = new DefaultElementController();
 
-        private CancellationTokenSource m_cancellationTokenSource = new();
-        private bool m_closed;
-        private bool m_disposed;
-
-        protected IElements Elements { get; private set; }
-
-        internal UniTask Initialize(IElements elements)
+        internal void InitializeElements(IElements elements)
         {
             Elements = elements;
-            Initialize();
-            return InitializeAsync();
         }
 
-        #region Public API
+        public virtual void Initialize() { }
 
-        public async UniTask Show(Action callback = null, IElementController customController = null)
+        public virtual UniTask InitializeAsync()
         {
-            var controller = customController ?? ElementController;
-            await controller.Show(this);
-            callback?.Invoke();
+            return UniTask.CompletedTask;
         }
 
-        public async UniTask Hide(Action callback = null, IElementController customController = null)
+        public async UniTask Show()
         {
-            var controller = customController ?? ElementController;
-            await controller.Hide(this);
-            callback?.Invoke();
+            if (m_closing || m_cleanedUp)
+                return;
+
+            await ElementController.Show(this);
         }
 
-        public async UniTask Close(Action callback = null, IElementController customController = null)
+        public async UniTask Hide()
         {
-            if (m_closed) return;
-            m_closed = true;
+            if (m_closing || m_cleanedUp)
+                return;
 
-            IElementController controller = customController ?? ElementController;
+            await ElementController.Hide(this);
+        }
+
+        public async UniTask Close()
+        {
+            if (m_closing || m_cleanedUp)
+                return;
+
+            m_closing = true;
 
             try
             {
-                await controller.Hide(this);
+                if (this != null && gameObject != null)
+                    await ElementController.Hide(this);
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"[ElementBase] Hide failed: {e.Message}");
+                Debug.LogWarning($"[ElementBase] Hide failed: {e.Message}", this);
             }
 
-            callback?.Invoke();
-
             CleanupBase();
-            Destroy(gameObject);
+
+            if (this != null && gameObject != null)
+                Destroy(gameObject);
         }
 
-        #endregion
-
-        #region Lifecycle
-
-        public virtual void Initialize() { }
-        public virtual UniTask InitializeAsync() => UniTask.CompletedTask;
+        public IDisposable AsCloseDisposable()
+        {
+            return new CloseDisposable(this);
+        }
 
         protected virtual void OnDisposing() { }
 
-        public void Dispose()
-        {
-            if (m_disposed) return;
-            m_disposed = true;
-
-            Close().Forget();
-            OnDisposing();
-        }
-
         private void CleanupBase()
         {
-            if (m_cancellationTokenSource != null)
+            if (m_cleanedUp)
+                return;
+
+            m_cleanedUp = true;
+            m_closing = true;
+
+            if (m_lifetimeCts != null)
             {
-                m_cancellationTokenSource.Cancel();
-                m_cancellationTokenSource.Dispose();
-                m_cancellationTokenSource = null;
+                m_lifetimeCts.Cancel();
+            }
+
+            try
+            {
+                OnDisposing();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e, this);
             }
 
             Elements = null;
-            Disposing?.Invoke();
-        }
 
-        public CancellationToken LifetimeToken => m_cancellationTokenSource.Token;
+            if (m_lifetimeCts != null)
+            {
+                m_lifetimeCts.Dispose();
+            }
+        }
 
         private void OnDestroy()
         {
-            if (!m_disposed) Dispose();
+            CleanupBase();
         }
 
-        #endregion
+        private sealed class CloseDisposable : IDisposable
+        {
+            private ElementBase m_element;
+            private bool m_disposed;
+
+            public CloseDisposable(ElementBase element)
+            {
+                m_element = element;
+            }
+
+            public void Dispose()
+            {
+                if (m_disposed)
+                    return;
+
+                m_disposed = true;
+
+                ElementBase element = m_element;
+                m_element = null;
+
+                if (element == null)
+                    return;
+
+                UniTask.Void(async () =>
+                {
+                    await UniTask.SwitchToMainThread();
+
+                    if (element != null)
+                        await element.Close();
+                });
+            }
+        }
+
+        private sealed class EmptyDisposable : IDisposable
+        {
+            public static readonly EmptyDisposable Instance = new();
+
+            public void Dispose() { }
+        }
     }
 }
