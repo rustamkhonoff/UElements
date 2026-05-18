@@ -1,0 +1,70 @@
+name: Publish package to main
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout develop
+        uses: actions/checkout@v4
+        with:
+          ref: develop
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare all SamplesDev folders for publish
+        shell: bash
+        run: |
+          echo "Searching for SamplesDev folders..."
+
+          FOUND=0
+
+          while IFS= read -r DEV_SAMPLES; do
+            FOUND=1
+
+            PARENT_DIR="$(dirname "$DEV_SAMPLES")"
+            PUBLISH_SAMPLES="$PARENT_DIR/Samples~"
+
+            DEV_META="$DEV_SAMPLES.meta"
+            PUBLISH_META="$PUBLISH_SAMPLES.meta"
+
+            echo "Processing:"
+            echo "  From: $DEV_SAMPLES"
+            echo "  To:   $PUBLISH_SAMPLES"
+
+            if [ -d "$PUBLISH_SAMPLES" ]; then
+              rm -rf "$PUBLISH_SAMPLES"
+            fi
+
+            if [ -f "$PUBLISH_META" ]; then
+              rm -f "$PUBLISH_META"
+            fi
+
+            mv "$DEV_SAMPLES" "$PUBLISH_SAMPLES"
+
+            if [ -f "$DEV_META" ]; then
+              mv "$DEV_META" "$PUBLISH_META"
+            fi
+
+          done < <(find . -type d -name "SamplesDev")
+
+          if [ "$FOUND" -eq 0 ]; then
+            echo "No SamplesDev folders found"
+          fi
+
+      - name: Publish to main
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "Publish package from develop" || echo "No changes to commit"
+
+          git push origin HEAD:main --force
