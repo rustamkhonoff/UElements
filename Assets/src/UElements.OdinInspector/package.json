@@ -11,7 +11,7 @@
   "samples": [
     {
       "displayName": "Visual Designer OVDF assets",
-      "description": "ODIN Inspector OVDG assets for UElements ",
+      "description": "ODIN Inspector OVDF assets for UElements ",
       "path": "Samples/UElements"
     }
   ]
