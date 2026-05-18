@@ -3,31 +3,41 @@ using Cysharp.Threading.Tasks;
 
 namespace UElements.NavigationBar
 {
-    public class ElementNavigationContentPresenter<TModel> : INavigationContentPresenter
+    public class ElementNavigationContentPresenter<TModel> : ElementNavigationContentPresenter<TModel, ElementBase>
         where TModel : INavigationModel
     {
-        private readonly TModel m_model;
-        private readonly Func<TModel, ElementRequest> m_selector;
-        private readonly Action<ElementBase> m_onViewCreated;
-        private ElementBase m_elementBase;
+        public ElementNavigationContentPresenter(TModel model, Func<TModel, UniTask<ElementBase>> contentFactory, Action<ElementBase> onViewCreated = null) : base(model, contentFactory, onViewCreated) { }
+    }
 
-        public ElementNavigationContentPresenter(TModel model, Func<TModel, ElementRequest> selector, Action<ElementBase> onViewCreated = null)
+    public class ElementNavigationContentPresenter<TModel, TView> : INavigationContentPresenter
+        where TModel : INavigationModel
+        where TView : ElementBase
+    {
+        private readonly TModel m_model;
+        private readonly Func<TModel, UniTask<TView>> _contentFactory;
+        private readonly Action<TView> m_onViewCreated;
+        private TView m_elementBase;
+
+        public ElementNavigationContentPresenter(TModel model, Func<TModel, UniTask<TView>> contentFactory, Action<TView> onViewCreated = null)
         {
             m_model = model;
-            m_selector = selector;
+            _contentFactory = contentFactory;
             m_onViewCreated = onViewCreated;
         }
 
         public async UniTask Enable()
         {
-            m_elementBase = await ElementsGlobal.Instance.Create(m_selector(m_model));
+            m_elementBase = await _contentFactory(m_model);
             m_onViewCreated?.Invoke(m_elementBase);
         }
 
-        public UniTask Disable()
+        public async UniTask Disable()
         {
-            m_elementBase.SafeDispose();
-            return UniTask.CompletedTask;
+            if (m_elementBase != null)
+            {
+                await m_elementBase.Hide();
+                m_elementBase.SafeDispose();
+            }
         }
     }
 }

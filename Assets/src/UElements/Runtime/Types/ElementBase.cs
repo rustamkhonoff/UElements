@@ -140,12 +140,5 @@ namespace UElements
                 });
             }
         }
-
-        private sealed class EmptyDisposable : IDisposable
-        {
-            public static readonly EmptyDisposable Instance = new();
-
-            public void Dispose() { }
-        }
     }
 }

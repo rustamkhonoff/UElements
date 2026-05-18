@@ -4,7 +4,7 @@ using UElements.CollectionView;
 
 namespace UElements.NavigationBar
 {
-    internal class Navigation<TModel, TTabView> : INavigation<TModel>
+    internal class Navigation<TModel> : INavigation<TModel>
         where TModel : INavigationModel
     {
         public event Action<TModel> PageChanged;
@@ -17,7 +17,8 @@ namespace UElements.NavigationBar
         public Navigation(
             NavigationState<TModel> state,
             ICollectionPresenter<TModel> collection,
-            INavigationPresenter presenter)
+            INavigationPresenter presenter
+        )
         {
             m_state = state;
             m_collection = collection;

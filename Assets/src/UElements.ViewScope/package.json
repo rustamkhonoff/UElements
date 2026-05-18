@@ -1,8 +1,8 @@
 {
-  "name": "com.rustamkhonoff.uelements",
+  "name": "com.rustamkhonoff.uelements.viewscope",
   "version": "1.0.0",
-  "displayName": "UElements",
-  "description": "Simple Elements based UI service using UniTask",
+  "displayName": "UElements.ViewScope",
+  "description": "Wrapper for views",
   "unity": "2021.3",
   "unityRelease": "21f1",
   "author": {

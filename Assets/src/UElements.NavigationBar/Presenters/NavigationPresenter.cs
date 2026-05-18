@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 
 namespace UElements.NavigationBar
 {
-    internal class NavigationPresenter<TModel> : IDisposable, INavigationPresenter
+    internal class NavigationPresenter<TModel> : INavigationPresenter
         where TModel : INavigationModel
     {
         public event Action<object> ContentCreated;
@@ -39,9 +39,11 @@ namespace UElements.NavigationBar
 
         public void Dispose()
         {
-            if (m_activePresenter != null)
-                m_activePresenter.Disable().Forget();
             m_state.PageChanged -= OnActivePageChanged;
+            if (m_activePresenter != null)
+            {
+                m_activePresenter.Disable().Forget();
+            }
         }
     }
 }

@@ -2,10 +2,9 @@ using System;
 
 namespace UElements.NavigationBar
 {
-    public interface INavigationPresenter
+    public interface INavigationPresenter : IDisposable
     {
         event Action<object> ContentCreated;
         bool TrySwitch(string key);
-        void Dispose();
     }
 }

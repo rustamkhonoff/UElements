@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UElements.CollectionView;
 
@@ -7,9 +8,9 @@ namespace UElements.NavigationBar
 {
     public static class NavigationBuilder
     {
-        public async static UniTask<INavigation<TModel>> BuildNavigation<TModel, TTab>(
+        public static async UniTask<INavigation<TModel>> BuildNavigation<TModel, TTab>(
             this IEnumerable<TModel> models,
-            Func<TModel, UniTask<TTab>> navFactory,
+            Func<TModel, CancellationToken, UniTask<TTab>> navFactory,
             Func<TModel, INavigationContentPresenter> contentPresenterFactory, string defaultPage = null
         )
             where TModel : INavigationModel
@@ -21,9 +22,9 @@ namespace UElements.NavigationBar
             return navigation;
         }
 
-        public async static UniTask<INavigation<TModel>> BuildNavigation<TModel, TTab>(
+        public static async UniTask<INavigation<TModel>> BuildNavigation<TModel, TTab>(
             this IEnumerable<TModel> models,
-            Func<TModel, UniTask<TTab>> navFactory,
+            Func<TModel, CancellationToken, UniTask<TTab>> navFactory,
             Func<TModel, INavigationContentPresenter> contentPresenterFactory, TModel defaultPage = default
         )
             where TModel : INavigationModel
@@ -36,7 +37,7 @@ namespace UElements.NavigationBar
         }
 
         public static INavigation<TModel> BuildNavigation<TModel, TTab>(
-            Func<TModel, UniTask<TTab>> navFactory,
+            Func<TModel, CancellationToken, UniTask<TTab>> navFactory,
             Func<TModel, INavigationContentPresenter> contentPresenterFactory
         )
             where TModel : INavigationModel
@@ -49,7 +50,7 @@ namespace UElements.NavigationBar
             );
 
             INavigationPresenter navigationPresenter = new NavigationPresenter<TModel>(state, contentPresenterFactory);
-            INavigation<TModel> navigation = new Navigation<TModel, TTab>(state, collectionPresenter, navigationPresenter);
+            INavigation<TModel> navigation = new Navigation<TModel>(state, collectionPresenter, navigationPresenter);
             return navigation;
         }
     }

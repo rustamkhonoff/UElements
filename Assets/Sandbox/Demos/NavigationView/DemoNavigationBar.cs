@@ -7,6 +7,7 @@ using R3;
 using Sirenix.OdinInspector;
 using UElements;
 using UElements.NavigationBar;
+using UElements.NavigationBar.Extensions;
 using UnityEngine;
 
 namespace Sandbox.Demos.NavigationView
@@ -24,11 +25,13 @@ namespace Sandbox.Demos.NavigationView
             m_navigation = await _navigationPageModels.BuildNavigation(CreateSwitcher, GetContentBuilder, _navigationPageModels[0]);
             m_navigation.PageChanged += HandlePageChange;
             m_navigation.ContentCreated += ContentCreated;
+
+            m_navigation.SubscribeToPageWithInitial(page => Debug.Log(page.Key), LifetimeToken).AddTo(this);
         }
 
-        private UniTask<ElementNavigationTabBase> CreateSwitcher(DemoNavigationModel arg1)
+        private UniTask<ElementNavigationTabBase> CreateSwitcher(DemoNavigationModel arg1, CancellationToken cancellationToken)
         {
-            return ElementsGlobal.Instance.Create<ElementNavigationTabBase, DemoNavigationModel>(arg1, _navigationBarElementRequest);
+            return ElementsGlobal.Instance.Create<ElementNavigationTabBase, DemoNavigationModel>(arg1, _navigationBarElementRequest, lifetimeToken: cancellationToken);
         }
 
         private INavigationContentPresenter GetContentBuilder(DemoNavigationModel model)
@@ -38,12 +41,12 @@ namespace Sandbox.Demos.NavigationView
                 return new ElementNavigationContentPresenter<DemoNavigationModel, PageA>
                 (
                     model,
-                    a => a.ElementRequest,
+                    m => ElementsGlobal.Instance.Create<PageA>(m.ElementRequest),
                     view => view.OnEndEdit.Subscribe(a => Debug.Log(a.Name))
                 );
             }
 
-            return new ElementNavigationContentPresenter<DemoNavigationModel>(model, a => a.ElementRequest);
+            return new ElementNavigationContentPresenter<DemoNavigationModel>(model, m => ElementsGlobal.Instance.Create(m.ElementRequest));
         }
 
         [Button]
@@ -63,12 +66,10 @@ namespace Sandbox.Demos.NavigationView
             Debug.Log(o);
         }
 
-
         private void HandlePageChange(INavigationModel navigationModel)
         {
             Debug.Log(navigationModel.Key);
         }
-
 
         [Button] public void DisposeNavigation() => m_navigation?.Dispose();
 

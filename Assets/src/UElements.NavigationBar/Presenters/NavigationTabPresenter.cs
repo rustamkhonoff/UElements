@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UElements.CollectionView;
 
@@ -9,11 +10,12 @@ namespace UElements.NavigationBar
         where TView : INavigationTab
     {
         private readonly NavigationState<TModel> m_state;
-        private readonly Func<TModel, UniTask<TView>> m_viewFunc;
+        private readonly Func<TModel, CancellationToken, UniTask<TView>> m_viewFunc;
+        private readonly CancellationTokenSource m_cts = new();
         public TModel Model { get; }
         public TView View { get; private set; }
 
-        public NavigationTabPresenter(NavigationState<TModel> state, TModel model, Func<TModel, UniTask<TView>> viewFunc)
+        public NavigationTabPresenter(NavigationState<TModel> state, TModel model, Func<TModel, CancellationToken, UniTask<TView>> viewFunc)
         {
             m_state = state;
             m_viewFunc = viewFunc;
@@ -24,7 +26,7 @@ namespace UElements.NavigationBar
         {
             m_state.PageChanged += HandlePageChanged;
 
-            View = await m_viewFunc(Model);
+            View = await m_viewFunc(Model, m_cts.Token);
             View.SwitchRequested += OnSwitchRequested;
             View.SetInitialState(m_state.ActivePage != null && Model.Key == m_state.ActivePage.Key);
         }
@@ -39,15 +41,14 @@ namespace UElements.NavigationBar
             m_state.TrySwitch(Model.Key);
         }
 
-        public async UniTask Disable()
+        public UniTask Disable()
         {
             m_state.PageChanged -= HandlePageChanged;
 
-            if (View != null)
-            {
+            if (View != null) 
                 View.SwitchRequested -= OnSwitchRequested;
-                await View.Close();
-            }
+
+            return UniTask.CompletedTask;
         }
     }
 }

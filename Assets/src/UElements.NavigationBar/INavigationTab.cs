@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 
 namespace UElements.NavigationBar
 {
@@ -8,6 +7,5 @@ namespace UElements.NavigationBar
         event Action SwitchRequested;
         void SetInitialState(bool state);
         void SetState(bool state);
-        UniTask Close();
     }
 }
