@@ -1,0 +1,10 @@
+OVDF v1.1
+UElements.Reference.ReferenceElementsModule, UElements.Reference
+MetaGuid:ca850933f6ef4699bc08d4ca42ce0f02
+
+# <Maps>k__BackingField
++ [Sirenix.OdinInspector.TableListAttribute]
+	IsReadOnly = False
+	ShowIndexLabels = False
+	DrawScrollView = True
+	HideToolbar = False

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace UElements.Resource
 {
@@ -33,7 +32,7 @@ namespace UElements.Resource
                 if (UElementsExtensions.IsEmptyKey(elementMap.Key))
                     elementMap.Key = UElementsExtensions.GetKey(elementMap.Prefab.gameObject);
 
-                elementMap.Path = UElementsExtensions.GetResourcesPath(elementMap.Prefab);
+                elementMap.Path = UElementsExtensions.TryGetAssetsFolderPath(elementMap.Prefab, out string path) ? path : string.Empty;
             }
         }
 #endif

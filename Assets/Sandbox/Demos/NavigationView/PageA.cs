@@ -4,7 +4,6 @@ using MessagePack;
 using R3;
 using TMPro;
 using UElements;
-using UElements.R3;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,11 +34,11 @@ namespace Demos.NavigationView
 
         public override void Initialize()
         {
-            _save.SubscribeClick(Save).AddTo(this);
-            _load.SubscribeClick(Load).AddTo(this);
-            _name.SubscribeEndEdit(a => _user.Name = a).AddTo(this);
-            _age.SubscribeEndEdit(a => _user.Age = int.Parse(a)).AddTo(this);
-            _mail.SubscribeEndEdit(a => _user.Mail = a).AddTo(this);
+            _save.OnClickAsObservable().Subscribe(_ => Save()).AddTo(this);
+            _load.OnClickAsObservable().Subscribe(_ => Load()).AddTo(this);
+            _name.OnEndEditAsObservable().Subscribe(a => _user.Name = a).AddTo(this);
+            _age.OnEndEditAsObservable().Subscribe(a => _user.Age = int.Parse(a)).AddTo(this);
+            _mail.OnEndEditAsObservable().Subscribe(a => _user.Mail = a).AddTo(this);
 
             Load();
         }

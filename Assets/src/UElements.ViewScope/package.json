@@ -1,6 +1,6 @@
 {
   "name": "com.rustamkhonoff.uelements.viewscope",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "displayName": "UElements.ViewScope",
   "description": "Wrapper for views",
   "unity": "2021.3",

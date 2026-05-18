@@ -1,0 +1,10 @@
+OVDF v1.1
+UElements.Profiles.LitMotion.BaseLitMotionProfileOperation`2, UElements.Profiles.LitMotion
+
+# _configuration
++ [Sirenix.OdinInspector.LabelTextAttribute]
+	Text = "Animation"
+	NicifyText = False
+	Icon = GearFill
++ [Sirenix.OdinInspector.IndentAttribute]
+	IndentLevel = -1

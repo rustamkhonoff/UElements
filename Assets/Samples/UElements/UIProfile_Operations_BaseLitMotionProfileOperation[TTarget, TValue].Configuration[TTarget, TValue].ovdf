@@ -1,0 +1,49 @@
+OVDF v1.1
+UElements.Profiles.LitMotion.BaseLitMotionProfileOperation`2+Configuration, UElements.Profiles.LitMotion
+
+# $2BqpvJY1VkbMB7Z9vXT1cv
+Position: $T5hrjjLh5q3g8thftYGFRK:0
++ [Sirenix.OdinInspector.HorizontalGroupAttribute]
+	VisibleIf = "Animate"
+	AnimateVisibility = False
+
+# $VvidNGSQCvLr8To6ssxgys
+Position: $2BqpvJY1VkbMB7Z9vXT1cv:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute]
+
+# $87cfVZias6sF8YctfqN3kw
+Position: $VvidNGSQCvLr8To6ssxgys:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $XRepMoLMzv8UErPefxNfjV
+Position: $VvidNGSQCvLr8To6ssxgys:1
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $SSdoDNqJ7gBiHfsQvLnEWe
+Position: $VvidNGSQCvLr8To6ssxgys:2
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $Vu3qDgMmw2Ep3BQchajg39
+Position: $root:13
++ [Sirenix.OdinInspector.ColumnGroupAttribute]
+
+# $D21EWYLMEs7SLhGUtuk7Wx
+Position: $Vu3qDgMmw2Ep3BQchajg39:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+	Size = 200 px
+
+# $T5hrjjLh5q3g8thftYGFRK
+Position: $Vu3qDgMmw2Ep3BQchajg39:1
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# <Duration>k__BackingField
+Position: $87cfVZias6sF8YctfqN3kw:0
+
+# <Ease>k__BackingField
+Position: $XRepMoLMzv8UErPefxNfjV:0
+
+# <Delay>k__BackingField
+Position: $SSdoDNqJ7gBiHfsQvLnEWe:0
+
+# <Animate>k__BackingField
+Position: $D21EWYLMEs7SLhGUtuk7Wx:0

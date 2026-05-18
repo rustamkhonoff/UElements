@@ -3,7 +3,6 @@ using Cysharp.Threading.Tasks;
 using R3;
 using UElements;
 using UElements.CollectionView;
-using UElements.R3;
 
 namespace Demos.CollectionView
 {
@@ -22,7 +21,7 @@ namespace Demos.CollectionView
                 .AddTo(LifetimeToken);
 
             View.Clicked
-                .SubscribeCallback(Model.IncreaseAmount)
+                .Subscribe(_ => Model.IncreaseAmount())
                 .AddTo(LifetimeToken);
         }
     }

@@ -1,0 +1,24 @@
+{
+    "name": "UElements.Profiles",
+    "rootNamespace": "UElements.Profiles",
+    "references": [
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:eec0964c48f6f4e40bc3ec2257ccf8c5",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.localization",
+            "expression": "1.0.0",
+            "define": "UNITY_LOCALIZATION"
+        }
+    ],
+    "noEngineReferences": false
+}

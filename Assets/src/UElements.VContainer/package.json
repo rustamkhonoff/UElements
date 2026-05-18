@@ -1,6 +1,6 @@
 {
   "name": "com.rustamkhonoff.uelements.vcontainer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "displayName": "UElements.VContainer",
   "description": "UElements VContainer extension",
   "unity": "2021.3",

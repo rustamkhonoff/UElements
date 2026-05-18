@@ -142,7 +142,7 @@ namespace UElements
             return string.IsNullOrEmpty(key) || key == "null";
         }
 #if UNITY_EDITOR
-        public static string GetResourcesPath(Object asset)
+        public static bool TryGetAssetsFolderPath(Object asset, out string path)
         {
             string fullPath = UnityEditor.AssetDatabase.GetAssetPath(asset);
             int resourcesIndex = fullPath.IndexOf("/Resources/", StringComparison.Ordinal);
@@ -150,12 +150,13 @@ namespace UElements
             if (resourcesIndex == -1)
             {
                 Debug.LogError("Asset is not located in a Resources folder.");
-                return null;
+                path = string.Empty;
+                return false;
             }
 
             string relativePath = fullPath[(resourcesIndex + "/Resources/".Length)..];
-            relativePath = Path.ChangeExtension(relativePath, null);
-            return relativePath;
+            path = Path.ChangeExtension(relativePath, null);
+            return true;
         }
 #endif
     }

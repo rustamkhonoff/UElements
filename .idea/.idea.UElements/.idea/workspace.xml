@@ -15,7 +15,6 @@
     <setting file="file://$PROJECT_DIR$/Assets/Sandbox/VContainer/VContainerProjectInstaller.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Sandbox/Zenject/ProjectInstaller.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.NavigationBar/NavigationBuilder.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/src/UElements.R3/R3CollectionExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.Reflex/Runtime/ReflexExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements.States/Runtime/StatedElement.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/src/UElements/Runtime/Implementations/Addressables/AddressableElementsModule.cs" root0="FORCE_HIGHLIGHTING" />
@@ -78,6 +77,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/e23b4c8f9acd4e9bab40e0237d631867305000/bc/7a8c8fb8/OdinAttributeProcessor`1.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/eaa93d1ff51f46939e13cc06b5754f3d177000/09/b8b0bd4c/Object.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/eaa93d1ff51f46939e13cc06b5754f3d177000/10/394d4e15/Component.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/eaa93d1ff51f46939e13cc06b5754f3d177000/64/fedc262e/GameObject.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/eaa93d1ff51f46939e13cc06b5754f3d177000/66/e3fa03c7/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f00548962438470a9b953f55f995ce1219c00/29/da9d9fd6/ShowIfAttribute.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f00548962438470a9b953f55f995ce1219c00/c2/0d474141/CustomValueDrawerAttribute.cs" root0="SKIP_HIGHLIGHTING" />
@@ -209,7 +209,7 @@
       <workItem from="1776067769172" duration="366000" />
       <workItem from="1778760855588" duration="13000" />
       <workItem from="1778836734077" duration="12274000" />
-      <workItem from="1779084217527" duration="5018000" />
+      <workItem from="1779084217527" duration="13900000" />
     </task>
     <servers />
   </component>

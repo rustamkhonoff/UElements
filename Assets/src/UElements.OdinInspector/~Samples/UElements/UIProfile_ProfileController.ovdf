@@ -1,0 +1,72 @@
+OVDF v1.1
+UElements.Profiles.ProfileController, UElements.Profiles
+MetaGuid:bd7e4a937b0c4f08adfdcb93bf28db79
+
+# $self
++ [Sirenix.OdinInspector.OnInspectorInitAttribute]
+	Action = "Rebuild"
+
+# $5QEdDbUE4Sc4z9i1TYhwyT
+Position: $root:9
++ [Sirenix.OdinInspector.ColumnGroupAttribute]
+
+# $UALcJEP9NxXjcNj8pWZXUb
+Position: $5QEdDbUE4Sc4z9i1TYhwyT:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $MLqonLHRjdp2Ht4YsmvwVu
+Position: $5QEdDbUE4Sc4z9i1TYhwyT:1
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+	Size = 25 px
+
+# <Subjects>k__BackingField
++ [Sirenix.OdinInspector.ListDrawerSettingsAttribute]
+	draggable = False
+	draggableHasValue = True
+	ListElementLabelName = "@\"Subject: \"+Key"
+	HideRemoveButton = False
+	HideAddButton = False
+
+# m_targets
+Position: $UALcJEP9NxXjcNj8pWZXUb:0
++ [Sirenix.OdinInspector.ListDrawerSettingsAttribute]
+	HideAddButton = True
+	HideRemoveButton = True
+	draggable = False
+	draggableHasValue = True
+	ListElementLabelName = "Id"
+	isReadOnly = True
+	isReadOnlyHasValue = True
+	showItemCount = False
+	showItemCountHasValue = True
+	showIndexLabels = True
+	showIndexLabelsHasValue = True
++ [Sirenix.OdinInspector.ReadOnlyAttribute]
+
+# Rebuild()
+Position: $MLqonLHRjdp2Ht4YsmvwVu:0
+Visibility: Shown
++ [Sirenix.OdinInspector.ButtonAttribute]
+	Style = Box
+	Icon = ArrowCounterclockwise
+	Name = ""
+	buttonHeight = 24
+	HasDefinedButtonHeight = True
+
+# <Targets>k__BackingField
+Position: $UALcJEP9NxXjcNj8pWZXUb:0
++ [Sirenix.OdinInspector.ReadOnlyAttribute]
++ [Sirenix.OdinInspector.ListDrawerSettingsAttribute]
+	ListElementLabelName = "Id"
+
+# SetValueImmediate(string, string)
+Visibility: Hidden
+
+# SetValueEditor(string, string)
+Visibility: Hidden
++ [Sirenix.OdinInspector.PropertySpaceAttribute]
++ [Sirenix.OdinInspector.ButtonAttribute]
+	DisplayParameters = True
+	Expanded = False
+	stretch = False
+	HasDefinedStretch = True

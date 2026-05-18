@@ -1,0 +1,18 @@
+{
+  "name": "com.rustamkhonoff.uelements.odininspector",
+  "version": "2.0.0",
+  "displayName": "UElements.OdinInspector",
+  "unity": "2021.3",
+  "unityRelease": "21f1",
+  "author": {
+    "name": "rustamkhonoff",
+    "email": "rustamkhonoff@gmail.com"
+  },
+  "samples": [
+    {
+      "displayName": "Visual Designer OVDF assets",
+      "description": "ODIN Inspector OVDG assets for UElements ",
+      "path": "Samples~/UElements"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "com.rustamkhonoff.uelements.zenject",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "displayName": "UElements.Zenject",
   "description": "UElements Zenject extension",
   "unity": "2021.3",

@@ -1,0 +1,63 @@
+OVDF v1.1
+UElements.Profiles.SubjectStateVariant, UElements.Profiles
+
+# $6WsHwipy5oeDLhhfnkZdgJ
+Position: $root:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute]
+
+# $X2rwbb8699QtFjEJquAwv4
+Position: $6WsHwipy5oeDLhhfnkZdgJ:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $GURyJqLV3xK5bh4U2xnZXH
+Position: $X2rwbb8699QtFjEJquAwv4:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute]
+
+# $P4sVvvsqeop6dNjRvsrW77
+Position: $GURyJqLV3xK5bh4U2xnZXH:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# $7DY9rbGcfdmWeuVEnCJhzT
+Position: $GURyJqLV3xK5bh4U2xnZXH:1
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+
+# <Operations>k__BackingField
++ [Sirenix.OdinInspector.ListDrawerSettingsAttribute]
+	draggable = False
+	draggableHasValue = True
+
+# <ApplyMode>k__BackingField
+Position: $root:1
+
+# <Value>k__BackingField
+Position: $7DY9rbGcfdmWeuVEnCJhzT:0
++ [UElements.Profiles.Editor.ConditionalValueDropdownAttribute]
+	Condition = "@UsePredefinedStateKeys"
+	Values = "@UElements.Profiles.PredefinedStatesHelper.Get"
+	IncludeCurrentValueIfMissing = True
++ [Sirenix.OdinInspector.LabelTextAttribute]
+	Text = "Key"
+	NicifyText = True
+	Icon = None
+
+# m_isUsingPredefinedStates
+Position: $8p8HnmM4WigYUSZUbts8Yv:0
+Visibility: Shown
+
+# <UsePredefinedStateKeys>k__BackingField
+Position: $P4sVvvsqeop6dNjRvsrW77:0
++ [Sirenix.OdinInspector.LabelWidthAttribute]
+	Width = 170
+
+# <Key>k__BackingField
+Position: $7DY9rbGcfdmWeuVEnCJhzT:0
++ [UElements.Profiles.Editor.ConditionalValueDropdownAttribute]
+	Condition = "@UsePredefinedStateKeys"
+	Values = "@UElements.Profiles.PredefinedStatesHelper.Get"
+
+# Apply()
+Visibility: Shown
++ [Sirenix.OdinInspector.ButtonAttribute]
+
+# Activate()
+Visibility: Shown
