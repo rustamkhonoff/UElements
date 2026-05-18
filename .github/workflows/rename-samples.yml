@@ -7,8 +7,8 @@ on:
     branches:
       - develop
     paths:
-      - "Assets/src/Elements.OdinInspector/Samples/**"
-      - "Assets/src/Elements.OdinInspector/Samples.meta"
+      - "Assets/src/UIElements.OdinInspector/Samples/**"
+      - "Assets/src/UIElements.OdinInspector/Samples.meta"
       - ".github/workflows/rename-samples.yml"
 
 permissions:
@@ -28,11 +28,11 @@ jobs:
       - name: Rename Samples to Samples~
         shell: bash
         run: |
-          OLD_PATH="Assets/src/Elements.OdinInspector/Samples"
-          NEW_PATH="Assets/src/Elements.OdinInspector/Samples~"
+          OLD_PATH="Assets/src/UIElements.OdinInspector/Samples"
+          NEW_PATH="Assets/src/UIElements.OdinInspector/Samples~"
 
-          OLD_META="Assets/src/Elements.OdinInspector/Samples.meta"
-          NEW_META="Assets/src/Elements.OdinInspector/Samples~.meta"
+          OLD_META="Assets/src/UIElements.OdinInspector/Samples.meta"
+          NEW_META="Assets/src/UIElements.OdinInspector/Samples~.meta"
 
           if [ -d "$OLD_PATH" ] && [ ! -d "$NEW_PATH" ]; then
             git mv "$OLD_PATH" "$NEW_PATH"
