@@ -1,12 +1,15 @@
 name: Rename Samples folder
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - develop
     paths:
       - "Assets/src/Elements.OdinInspector/Samples/**"
       - "Assets/src/Elements.OdinInspector/Samples.meta"
+      - ".github/workflows/rename-samples.yml"
 
 permissions:
   contents: write
