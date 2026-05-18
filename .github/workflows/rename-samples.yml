@@ -7,8 +7,8 @@ on:
     branches:
       - develop
     paths:
-      - "Assets/src/UIElements.OdinInspector/Samples/**"
-      - "Assets/src/UIElements.OdinInspector/Samples.meta"
+      - "Assets/src/UElements.OdinInspector/Samples/**"
+      - "Assets/src/UElements.OdinInspector/Samples.meta"
       - ".github/workflows/rename-samples.yml"
 
 permissions:
@@ -28,17 +28,29 @@ jobs:
       - name: Rename Samples to Samples~
         shell: bash
         run: |
-          OLD_PATH="Assets/src/UIElements.OdinInspector/Samples"
-          NEW_PATH="Assets/src/UIElements.OdinInspector/Samples~"
+          OLD_PATH="Assets/src/UElements.OdinInspector/Samples"
+          NEW_PATH="Assets/src/UElements.OdinInspector/Samples~"
 
-          OLD_META="Assets/src/UIElements.OdinInspector/Samples.meta"
-          NEW_META="Assets/src/UIElements.OdinInspector/Samples~.meta"
+          OLD_META="Assets/src/UElements.OdinInspector/Samples.meta"
+          NEW_META="Assets/src/UElements.OdinInspector/Samples~.meta"
 
-          if [ -d "$OLD_PATH" ] && [ ! -d "$NEW_PATH" ]; then
-            git mv "$OLD_PATH" "$NEW_PATH"
+          echo "Checking path: $OLD_PATH"
+
+          if [ ! -d "$OLD_PATH" ]; then
+            echo "Folder not found: $OLD_PATH"
+            echo "Available folders:"
+            ls -la "Assets/src/UElements.OdinInspector" || true
+            exit 0
           fi
 
-          if [ -f "$OLD_META" ] && [ ! -f "$NEW_META" ]; then
+          if [ -d "$NEW_PATH" ]; then
+            echo "Target folder already exists: $NEW_PATH"
+            exit 0
+          fi
+
+          git mv "$OLD_PATH" "$NEW_PATH"
+
+          if [ -f "$OLD_META" ]; then
             git mv "$OLD_META" "$NEW_META"
           fi
 
