@@ -221,7 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _subject: Active
-  _value: True
+  _value: Active
 --- !u!1 &165789925
 GameObject:
   m_ObjectHideFlags: 0
