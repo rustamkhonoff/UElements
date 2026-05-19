@@ -1,7 +1,7 @@
 {
-  "name": "com.rustamkhonoff.uelements.litmotion",
-  "version": "1.0.0",
-  "displayName": "UElements.LitMotion",
+  "name": "com.rustamkhonoff.uelements.navigationbar",
+  "version": "2.0.0",
+  "displayName": "UElements.Profiles",
   "unity": "2021.3",
   "unityRelease": "21f1",
   "author": {
