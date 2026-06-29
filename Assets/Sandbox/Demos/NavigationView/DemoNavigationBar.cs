@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Demos.NavigationView;
@@ -20,13 +18,13 @@ namespace Sandbox.Demos.NavigationView
         [SerializeReference] private DemoNavigationModel _hidden;
         private INavigation<DemoNavigationModel> m_navigation;
 
-        public override async void Initialize()
+        protected override async UniTask InitializeAsync(CancellationToken ct)
         {
             m_navigation = await _navigationPageModels.BuildNavigation(CreateSwitcher, GetContentBuilder, _navigationPageModels[0]);
             m_navigation.PageChanged += HandlePageChange;
             m_navigation.ContentCreated += ContentCreated;
 
-            m_navigation.SubscribeToPageWithInitial(page => Debug.Log(page.Key), LifetimeToken).AddTo(this);
+            m_navigation.SubscribeToPageWithInitial(page => Debug.Log(page.Key), ct).AddTo(ct);
         }
 
         private UniTask<ElementNavigationTabBase> CreateSwitcher(DemoNavigationModel arg1, CancellationToken cancellationToken)

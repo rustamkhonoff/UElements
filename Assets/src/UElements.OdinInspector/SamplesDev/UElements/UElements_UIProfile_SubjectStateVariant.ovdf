@@ -52,12 +52,17 @@ Position: $P4sVvvsqeop6dNjRvsrW77:0
 # <Key>k__BackingField
 Position: $7DY9rbGcfdmWeuVEnCJhzT:0
 + [UElements.Profiles.Editor.ConditionalValueDropdownAttribute]
-	Condition = "@UsePredefinedStateKeys"
-	Values = "@UElements.Profiles.PredefinedStatesHelper.Get"
+	Condition = "@UsePredefinedValues"
+	Values = "@UElements.Profiles.PredefinedKeysHelper.Values"
 
 # Apply()
 Visibility: Shown
 + [Sirenix.OdinInspector.ButtonAttribute]
 
 # Activate()
+Position: $root:3
 Visibility: Shown
++ [Sirenix.OdinInspector.InlineButtonAttribute]
+
+# <UsePredefinedValues>k__BackingField
+Position: $P4sVvvsqeop6dNjRvsrW77:0

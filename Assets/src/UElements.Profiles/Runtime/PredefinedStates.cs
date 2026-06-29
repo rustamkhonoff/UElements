@@ -3,9 +3,22 @@
 // Date: 18.05.2026
 // Description:
 // -------------------------------------------------------------------
+
 namespace UElements.Profiles
 {
-    public enum PredefinedStates
+    public enum StateNames
+    {
+        None = -1,
+        IsActive = 0,
+        IsEnabled = 1,
+        IsDisabled = 2,
+        IsInteractable = 3,
+        IsSelected = 4,
+        IsHovered = 5,
+        State = 999
+    }
+
+    public enum StateValues
     {
         None = -1,
         True = 0,
@@ -16,6 +29,8 @@ namespace UElements.Profiles
         Interactable = 5,
         NotInteractable = 6,
         Selected = 7,
-        NotSelected = 8
+        NotSelected = 8,
+        Hovered = 9,
+        NotHovered = 10,
     }
 }

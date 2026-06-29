@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace UElements.Profiles
 {
@@ -12,14 +11,15 @@ namespace UElements.Profiles
             m_targets = targets;
         }
 
-        public bool TryGet<T>(string key, out T target) where T : ProfileTarget
+        public bool TryGet<T>(string id, out T target) where T : ProfileTarget
         {
             target = null;
-            if (m_targets.FirstOrDefault(a => a.Id == key) is not { } found)
-                return false;
-
-            target = (T)found;
-            return true;
+            foreach (ProfileTarget profileTarget in m_targets)
+            {
+                if (profileTarget.Id == id && profileTarget is T t)
+                    return t;
+            }
+            return false;
         }
     }
 }

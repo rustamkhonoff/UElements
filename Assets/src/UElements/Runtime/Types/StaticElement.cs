@@ -11,10 +11,7 @@ namespace UElements
 
         private async UniTask StartAsync()
         {
-            InitializeElements(ElementsGlobal.Instance);
-            await InitializeAsync();
-            // ReSharper disable once MethodHasAsyncOverload
-            Initialize();
+            await InitializeInternal(ElementsGlobal.Instance, destroyCancellationToken);
             await Show();
         }
     }

@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using MessagePack;
 using R3;
 using TMPro;
@@ -32,13 +34,13 @@ namespace Demos.NavigationView
             [Key(2)] public string Mail { get; set; }
         }
 
-        public override void Initialize()
+        protected override void Initialize(CancellationToken ct)
         {
-            _save.OnClickAsObservable().Subscribe(_ => Save()).AddTo(this);
-            _load.OnClickAsObservable().Subscribe(_ => Load()).AddTo(this);
-            _name.OnEndEditAsObservable().Subscribe(a => _user.Name = a).AddTo(this);
-            _age.OnEndEditAsObservable().Subscribe(a => _user.Age = int.Parse(a)).AddTo(this);
-            _mail.OnEndEditAsObservable().Subscribe(a => _user.Mail = a).AddTo(this);
+            _save.OnClickAsObservable().Subscribe(_ => Save()).AddTo(ct);
+            _load.OnClickAsObservable().Subscribe(_ => Load()).AddTo(ct);
+            _name.OnEndEditAsObservable().Subscribe(a => _user.Name = a).AddTo(ct);
+            _age.OnEndEditAsObservable().Subscribe(a => _user.Age = int.Parse(a)).AddTo(ct);
+            _mail.OnEndEditAsObservable().Subscribe(a => _user.Mail = a).AddTo(ct);
 
             Load();
         }

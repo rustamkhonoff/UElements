@@ -11,8 +11,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Scripting;
+#if ODIN_INSPECTOR && UNITY_EDITOR
+using Sirenix.Utilities.Editor;
+#endif
 
 namespace UElements.Profiles
 {
@@ -20,13 +24,35 @@ namespace UElements.Profiles
     public sealed class ProfileController : MonoBehaviour, ITargetProvider
     {
         [field: SerializeField] public ProfileSubject[] Subjects { get; private set; }
-        [field: SerializeField] public ProfileTarget[] Targets { get; private set; } = Array.Empty<ProfileTarget>();
+
+        [field: SerializeField]
+#if ODIN_INSPECTOR
+        [field: ListDrawerSettings(OnTitleBarGUI = nameof(DrawTitleBar))]
+#endif
+        public ProfileTarget[] Targets { get; private set; } = Array.Empty<ProfileTarget>();
 
         private readonly Dictionary<string, ProfileSubject> m_profileSubjects = new();
         private readonly Dictionary<string, string> m_stateBag = new();
         private readonly Dictionary<string, ProfileTarget> m_profileTargetsMap = new();
 
         private CancellationTokenSource Lifetime { get; set; } = new();
+
+#if ODIN_INSPECTOR
+        private void DrawTitleBar()
+        {
+            if (SirenixEditorGUI.ToolbarButton(EditorIcons.Refresh))
+            {
+                Rebuild();
+            }
+        }
+        private void DrawTitleBar2()
+        {
+            if (SirenixEditorGUI.ToolbarButton(EditorIcons.Bell))
+            {
+                Debug.Log("BELL");
+            }
+        }
+#endif
 
         [Preserve]
         public IEnumerable KeysByTargetType(Type type)
@@ -89,10 +115,10 @@ namespace UElements.Profiles
                 SetValueImmediate(subject.Key, subject.DefaultValue);
         }
 
-        public bool TryGet<T>(string key, out T target) where T : ProfileTarget
+        public bool TryGet<T>(string id, out T target) where T : ProfileTarget
         {
             target = null;
-            bool has = m_profileTargetsMap.TryGetValue(key, out ProfileTarget found);
+            bool has = m_profileTargetsMap.TryGetValue(id, out ProfileTarget found);
             if (!has) return false;
             target = (T)found;
             return true;

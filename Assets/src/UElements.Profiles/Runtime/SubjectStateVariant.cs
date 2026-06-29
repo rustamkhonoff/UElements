@@ -7,12 +7,12 @@ namespace UElements.Profiles
     [Serializable]
     public class SubjectStateVariant
     {
-        [field: SerializeField] public string Key { get; private set; }
+        [field: SerializeField] public string Key { get; private set; } = nameof(StateValues.True);
         [field: SerializeField] public ApplyMode ApplyMode { get; private set; } = ApplyMode.Parallel;
         [field: SerializeField, SerializeReference] public IProfileOperation[] Operations { get; private set; } = Array.Empty<IProfileOperation>();
 
         [Preserve]
-        [field: SerializeField] public bool UsePredefinedStateKeys { get; private set; }
+        [field: SerializeField] public bool UsePredefinedValues { get; private set; } = true;
 
         private Action m_callback;
 

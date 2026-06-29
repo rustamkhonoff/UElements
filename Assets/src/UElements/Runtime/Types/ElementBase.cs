@@ -15,14 +15,17 @@ namespace UElements
         protected IElements Elements { get; private set; }
         public IElementController ElementController { get; set; } = new DefaultElementController();
 
-        internal void InitializeElements(IElements elements)
+        internal async UniTask InitializeInternal(IElements elements, CancellationToken ct)
         {
             Elements = elements;
+            await InitializeAsync(ct);
+            // ReSharper disable once MethodHasAsyncOverload
+            Initialize(ct);
         }
 
-        public virtual void Initialize() { }
+        protected virtual void Initialize(CancellationToken ct) { }
 
-        public virtual UniTask InitializeAsync()
+        protected virtual UniTask InitializeAsync(CancellationToken ct)
         {
             return UniTask.CompletedTask;
         }

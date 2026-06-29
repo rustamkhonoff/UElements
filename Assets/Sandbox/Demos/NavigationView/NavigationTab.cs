@@ -1,4 +1,6 @@
 using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using LitMotion;
 using LitMotion.Extensions;
 using R3;
@@ -20,12 +22,10 @@ namespace Demos.NavigationView
         [SerializeField] private Color _a, _b;
         [SerializeField] private TMP_Text _text;
 
-        public override void Initialize()
+        protected override void Initialize(CancellationToken ct)
         {
             _image.sprite = Model.Icon;
-            // Model.Locked.Subscribe(_locked.SetState).AddTo(this);
-            // Model.BadgeActive.CombineLatest(Model.Locked, (badge, locked) => badge && !locked).Subscribe(_badgeActive.SetState).AddTo(this);
-            Model.Name.SubscribeToText(_text).AddTo(this);
+            Model.Name.SubscribeToText(_text).AddTo(ct);
             _button.onClick.AddListener(RequestSwitch);
         }
 

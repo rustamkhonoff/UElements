@@ -2,10 +2,6 @@ OVDF v1.1
 UElements.Profiles.ProfileController, UElements.Profiles
 MetaGuid:bd7e4a937b0c4f08adfdcb93bf28db79
 
-# $self
-+ [Sirenix.OdinInspector.OnInspectorInitAttribute]
-	Action = "Rebuild"
-
 # $5QEdDbUE4Sc4z9i1TYhwyT
 Position: $root:9
 + [Sirenix.OdinInspector.ColumnGroupAttribute]
@@ -13,11 +9,6 @@ Position: $root:9
 # $UALcJEP9NxXjcNj8pWZXUb
 Position: $5QEdDbUE4Sc4z9i1TYhwyT:0
 + [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
-
-# $MLqonLHRjdp2Ht4YsmvwVu
-Position: $5QEdDbUE4Sc4z9i1TYhwyT:1
-+ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
-	Size = 25 px
 
 # <Subjects>k__BackingField
 + [Sirenix.OdinInspector.ListDrawerSettingsAttribute]
@@ -45,19 +36,18 @@ Position: $UALcJEP9NxXjcNj8pWZXUb:0
 
 # Rebuild()
 Position: $MLqonLHRjdp2Ht4YsmvwVu:0
-Visibility: Shown
-+ [Sirenix.OdinInspector.ButtonAttribute]
-	Style = Box
-	Icon = ArrowCounterclockwise
-	Name = ""
-	buttonHeight = 24
-	HasDefinedButtonHeight = True
+Visibility: Hidden
 
 # <Targets>k__BackingField
 Position: $UALcJEP9NxXjcNj8pWZXUb:0
-+ [Sirenix.OdinInspector.ReadOnlyAttribute]
 + [Sirenix.OdinInspector.ListDrawerSettingsAttribute]
 	ListElementLabelName = "Id"
+	HideAddButton = True
+	HideRemoveButton = True
+	isReadOnly = True
+	isReadOnlyHasValue = True
+	draggable = False
+	draggableHasValue = True
 
 # SetValueImmediate(string, string)
 Visibility: Hidden

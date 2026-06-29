@@ -2,6 +2,6 @@ namespace UElements.Profiles
 {
     public interface ITargetProvider
     {
-        public bool TryGet<T>(string key, out T target) where T : ProfileTarget;
+        public bool TryGet<T>(string id, out T target) where T : ProfileTarget;
     }
 }

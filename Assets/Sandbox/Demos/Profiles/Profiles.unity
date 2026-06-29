@@ -169,22 +169,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <Subjects>k__BackingField:
-  - <Key>k__BackingField: Active
-    <HasDefaultValue>k__BackingField: 0
+  - <Key>k__BackingField: IsActive
+    <HasDefaultValue>k__BackingField: 1
     <DefaultValue>k__BackingField: Active
     <Variants>k__BackingField:
-    - <Key>k__BackingField: Active
+    - <Key>k__BackingField: True
       <ApplyMode>k__BackingField: 0
       <Operations>k__BackingField:
       - rid: 3581468228734681090
-      <UsePredefinedStateKeys>k__BackingField: 1
-    - <Key>k__BackingField: Disabled
+      <UsePredefinedValues>k__BackingField: 1
+    - <Key>k__BackingField: False
       <ApplyMode>k__BackingField: 0
       <Operations>k__BackingField:
       - rid: 3581468228734681091
-      <UsePredefinedStateKeys>k__BackingField: 1
+      <UsePredefinedValues>k__BackingField: 1
+    <UsePredefinedValues>k__BackingField: 1
   <Targets>k__BackingField:
-  - {fileID: 1257434156}
+  - {fileID: 0}
   references:
     version: 2
     RefIds:
@@ -220,8 +221,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ed2e8b8f1a4881ad67ff5b72f93042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _subject: Active
-  _value: Disabled
+  _subject: IsActive
+  _value: False
 --- !u!1 &165789925
 GameObject:
   m_ObjectHideFlags: 0

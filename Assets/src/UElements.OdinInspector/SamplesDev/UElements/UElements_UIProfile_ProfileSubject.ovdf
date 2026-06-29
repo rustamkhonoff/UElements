@@ -2,7 +2,7 @@ OVDF v1.1
 UElements.Profiles.ProfileSubject, UElements.Profiles
 
 # $7cMWtz2KVv6BTR1JstVe8i
-Position: $root:1
+Position: $root:3
 + [Sirenix.OdinInspector.ColumnGroupAttribute]
 
 # $VWYZf18uVRxD8qCn1mDvg3
@@ -12,7 +12,20 @@ Position: $7cMWtz2KVv6BTR1JstVe8i:1
 # $293cWN1pf5zc14mj8njgQs
 Position: $7cMWtz2KVv6BTR1JstVe8i:0
 + [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
-	Size = 130 px
+	Size = 140 px
+
+# $FPtzNP1h9YzWKFc5R4uSE9
+Position: $root:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute]
+
+# $8yEEkCdhLuxkepLMeMzfWm
+Position: $FPtzNP1h9YzWKFc5R4uSE9:0
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
+	Size = 140 px
+
+# $S9BQ6BcUiLyUGDnqUqVrZa
+Position: $FPtzNP1h9YzWKFc5R4uSE9:1
++ [Sirenix.OdinInspector.ColumnGroupAttribute+ColumnSubGroupAttribute]
 
 # <DefaultValue>k__BackingField
 Position: $VWYZf18uVRxD8qCn1mDvg3:0
@@ -20,12 +33,20 @@ Position: $VWYZf18uVRxD8qCn1mDvg3:0
 	ValuesGetter = "@Keys"
 + [Sirenix.OdinInspector.EnableIfAttribute]
 	Condition = "HasDefaultValue"
++ [Sirenix.OdinInspector.LabelTextAttribute]
+	Text = "Value"
 
 # <Key>k__BackingField
-Position: $root:0
+Position: $S9BQ6BcUiLyUGDnqUqVrZa:0
++ [UElements.Profiles.Editor.ConditionalValueDropdownAttribute]
+	Values = "@UElements.Profiles.PredefinedKeysHelper.Names"
+	Condition = "@UsePredefinedValues"
++ [Sirenix.OdinInspector.LabelTextAttribute]
+	Text = "Name"
+	NicifyText = False
 
 # <Variants>k__BackingField
-Position: $root:2
+Position: $root:4
 + [Sirenix.OdinInspector.ListDrawerSettingsAttribute]
 	draggable = False
 	draggableHasValue = True
@@ -34,6 +55,7 @@ Position: $root:2
 	ListElementLabelName = "@ \"State: \" + Key"
 	showItemCount = True
 	showItemCountHasValue = True
+	onTitleBarGUI = null
 
 # <AutoInitializeDefaultValue>k__BackingField
 Position: $UxtxpmkJN119zT9AU6X78d:0
@@ -43,4 +65,11 @@ Position: $UxtxpmkJN119zT9AU6X78d:0
 # <HasDefaultValue>k__BackingField
 Position: $293cWN1pf5zc14mj8njgQs:0
 + [Sirenix.OdinInspector.LabelWidthAttribute]
-	Width = 120
+	Width = 130
+
+# <UsePredefinedValues>k__BackingField
+Position: $8yEEkCdhLuxkepLMeMzfWm:0
++ [Sirenix.OdinInspector.LabelTextAttribute]
+	Text = "Use Default Names"
++ [Sirenix.OdinInspector.LabelWidthAttribute]
+	Width = 130

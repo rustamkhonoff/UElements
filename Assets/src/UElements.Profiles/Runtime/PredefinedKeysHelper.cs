@@ -7,8 +7,9 @@ using System;
 
 namespace UElements.Profiles
 {
-    public static class PredefinedStatesHelper
+    public static class PredefinedKeysHelper
     {
-        public static string[] Get => Enum.GetNames(typeof(PredefinedStates));
+        public static string[] Values => Enum.GetNames(typeof(StateValues));
+        public static string[] Names => Enum.GetNames(typeof(StateNames));
     }
 }

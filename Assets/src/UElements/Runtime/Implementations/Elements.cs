@@ -150,7 +150,7 @@ namespace UElements
             if (!ModelElementHelper.TryInitializeModel(instance, model))
                 Debug.LogWarning($"Trying to create element with model {model.GetType()}");
 
-            await InitializeElement(instance);
+            await InitializeElement(instance, options);
             await ShowElement(instance);
             return instance;
         }
@@ -158,7 +158,7 @@ namespace UElements
         public async UniTask<ElementBase> Create(ElementCreateOptions options)
         {
             ElementBase instance = await Create_Internal<ElementBase>(options);
-            await InitializeElement(instance);
+            await InitializeElement(instance, options);
             await ShowElement(instance);
             return instance;
         }
@@ -166,7 +166,7 @@ namespace UElements
         public async UniTask<T> Create<T>(ElementCreateOptions options) where T : Element
         {
             T instance = await Create_Internal<T>(options);
-            await InitializeElement(instance);
+            await InitializeElement(instance, options);
             await ShowElement(instance);
             return instance;
         }
@@ -175,17 +175,14 @@ namespace UElements
         {
             T instance = await Create_Internal<T>(options);
             instance.InitializeModel(model);
-            await InitializeElement(instance);
+            await InitializeElement(instance, options);
             await ShowElement(instance);
             return instance;
         }
 
-        private async UniTask InitializeElement(ElementBase elementBase)
+        private async UniTask InitializeElement(ElementBase elementBase, ElementCreateOptions options)
         {
-            elementBase.InitializeElements(this);
-            await elementBase.InitializeAsync();
-            // ReSharper disable once MethodHasAsyncOverload
-            elementBase.Initialize();
+            await elementBase.InitializeInternal(this, options.LifetimeToken);
         }
 
         private async UniTask<T> Create_Internal<T>(ElementCreateOptions options)

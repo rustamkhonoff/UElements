@@ -10,13 +10,16 @@ namespace UElements.Profiles
     [Serializable]
     public class ProfileSubject
     {
-        [field: SerializeField] public string Key { get; private set; }
+        [field: SerializeField] public string Key { get; private set; } = nameof(StateNames.None);
         [field: SerializeField] public bool HasDefaultValue { get; private set; } = true;
         [field: SerializeField] public string DefaultValue { get; private set; }
         [field: SerializeField] public List<SubjectStateVariant> Variants { get; private set; }
 
         private Dictionary<string, SubjectStateVariant> m_variants = new();
         public bool Cached { get; private set; }
+
+        [Preserve]
+        [field: SerializeField] public bool UsePredefinedValues { get; private set; } = true;
 
         [Preserve]
         public IEnumerable Keys => Variants.Select(a => a.Key);

@@ -1,3 +1,4 @@
+using System.Threading;
 using R3;
 using TMPro;
 using UElements;
@@ -11,12 +12,11 @@ namespace Demos.CollectionView
         [SerializeField] private TMP_Text _text;
         [SerializeField] private Button _click;
 
-        public Observable<Unit> Clicked => m_clicked;
-        private Observable<Unit> m_clicked;
+        public Observable<Unit> Clicked { get; private set; }
 
-        public override void Initialize()
+        protected override void Initialize(CancellationToken ct)
         {
-            m_clicked = _click.OnClickAsObservable();
+            Clicked = _click.OnClickAsObservable();
         }
 
         public void SetText(string text)

@@ -42,6 +42,21 @@ namespace UElements.Profiles
             return source.BindValueWithImmediateFirst(controller, key, a => a ? "True" : "False");
         }
 
+        public static UniTask SetValue(this ProfileController controller, StateNames name, StateValues value, CancellationToken ct)
+        {
+            return controller.SetValue(name.ToString(), value.ToString(), ct);
+        }
+
+        public static UniTask SetValue(this ProfileController controller, string name, StateValues value, CancellationToken ct)
+        {
+            return controller.SetValue(name, value.ToString(), ct);
+        }
+
+        public static UniTask SetValue(this ProfileController controller, StateNames name, string value, CancellationToken ct)
+        {
+            return controller.SetValue(name.ToString(), value, ct);
+        }
+
         public static UniTask SetBool(this ProfileController controller, string key, bool state, CancellationToken ct = default)
         {
             string value = state ? "True" : "False";
