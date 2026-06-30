@@ -45,13 +45,6 @@ namespace UElements.Profiles
                 Rebuild();
             }
         }
-        private void DrawTitleBar2()
-        {
-            if (SirenixEditorGUI.ToolbarButton(EditorIcons.Bell))
-            {
-                Debug.Log("BELL");
-            }
-        }
 #endif
 
         [Preserve]

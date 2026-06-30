@@ -14,7 +14,6 @@ namespace UElements.Profiles
         [field: SerializeField] public bool HasDefaultValue { get; private set; } = true;
         [field: SerializeField] public string DefaultValue { get; private set; }
         [field: SerializeField] public List<SubjectStateVariant> Variants { get; private set; }
-
         private Dictionary<string, SubjectStateVariant> m_variants = new();
         public bool Cached { get; private set; }
 
