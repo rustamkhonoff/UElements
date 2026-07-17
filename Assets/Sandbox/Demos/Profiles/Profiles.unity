@@ -132,7 +132,6 @@ GameObject:
   m_Component:
   - component: {fileID: 155138683}
   - component: {fileID: 155138684}
-  - component: {fileID: 155138685}
   m_Layer: 0
   m_Name: Profiles
   m_TagString: Untagged
@@ -185,7 +184,7 @@ MonoBehaviour:
       <UsePredefinedValues>k__BackingField: 1
     <UsePredefinedValues>k__BackingField: 1
   <Targets>k__BackingField:
-  - {fileID: 0}
+  - {fileID: 1257434156}
   references:
     version: 2
     RefIds:
@@ -209,20 +208,6 @@ MonoBehaviour:
           <Duration>k__BackingField: 0.125
           <Ease>k__BackingField: 3
           <Delay>k__BackingField: 0
---- !u!114 &155138685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 155138682}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5ed2e8b8f1a4881ad67ff5b72f93042, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _subject: IsActive
-  _value: False
 --- !u!1 &165789925
 GameObject:
   m_ObjectHideFlags: 0
@@ -536,7 +521,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.10298407, g: 1, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

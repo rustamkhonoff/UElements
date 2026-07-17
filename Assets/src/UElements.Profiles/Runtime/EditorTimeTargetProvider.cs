@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace UElements.Profiles
 {
@@ -17,7 +18,10 @@ namespace UElements.Profiles
             foreach (ProfileTarget profileTarget in m_targets)
             {
                 if (profileTarget.Id == id && profileTarget is T t)
-                    return t;
+                {
+                    target = t;
+                    return true;
+                }
             }
             return false;
         }

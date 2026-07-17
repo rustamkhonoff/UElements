@@ -71,15 +71,22 @@ namespace UElements.Profiles
             Lifetime = null;
         }
 
+        private void OnValidate()
+        {
+            Rebuild();
+        }
+
         public void SetValueEditor(string subject, string value)
         {
             ProfileSubject sbj = Subjects.FirstOrDefault(a => a.Key == subject);
             if (sbj == null)
                 return;
-            var provider = new EditorTimeTargetProvider(Targets);
+            EditorTimeTargetProvider provider = new(Targets);
 
             foreach (IProfileOperation profileOperation in sbj.Variants.FirstOrDefault(a => a.Key == value)!.Operations)
+            {
                 profileOperation.Apply(provider);
+            }
 
 #if UNITY_EDITOR
             if (!Application.isPlaying)
@@ -118,6 +125,9 @@ namespace UElements.Profiles
         }
 
         [Preserve]
+#if ODIN_INSPECTOR
+        [OnInspectorInit]
+#endif
         private void Rebuild()
         {
             foreach (ProfileSubject profileSubject in Subjects)

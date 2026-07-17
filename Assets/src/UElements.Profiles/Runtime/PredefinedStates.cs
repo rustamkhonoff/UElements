@@ -15,6 +15,9 @@ namespace UElements.Profiles
         IsInteractable = 3,
         IsSelected = 4,
         IsHovered = 5,
+        IsReached = 6,
+        IsUnlocked = 7,
+        IsCompleted = 8,
         State = 999
     }
 

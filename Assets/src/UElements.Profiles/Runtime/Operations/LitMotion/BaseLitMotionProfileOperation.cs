@@ -30,11 +30,8 @@ namespace UElements.Profiles.LitMotion
 
         protected override async sealed UniTask OnApplyAsync(TTarget target, TValue value, CancellationToken ct = default)
         {
-            if (m_motionHandle.IsActive())
-            {
-                Debug.Log("CANCEL CANCEL");
+            if (m_motionHandle.IsActive()) 
                 m_motionHandle.Cancel();
-            }
 
             if (_configuration.Animate)
             {
