@@ -26,7 +26,7 @@ namespace UElements.Profiles
         [field: SerializeField] public ProfileSubject[] Subjects { get; private set; }
 
         [field: SerializeField]
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR&& UNITY_EDITOR
         [field: ListDrawerSettings(OnTitleBarGUI = nameof(DrawTitleBar))]
 #endif
         public ProfileTarget[] Targets { get; private set; } = Array.Empty<ProfileTarget>();
@@ -37,7 +37,7 @@ namespace UElements.Profiles
 
         private CancellationTokenSource Lifetime { get; set; } = new();
 
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         private void DrawTitleBar()
         {
             if (SirenixEditorGUI.ToolbarButton(EditorIcons.Refresh))
@@ -125,7 +125,7 @@ namespace UElements.Profiles
         }
 
         [Preserve]
-#if ODIN_INSPECTOR
+#if ODIN_INSPECTOR && UNITY_EDITOR
         [OnInspectorInit]
 #endif
         private void Rebuild()
@@ -147,7 +147,7 @@ namespace UElements.Profiles
             }
             Targets = GetComponentsInChildren<ProfileTarget>(true);
         }
-
+        
         public void SetValueImmediate(string key, string value, bool force = false)
         {
             if (m_stateBag.ContainsKey(key))

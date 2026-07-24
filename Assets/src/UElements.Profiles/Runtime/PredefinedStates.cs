@@ -18,6 +18,11 @@ namespace UElements.Profiles
         IsReached = 6,
         IsUnlocked = 7,
         IsCompleted = 8,
+        IsVisible = 9,
+        IsOpen = 10,
+        IsLoading = 11,
+        IsValidating = 12,
+        IsValid = 13,
         State = 999
     }
 
@@ -35,5 +40,9 @@ namespace UElements.Profiles
         NotSelected = 8,
         Hovered = 9,
         NotHovered = 10,
+        Loaded = 11,
+        NotLoaded = 12,
+        Visible = 13,
+        Invisible = 14,
     }
 }
